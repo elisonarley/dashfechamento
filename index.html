@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diário de Bordo de Monitoramento</title>
+    <title>Diário de Bordo de Monitoramento - Moderno</title>
     <!-- Carregamento do Tailwind CSS CDN --><script src="https://cdn.tailwindcss.com"></script>
     <!-- Carregamento do Flatpickr (Seletor de Datas) --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -119,17 +118,17 @@
                     {
                         icon: '🛑',
                         type: 'Incidente Crítico',
-                        title: 'Pedidos Represados no Faturamento (JUNDSOFT e WMS)
+                        title: 'Pedidos Represados no Faturamento (Sistema Jundsoft)',
                         status: 'RESOLVIDO',
                         statusClass: 'bg-status-resolved text-white',
                         initialTime: '08:31:00',
                         actors: ['Gleice', 'Pablo'],
                         log: [
                             { time: '08:31:00', actor: 'Gleice', description: 'Acionamento inicial: Faturamento paralisado. (Chamado #2511170003)' },
-                            { time: '08:37:00', actor: 'Pablo', description: 'Verificação: Robôs do JUND estão OK. Identificado pedido das 08:10 represado devido ao grande volume no fluxo de pedidos. O pedido seguiu o fluxo automaticamente logo após a verificação.' },
+                            { time: '08:37:00', actor: 'Pablo', description: 'Verificação: Robôs do Jundiaí estão OK. Identificado pedido das 08:10 represado na fila de Separação do Jundiaí.' },
                             { time: '08:40:00', actor: 'Sistema', description: 'RESOLVIDO: Fluxo de faturamento normalizado. (Causa raiz: Represamento pontual e autossolucionado no pipeline de Separação.)' },
                         ],
-                        summary: 'Represamento pontual de pedidos no pipeline de Separação em Jundiaí. O fluxo foi normalizado automaticamente em 9 minutos.'
+                        summary: 'Represamento pontual de pedidos no pipeline de Separação no Sistema Jundsoft. O fluxo foi normalizado automaticamente em 9 minutos.'
                     },
                     {
                         icon: '⚠️',
@@ -166,17 +165,17 @@
                     {
                         icon: '🚨',
                         type: 'Instabilidade de Infra',
-                        title: 'Alerta de Instabilidade - Link de Internet em Jundiaí',
+                        title: 'Alerta de Instabilidade - Link de Internet no Sistema Jundsoft',
                         status: 'NORMALIZADO',
                         statusClass: 'bg-status-resolved text-white',
                         initialTime: '16:25:00',
                         actors: ['Elison', 'Matheus - JDI'],
                         log: [
-                            { time: '16:25:00', actor: 'Elison', description: 'Identificada instabilidade na internet em Jundiaí.' },
+                            { time: '16:25:00', actor: 'Elison', description: 'Identificada instabilidade na internet no Sistema Jundsoft.' },
                             { time: '16:28:00', actor: 'Matheus - JDI', description: 'Houve uma queda de internet de aproximadamente 3 minutos há pouco; - O serviço já foi normalizado; - Segundo o Matheus, esse tipo de oscilação ocorre normalmente 1 vez por dia (nem sempre no mesmo horário e nem todos os dias).' },
                             { time: '16:30:00', actor: 'Elison', description: 'Verificado que o sistema estava normal e informado no grupo.' },
                         ],
-                        summary: 'Queda de internet de 3 minutos em Jundiaí. Serviço normalizado. Nota: É uma oscilação de recorrência diária.'
+                        summary: 'Queda de internet de 3 minutos no Sistema Jundsoft. Serviço normalizado. Nota: É uma oscilação de recorrência diária.'
                     },
                 ]
             },
@@ -408,4 +407,3 @@
     </script>
 </body>
 </html>
-
