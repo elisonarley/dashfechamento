@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diário de Bordo de Monitoramento - Fechamento</title>
-    <!-- Carregamento do Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Configuração do Tailwind para cor e fonte -->
-    <script>
+    <title>Diário de Bordo de Monitoramento - Moderno</title>
+    <!-- Carregamento do Tailwind CSS CDN --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carregamento do Flatpickr (Seletor de Datas) --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Configuração do Tailwind para cor e fonte --><script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'primary': '#1f2937', // Gray-800
-                        'secondary': '#374151', // Gray-700
-                        'accent-red': '#ef4444',
-                        'accent-yellow': '#f59e0b',
-                        'accent-blue': '#3b82f6',
-                        'accent-green': '#10b981',
+                        'primary-bg': '#0f0f0f', // Fundo principal bem escuro (quase preto)
+                        'secondary-bg': '#1a1a1a', // Fundo de cards/elementos um pouco mais claro
+                        'text-light': '#f5f5f5', // Texto claro
+                        'text-muted': '#a0a0a0', // Texto secundário/cinza
+                        'brand-purple': '#5d3fd3', // Roxo vibrante (inspirado no Black Month)
+                        'brand-blue': '#4a90e2', // Azul para links/destaques
+                        'status-resolved': '#28a745', // Verde para resolvido
+                        'status-warning': '#ffc107', // Amarelo para aviso
+                        'status-critical': '#dc3545', // Vermelho para crítico
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'], // Usando Inter para um visual moderno
                     },
                 }
             }
@@ -29,8 +33,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Dark background */
-            color: #f9fafb; /* Light text */
+            background-color: '#0f0f0f'; /* Cor de fundo principal */
+            color: '#f5f5f5'; /* Cor de texto padrão */
         }
         /* Estilos de scrollbar customizados para dark mode */
         .log-container::-webkit-scrollbar {
@@ -43,28 +47,65 @@
         .log-container::-webkit-scrollbar-track {
             background: #1f2937; /* Gray-800 */
         }
+        
+        /* Estilo para o Flatpickr se integrar ao tema escuro */
+        .flatpickr-calendar {
+            background: #1a1a1a !important; /* Fundo do calendário */
+            border: 1px solid #333 !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5) !important;
+        }
+        .flatpickr-day, .flatpickr-weekday {
+            color: #f5f5f5 !important;
+        }
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange, .flatpickr-day.selected:focus, .flatpickr-day.startRange:focus, .flatpickr-day.endRange:focus, .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover, .flatpickr-day.selected.prevMonthDay, .flatpickr-day.startRange.prevMonthDay, .flatpickr-day.endRange.prevMonthDay, .flatpickr-day.selected.nextMonthDay, .flatpickr-day.startRange.nextMonthDay, .flatpickr-day.endRange.nextMonthDay {
+            background: #5d3fd3 !important; /* Cor de seleção */
+            border-color: #5d3fd3 !important;
+            color: #f5f5f5 !important;
+        }
+        .flatpickr-day.today {
+            border-color: #4a90e2 !important; /* Cor para o dia de hoje */
+            color: #4a90e2 !important;
+        }
+        .flatpickr-day.inRange {
+            background: rgba(93, 63, 211, 0.3) !important; /* Range selecionado */
+            border-color: rgba(93, 63, 211, 0.3) !important;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months,
+        .flatpickr-current-month .numInputWrapper span,
+        .flatpickr-current-month .flatpickr-month {
+            color: #f5f5f5 !important;
+        }
+        .flatpickr-next-month:hover svg, .flatpickr-prev-month:hover svg {
+            fill: #5d3fd3 !important;
+        }
+        .flatpickr-next-month svg, .flatpickr-prev-month svg {
+            fill: #a0a0a0 !important;
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <div class="max-w-7xl mx-auto">
-        <!-- Título e Resumo Executivo -->
-        <header class="mb-8 pb-4 border-b border-secondary">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-accent-blue tracking-tight">
+        <!-- Título e Seletor de Datas --><header class="mb-8 pb-4 border-b border-gray-800 flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-brand-purple tracking-tight mb-4 md:mb-0">
                 Diário de Bordo de Monitoramento
             </h1>
-            <p class="mt-2 text-lg text-gray-400">
-                Resumo Executivo de Fechamento - Visualização Consolidada de Incidentes e Eventos.
-            </p>
-            <div id="summary-metrics" class="mt-4 flex flex-wrap gap-4">
-                <!-- Métricas serão injetadas aqui -->
+            <div class="flex items-center space-x-4">
+                <input type="text" id="date-selector" placeholder="Filtrar por data..." 
+                       class="p-2 rounded-md bg-secondary-bg border border-gray-700 text-text-light focus:outline-none focus:ring-2 focus:ring-brand-blue" />
+                <button id="clear-date-filter" class="p-2 rounded-md bg-gray-700 text-text-light hover:bg-gray-600 transition duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
             </div>
         </header>
 
-        <!-- Container Principal para as Datas -->
-        <div id="dashboard-container">
-            <!-- As seções de datas serão renderizadas aqui -->
-        </div>
+        <!-- Métricas de Resumo --><div id="summary-metrics" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <!-- Métricas serão injetadas aqui --></div>
+
+        <!-- Container Principal para as Datas --><div id="dashboard-container">
+            <!-- As seções de datas serão renderizadas aqui --></div>
         
     </div>
 
@@ -79,7 +120,7 @@
                         type: 'Incidente Crítico',
                         title: 'Pedidos Represados no Faturamento (Jundiaí)',
                         status: 'RESOLVIDO',
-                        statusClass: 'bg-accent-green text-gray-900',
+                        statusClass: 'bg-status-resolved text-white',
                         initialTime: '08:31:00',
                         actors: ['Gleice', 'Pablo'],
                         log: [
@@ -94,7 +135,7 @@
                         type: 'Evento de Capacidade',
                         title: 'Disco Insuficiente - Servidor Donatello (Partição G:)',
                         status: 'NORMALIZADO',
-                        statusClass: 'bg-accent-green text-gray-900',
+                        statusClass: 'bg-status-resolved text-white',
                         initialTime: '08:09:00',
                         actors: ['Monitoramento', 'Gabriel', 'Gabriel Soares'],
                         log: [
@@ -109,29 +150,29 @@
                     {
                         icon: '📉',
                         type: 'Evento de Capacidade',
-                        title: 'Alto Consumo de Disco - Servidor Linux PROD-WMS-INTEGRADOR (/)',
+                        title: 'Alto Consumo de Disco - Servidor Linux PROD-WMS-INTEGRADOR (Filesystem /)',
                         status: 'RESOLVIDO',
-                        statusClass: 'bg-accent-green text-gray-900',
+                        statusClass: 'bg-status-resolved text-white',
                         initialTime: '07:54:00',
                         actors: ['Pablo', 'Murilo'],
                         log: [
                             { time: '07:54:00', actor: 'Pablo', description: 'Acionamento inicial: Alerta de espaço em disco no filesystem raiz (/) do Servidor Linux. Utilização: 97%.' },
-                            { time: '08:46:00', actor: 'Murilo', description: 'Time de Cloud e datacenter acionado, verificando a origem do consumo de espaço em disco.' },
+                            { time: '08:46:00', actor: 'Murilo', description: 'Time de Suporte acionado, verificando a origem do consumo de espaço em disco.' },
                             { time: '09:44:00', actor: 'Murilo', description: 'RESOLVIDO: Problema de espaço em disco corrigido. (Presume-se a limpeza/remoção de logs ou arquivos temporários.)' },
                         ],
-                        summary: 'Alto consumo no filesystem raiz do PROD-WMS-INTEGRADOR (97% de uso). Resolvido pelo Time de Cloud & Datacenter com limpeza de logs/temporários.'
+                        summary: 'Alto consumo no filesystem raiz do PROD-WMS-INTEGRADOR (97% de uso). Resolvido pelo Time de Suporte com limpeza de logs/temporários.'
                     },
                     {
                         icon: '🚨',
                         type: 'Instabilidade de Infra',
                         title: 'Alerta de Instabilidade - Link de Internet em Jundiaí',
                         status: 'NORMALIZADO',
-                        statusClass: 'bg-accent-green text-gray-900',
+                        statusClass: 'bg-status-resolved text-white',
                         initialTime: '16:25:00',
                         actors: ['Elison', 'Matheus - JDI'],
                         log: [
                             { time: '16:25:00', actor: 'Elison', description: 'Identificada instabilidade na internet em Jundiaí.' },
-                            { time: '16:28:00', actor: 'Matheus - JDI', description: 'Houve uma queda de internet de aproximadamente 3 minutos há pouco. O serviço já foi normalizado. Oscilação ocorre normalmente 1 vez por dia.' },
+                            { time: '16:28:00', actor: 'Matheus - JDI', description: 'Houve uma queda de internet de aproximadamente 3 minutos há pouco; - O serviço já foi normalizado; - Segundo o Matheus, esse tipo de oscilação ocorre normalmente 1 vez por dia (nem sempre no mesmo horário e nem todos os dias).' },
                             { time: '16:30:00', actor: 'Elison', description: 'Verificado que o sistema estava normal e informado no grupo.' },
                         ],
                         summary: 'Queda de internet de 3 minutos em Jundiaí. Serviço normalizado. Nota: É uma oscilação de recorrência diária.'
@@ -144,51 +185,66 @@
             }
         ];
 
+        let selectedDate = null; // Variável para armazenar a data selecionada
+
         // Função utilitária para gerar classes de cores baseadas no ícone
         function getIconColorClass(icon) {
             switch (icon) {
-                case '🛑': return 'bg-accent-red';
-                case '⚠️': return 'bg-accent-yellow';
-                case '📉': return 'bg-accent-yellow';
-                case '🚨': return 'bg-accent-blue';
-                default: return 'bg-gray-500';
+                case '🛑': return 'border-status-critical';
+                case '⚠️': return 'border-status-warning';
+                case '📉': return 'border-status-warning';
+                case '🚨': return 'border-brand-blue';
+                case '✅': return 'border-status-resolved'; // Para o dia sem eventos
+                default: return 'border-gray-500';
             }
         }
 
         // Função para calcular e renderizar as métricas de resumo
-        function renderSummary() {
+        function renderSummary(filteredEvents) {
             let totalEvents = 0;
             let totalIncidents = 0;
             let totalWarnings = 0;
 
-            eventData.forEach(day => {
-                totalEvents += day.events.length;
-                day.events.forEach(event => {
-                    if (event.icon === '🛑') {
-                        totalIncidents++;
-                    } else if (event.icon === '⚠️' || event.icon === '📉') {
-                        totalWarnings++;
-                    }
-                });
+            filteredEvents.forEach(event => {
+                totalEvents++;
+                if (event.icon === '🛑') {
+                    totalIncidents++;
+                } else if (event.icon === '⚠️' || event.icon === '📉' || event.icon === '🚨') {
+                    totalWarnings++;
+                }
             });
 
             const metricsHtml = `
-                <div class="p-3 bg-secondary rounded-lg shadow-xl border-l-4 border-accent-blue">
-                    <p class="text-sm font-medium text-gray-400">Total de Eventos Monitorados</p>
-                    <p class="text-2xl font-bold text-white">${totalEvents}</p>
+                <div class="p-4 bg-secondary-bg rounded-lg shadow-xl border-l-4 border-brand-blue flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-text-muted">Eventos Exibidos</p>
+                        <p class="text-3xl font-bold text-text-light">${totalEvents}</p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-brand-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 2v-6m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5l2 2h2a2 2 0 012 2v6a2 2 0 01-2 2z" />
+                    </svg>
                 </div>
-                <div class="p-3 bg-secondary rounded-lg shadow-xl border-l-4 border-accent-red">
-                    <p class="text-sm font-medium text-gray-400">Incidentes Críticos (🛑)</p>
-                    <p class="text-2xl font-bold text-white">${totalIncidents}</p>
+                <div class="p-4 bg-secondary-bg rounded-lg shadow-xl border-l-4 border-status-critical flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-text-muted">Incidentes Críticos</p>
+                        <p class="text-3xl font-bold text-text-light">${totalIncidents}</p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-status-critical" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
                 </div>
-                <div class="p-3 bg-secondary rounded-lg shadow-xl border-l-4 border-accent-yellow">
-                    <p class="text-sm font-medium text-gray-400">Eventos de Atenção (⚠️/📉)</p>
-                    <p class="text-2xl font-bold text-white">${totalWarnings}</p>
+                <div class="p-4 bg-secondary-bg rounded-lg shadow-xl border-l-4 border-status-warning flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-text-muted">Alertas/Avisos</p>
+                        <p class="text-3xl font-bold text-text-light">${totalWarnings}</p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-status-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
             `;
             document.getElementById('summary-metrics').innerHTML = metricsHtml;
         }
-
 
         // Função para renderizar um único cartão de evento
         function createEventCard(event) {
@@ -196,20 +252,20 @@
             
             const logItems = event.log.map(item => `
                 <li class="py-1 border-b border-gray-700 last:border-b-0">
-                    <span class="text-xs font-mono text-gray-400">[${item.time}]</span>
-                    <span class="text-sm font-semibold text-accent-blue">${item.actor}:</span>
-                    <span class="text-sm text-gray-300">${item.description}</span>
+                    <span class="text-xs font-mono text-text-muted">[${item.time}]</span>
+                    <span class="text-sm font-semibold text-brand-blue">${item.actor}:</span>
+                    <span class="text-sm text-text-light">${item.description}</span>
                 </li>
             `).join('');
 
             return `
-                <div class="bg-primary rounded-xl shadow-2xl p-6 border-t-8 ${iconBgClass}">
+                <div class="bg-secondary-bg rounded-xl shadow-lg p-6 border-t-8 ${iconBgClass} transition-all duration-300 hover:shadow-2xl">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center space-x-3">
                             <span class="text-3xl">${event.icon}</span>
                             <div>
-                                <h3 class="text-xl font-bold text-white">${event.title}</h3>
-                                <p class="text-sm text-gray-400">${event.type} | Início: ${event.initialTime}</p>
+                                <h3 class="text-xl font-bold text-text-light">${event.title}</h3>
+                                <p class="text-sm text-text-muted">${event.type} | Início: ${event.initialTime}</p>
                             </div>
                         </div>
                         <span class="px-3 py-1 text-xs font-bold rounded-full ${event.statusClass} shadow-md">
@@ -217,19 +273,18 @@
                         </span>
                     </div>
 
-                    <div class="mb-4 p-3 rounded-lg bg-secondary border border-gray-700">
-                        <p class="text-sm font-medium text-gray-300">Resumo Executivo:</p>
-                        <p class="text-base text-white mt-1">${event.summary}</p>
-                        <p class="text-xs mt-2 text-gray-400">Atores: ${event.actors.join(', ')}</p>
+                    <div class="mb-4 p-3 rounded-lg bg-gray-800 border border-gray-700">
+                        <p class="text-sm font-medium text-text-muted">Resumo Executivo:</p>
+                        <p class="text-base text-text-light mt-1">${event.summary}</p>
+                        <p class="text-xs mt-2 text-text-muted">Atores: ${event.actors.join(', ')}</p>
                     </div>
 
-                    <!-- Log Completo (Detalhamento da Ação) -->
-                    <details class="group cursor-pointer">
-                        <summary class="flex justify-between items-center text-sm font-semibold text-accent-blue hover:text-white transition duration-200 list-none p-2 rounded-md bg-secondary border border-gray-700">
+                    <!-- Log Completo (Detalhamento da Ação) --><details class="group cursor-pointer">
+                        <summary class="flex justify-between items-center text-sm font-semibold text-brand-blue hover:text-text-light transition duration-200 list-none p-2 rounded-md bg-gray-800 border border-gray-700">
                             <span>Timeline de Ações (Clique para expandir)</span>
                             <svg class="w-4 h-4 transform group-open:rotate-180 transition duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </summary>
-                        <ul class="mt-2 p-3 bg-secondary rounded-lg border border-gray-700 log-container max-h-48 overflow-y-auto">
+                        <ul class="mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700 log-container max-h-48 overflow-y-auto">
                             ${logItems}
                         </ul>
                     </details>
@@ -242,11 +297,29 @@
             const container = document.getElementById('dashboard-container');
             container.innerHTML = '';
 
-            eventData.forEach(day => {
+            let allFilteredEvents = [];
+            let displayedDates = new Set(); // Para controlar quais datas já foram exibidas
+
+            // Filtra os eventos com base na data selecionada
+            const filteredEventData = eventData.filter(day => {
+                if (!selectedDate) return true; // Se nenhuma data selecionada, mostra todos
+                const eventDate = new Date(day.date.split('/').reverse().join('-')); // Converte para formato YYYY-MM-DD
+                return eventDate.toDateString() === selectedDate.toDateString();
+            });
+
+            filteredEventData.forEach(day => {
+                // Se a data já foi exibida por ter eventos, não a repete
+                if (day.events.length > 0 && displayedDates.has(day.date)) {
+                    return;
+                }
+                
+                // Adiciona todos os eventos filtrados para cálculo de métricas
+                allFilteredEvents = allFilteredEvents.concat(day.events);
+
                 // Seção de Data
                 let daySection = `
                     <section class="mb-10">
-                        <h2 class="text-2xl font-bold text-white mb-6 p-2 rounded-lg bg-secondary inline-block border-l-4 border-accent-blue">
+                        <h2 class="text-2xl font-bold text-text-light mb-6 p-2 rounded-lg bg-secondary-bg inline-block border-l-4 border-brand-purple">
                             🗓️ Diário de Bordo - ${day.date}
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -255,12 +328,14 @@
                 if (day.events.length > 0) {
                     // Renderiza os eventos
                     daySection += day.events.map(createEventCard).join('');
+                    displayedDates.add(day.date); // Marca a data como exibida
                 } else {
-                    // Mensagem para dia sem eventos (como 18/11)
+                    // Mensagem para dia sem eventos (como 18/11 ou dia sem filtro)
+                    const iconClass = getIconColorClass('✅'); // Icone para dia limpo
                     daySection += `
-                        <div class="col-span-full bg-primary p-6 rounded-xl text-center border-2 border-dashed border-gray-700">
-                            <p class="text-xl text-gray-400">Nenhum evento crítico ou incidente registrado nesta data.</p>
-                            <p class="text-sm text-gray-500 mt-1">Status: OK/Dia Operacionalmente Limpo.</p>
+                        <div class="col-span-full bg-secondary-bg p-6 rounded-xl text-center border-2 border-dashed ${iconClass}">
+                            <p class="text-xl text-text-muted">Nenhum evento crítico ou incidente registrado para esta data.</p>
+                            <p class="text-sm text-gray-600 mt-1">Status: OK / Dia Operacionalmente Limpo.</p>
                         </div>
                     `;
                 }
@@ -272,12 +347,63 @@
                 container.innerHTML += daySection;
             });
             
-            // Renderiza as métricas no topo
-            renderSummary();
+            // Se nenhuma data foi filtrada e não há eventos, exibe a mensagem de nenhum evento.
+            if (filteredEventData.length === 0 && selectedDate) {
+                 container.innerHTML = `
+                    <section class="mb-10">
+                        <h2 class="text-2xl font-bold text-text-light mb-6 p-2 rounded-lg bg-secondary-bg inline-block border-l-4 border-brand-purple">
+                            🗓️ Diário de Bordo
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="col-span-full bg-secondary-bg p-6 rounded-xl text-center border-2 border-dashed ${getIconColorClass('✅')}">
+                                <p class="text-xl text-text-muted">Nenhum evento registrado para a data selecionada: ${selectedDate.toLocaleDateString('pt-BR')}.</p>
+                                <p class="text-sm text-gray-600 mt-1">Experimente limpar o filtro de data.</p>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            }
+
+
+            // Renderiza as métricas no topo com base nos eventos filtrados
+            renderSummary(allFilteredEvents);
         }
 
-        // Inicializa o dashboard ao carregar a página
-        document.addEventListener('DOMContentLoaded', renderDashboard);
+        // Função para obter as datas que realmente possuem eventos (para habilitar no seletor)
+        function getAvailableDates() {
+            return eventData
+                .filter(day => day.events.length > 0)
+                .map(day => day.date.split('/').reverse().join('-')); // Converte para YYYY-MM-DD
+        }
+
+        // Inicializa o Flatpickr
+        document.addEventListener('DOMContentLoaded', () => {
+            const availableDates = getAvailableDates(); // Obtém as datas válidas
+
+            const fp = flatpickr("#date-selector", {
+                dateFormat: "d/m/Y",
+                locale: "pt", // Define o locale para português
+                enable: availableDates, // Habilita apenas as datas com dados
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length > 0) {
+                        selectedDate = selectedDates[0];
+                    } else {
+                        selectedDate = null;
+                    }
+                    renderDashboard(); // Re-renderiza o dashboard com a nova data
+                }
+            });
+
+            // Adiciona evento ao botão de limpar filtro
+            document.getElementById('clear-date-filter').addEventListener('click', () => {
+                fp.clear(); // Limpa a seleção do flatpickr
+                selectedDate = null; // Reseta a variável de data selecionada
+                renderDashboard(); // Re-renderiza o dashboard sem filtro
+            });
+
+            // Renderiza o dashboard inicialmente
+            renderDashboard();
+        });
     </script>
 </body>
 </html>
