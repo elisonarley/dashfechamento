@@ -125,7 +125,7 @@
                         actors: ['Gleice', 'Pablo'],
                         log: [
                             { time: '08:31:00', actor: 'Gleice', description: 'Acionamento inicial: Faturamento paralisado. (Chamado #2511170003)' },
-                            { time: '08:37:00', actor: 'Pablo', description: 'Verificação: Robôs do Jundiaí estão OK. Identificado pedido das 08:10 represado na fila de Separação do Jund.' },
+                            { time: '08:37:00', actor: 'Pablo', description: 'Verificação: Robôs do Jundiaí estão OK. Identificado pedido das 08:10 represado na fila de Separação do Jundiaí.' },
                             { time: '08:40:00', actor: 'Sistema', description: 'RESOLVIDO: Fluxo de faturamento normalizado. (Causa raiz: Represamento pontual e autossolucionado no pipeline de Separação.)' },
                         ],
                         summary: 'Represamento pontual de pedidos no pipeline de Separação no Sistema Jundsoft. O fluxo foi normalizado automaticamente em 9 minutos.'
@@ -178,11 +178,8 @@
                         summary: 'Queda de internet de 3 minutos no Sistema Jundsoft. Serviço normalizado. Nota: É uma oscilação de recorrência diária.'
                     },
                 ]
-            },
-            {
-                date: "18/11/2025",
-                events: [] // Sem dados de evento no prompt
             }
+            // O objeto do dia 18/11/2025 foi removido daqui
         ];
 
         let selectedDate = null; // Variável para armazenar a data selecionada
@@ -304,15 +301,10 @@
             const filteredEventData = eventData.filter(day => {
                 if (!selectedDate) return true; // Se nenhuma data selecionada, mostra todos
                 const eventDate = new Date(day.date.split('/').reverse().join('-')); // Converte para formato YYYY-MM-DD
-                return eventDate.toDateString() === selectedDate.toDateString();
+                return day.events.length > 0 && eventDate.toDateString() === selectedDate.toDateString();
             });
 
             filteredEventData.forEach(day => {
-                // Se a data já foi exibida por ter eventos, não a repete
-                if (day.events.length > 0 && displayedDates.has(day.date)) {
-                    return;
-                }
-                
                 // Adiciona todos os eventos filtrados para cálculo de métricas
                 allFilteredEvents = allFilteredEvents.concat(day.events);
 
@@ -325,21 +317,9 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 `;
 
-                if (day.events.length > 0) {
-                    // Renderiza os eventos
-                    daySection += day.events.map(createEventCard).join('');
-                    displayedDates.add(day.date); // Marca a data como exibida
-                } else {
-                    // Mensagem para dia sem eventos (como 18/11 ou dia sem filtro)
-                    const iconClass = getIconColorClass('✅'); // Icone para dia limpo
-                    daySection += `
-                        <div class="col-span-full bg-secondary-bg p-6 rounded-xl text-center border-2 border-dashed ${iconClass}">
-                            <p class="text-xl text-text-muted">Nenhum evento crítico ou incidente registrado para esta data.</p>
-                            <p class="text-sm text-gray-600 mt-1">Status: OK / Dia Operacionalmente Limpo.</p>
-                        </div>
-                    `;
-                }
-
+                // Renderiza os eventos
+                daySection += day.events.map(createEventCard).join('');
+                
                 daySection += `
                         </div>
                     </section>
@@ -347,8 +327,8 @@
                 container.innerHTML += daySection;
             });
             
-            // Se nenhuma data foi filtrada e não há eventos, exibe a mensagem de nenhum evento.
-            if (filteredEventData.length === 0 && selectedDate) {
+            // Se o filtro estiver ativo, mas não houver resultados (o que é improvável dado o 'enable'), ou se os dados estiverem vazios.
+            if (allFilteredEvents.length === 0) {
                  container.innerHTML = `
                     <section class="mb-10">
                         <h2 class="text-2xl font-bold text-text-light mb-6 p-2 rounded-lg bg-secondary-bg inline-block border-l-4 border-brand-purple">
@@ -356,8 +336,8 @@
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="col-span-full bg-secondary-bg p-6 rounded-xl text-center border-2 border-dashed ${getIconColorClass('✅')}">
-                                <p class="text-xl text-text-muted">Nenhum evento registrado para a data selecionada: ${selectedDate.toLocaleDateString('pt-BR')}.</p>
-                                <p class="text-sm text-gray-600 mt-1">Experimente limpar o filtro de data.</p>
+                                <p class="text-xl text-text-muted">Nenhum evento crítico ou incidente registrado para a data selecionada.</p>
+                                <p class="text-sm text-gray-600 mt-1">Experimente limpar o filtro de data para ver todos os registros.</p>
                             </div>
                         </div>
                     </section>
@@ -380,10 +360,17 @@
         document.addEventListener('DOMContentLoaded', () => {
             const availableDates = getAvailableDates(); // Obtém as datas válidas
 
+            // Garante que o dashboard só inicie se houver dados
+            if (availableDates.length > 0 && !selectedDate) {
+                // Define a primeira data disponível como padrão para carregar o dashboard
+                selectedDate = new Date(availableDates[0]);
+            }
+
             const fp = flatpickr("#date-selector", {
                 dateFormat: "d/m/Y",
                 locale: "pt", // Define o locale para português
                 enable: availableDates, // Habilita apenas as datas com dados
+                defaultDate: selectedDate ? selectedDate : null,
                 onChange: function(selectedDates, dateStr, instance) {
                     if (selectedDates.length > 0) {
                         selectedDate = selectedDates[0];
@@ -407,4 +394,3 @@
     </script>
 </body>
 </html>
-
