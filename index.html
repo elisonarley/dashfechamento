@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário de Bordo de Monitoramento - Fechamento</title>
+    <!-- Carregamento do Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuração do Tailwind para cor e fonte -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1f2937', // Gray-800
+                        'secondary': '#374151', // Gray-700
+                        'accent-red': '#ef4444',
+                        'accent-yellow': '#f59e0b',
+                        'accent-blue': '#3b82f6',
+                        'accent-green': '#10b981',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark background */
+            color: #f9fafb; /* Light text */
+        }
+        /* Estilos de scrollbar customizados para dark mode */
+        .log-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .log-container::-webkit-scrollbar-thumb {
+            background-color: #4b5563; /* Gray-600 */
+            border-radius: 4px;
+        }
+        .log-container::-webkit-scrollbar-track {
+            background: #1f2937; /* Gray-800 */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Título e Resumo Executivo -->
+        <header class="mb-8 pb-4 border-b border-secondary">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-accent-blue tracking-tight">
+                Diário de Bordo de Monitoramento
+            </h1>
+            <p class="mt-2 text-lg text-gray-400">
+                Resumo Executivo de Fechamento - Visualização Consolidada de Incidentes e Eventos.
+            </p>
+            <div id="summary-metrics" class="mt-4 flex flex-wrap gap-4">
+                <!-- Métricas serão injetadas aqui -->
+            </div>
+        </header>
+
+        <!-- Container Principal para as Datas -->
+        <div id="dashboard-container">
+            <!-- As seções de datas serão renderizadas aqui -->
+        </div>
+        
+    </div>
+
+    <script>
+        // Dados brutos do Diário de Bordo
+        const eventData = [
+            {
+                date: "17/11/2025",
+                events: [
+                    {
+                        icon: '🛑',
+                        type: 'Incidente Crítico',
+                        title: 'Pedidos Represados no Faturamento (Jundiaí)',
+                        status: 'RESOLVIDO',
+                        statusClass: 'bg-accent-green text-gray-900',
+                        initialTime: '08:31:00',
+                        actors: ['Gleice', 'Pablo'],
+                        log: [
+                            { time: '08:31:00', actor: 'Gleice', description: 'Acionamento inicial: Faturamento paralisado. (Chamado #2511170003)' },
+                            { time: '08:37:00', actor: 'Pablo', description: 'Verificação: Robôs do Jundiaí estão OK. Identificado pedido das 08:10 represado na fila de Separação do Jundiaí. O pedido seguiu o fluxo automaticamente logo após a verificação.' },
+                            { time: '08:40:00', actor: 'Sistema', description: 'RESOLVIDO: Fluxo de faturamento normalizado. (Causa raiz: Represamento pontual e autossolucionado no pipeline de Separação.)' },
+                        ],
+                        summary: 'Represamento pontual de pedidos no pipeline de Separação em Jundiaí. O fluxo foi normalizado automaticamente em 9 minutos.'
+                    },
+                    {
+                        icon: '⚠️',
+                        type: 'Evento de Capacidade',
+                        title: 'Disco Insuficiente - Servidor Donatello (Partição G:)',
+                        status: 'NORMALIZADO',
+                        statusClass: 'bg-accent-green text-gray-900',
+                        initialTime: '08:09:00',
+                        actors: ['Monitoramento', 'Gabriel', 'Gabriel Soares'],
+                        log: [
+                            { time: '08:09:00', actor: 'Monitoramento', description: 'Alerta de espaço em disco no Servidor Donatello (G:). Espaço disponível: 573.1 GB.' },
+                            { time: '08:11:00', actor: 'Gabriel', description: 'Hipótese: Falha na exclusão do backup do dia anterior. Acionamento do Time de Banco para verificação e ação.' },
+                            { time: '10:03:00', actor: 'Gabriel Soares', description: 'Ação Corretiva: Solicitação de ajuste na trigger (limite do alerta) para 500 GB, readequando o threshold de monitoramento.' },
+                            { time: '10:20:00', actor: 'Gabriel Soares', description: 'Movendo o último backup full + checkdb do disco G para o disco E, para posterior deleção após mover para S3.' },
+                            { time: '11:16:00', actor: 'Monitoramento', description: 'Normalizado, o disco retornou para 42% de uso.' },
+                        ],
+                        summary: 'Alerta de disco em Donatello. Causa provável: falha na rotina de backup. Resolvido com readequação de threshold e movimentação de dados legados.'
+                    },
+                    {
+                        icon: '📉',
+                        type: 'Evento de Capacidade',
+                        title: 'Alto Consumo de Disco - Servidor Linux PROD-WMS-INTEGRADOR (/)',
+                        status: 'RESOLVIDO',
+                        statusClass: 'bg-accent-green text-gray-900',
+                        initialTime: '07:54:00',
+                        actors: ['Pablo', 'Murilo'],
+                        log: [
+                            { time: '07:54:00', actor: 'Pablo', description: 'Acionamento inicial: Alerta de espaço em disco no filesystem raiz (/) do Servidor Linux. Utilização: 97%.' },
+                            { time: '08:46:00', actor: 'Murilo', description: 'Time de Cloud e datacenter acionado, verificando a origem do consumo de espaço em disco.' },
+                            { time: '09:44:00', actor: 'Murilo', description: 'RESOLVIDO: Problema de espaço em disco corrigido. (Presume-se a limpeza/remoção de logs ou arquivos temporários.)' },
+                        ],
+                        summary: 'Alto consumo no filesystem raiz do PROD-WMS-INTEGRADOR (97% de uso). Resolvido pelo Time de Cloud & Datacenter com limpeza de logs/temporários.'
+                    },
+                    {
+                        icon: '🚨',
+                        type: 'Instabilidade de Infra',
+                        title: 'Alerta de Instabilidade - Link de Internet em Jundiaí',
+                        status: 'NORMALIZADO',
+                        statusClass: 'bg-accent-green text-gray-900',
+                        initialTime: '16:25:00',
+                        actors: ['Elison', 'Matheus - JDI'],
+                        log: [
+                            { time: '16:25:00', actor: 'Elison', description: 'Identificada instabilidade na internet em Jundiaí.' },
+                            { time: '16:28:00', actor: 'Matheus - JDI', description: 'Houve uma queda de internet de aproximadamente 3 minutos há pouco. O serviço já foi normalizado. Oscilação ocorre normalmente 1 vez por dia.' },
+                            { time: '16:30:00', actor: 'Elison', description: 'Verificado que o sistema estava normal e informado no grupo.' },
+                        ],
+                        summary: 'Queda de internet de 3 minutos em Jundiaí. Serviço normalizado. Nota: É uma oscilação de recorrência diária.'
+                    },
+                ]
+            },
+            {
+                date: "18/11/2025",
+                events: [] // Sem dados de evento no prompt
+            }
+        ];
+
+        // Função utilitária para gerar classes de cores baseadas no ícone
+        function getIconColorClass(icon) {
+            switch (icon) {
+                case '🛑': return 'bg-accent-red';
+                case '⚠️': return 'bg-accent-yellow';
+                case '📉': return 'bg-accent-yellow';
+                case '🚨': return 'bg-accent-blue';
+                default: return 'bg-gray-500';
+            }
+        }
+
+        // Função para calcular e renderizar as métricas de resumo
+        function renderSummary() {
+            let totalEvents = 0;
+            let totalIncidents = 0;
+            let totalWarnings = 0;
+
+            eventData.forEach(day => {
+                totalEvents += day.events.length;
+                day.events.forEach(event => {
+                    if (event.icon === '🛑') {
+                        totalIncidents++;
+                    } else if (event.icon === '⚠️' || event.icon === '📉') {
+                        totalWarnings++;
+                    }
+                });
+            });
+
+            const metricsHtml = `
+                <div class="p-3 bg-secondary rounded-lg shadow-xl border-l-4 border-accent-blue">
+                    <p class="text-sm font-medium text-gray-400">Total de Eventos Monitorados</p>
+                    <p class="text-2xl font-bold text-white">${totalEvents}</p>
+                </div>
+                <div class="p-3 bg-secondary rounded-lg shadow-xl border-l-4 border-accent-red">
+                    <p class="text-sm font-medium text-gray-400">Incidentes Críticos (🛑)</p>
+                    <p class="text-2xl font-bold text-white">${totalIncidents}</p>
+                </div>
+                <div class="p-3 bg-secondary rounded-lg shadow-xl border-l-4 border-accent-yellow">
+                    <p class="text-sm font-medium text-gray-400">Eventos de Atenção (⚠️/📉)</p>
+                    <p class="text-2xl font-bold text-white">${totalWarnings}</p>
+                </div>
+            `;
+            document.getElementById('summary-metrics').innerHTML = metricsHtml;
+        }
+
+
+        // Função para renderizar um único cartão de evento
+        function createEventCard(event) {
+            const iconBgClass = getIconColorClass(event.icon);
+            
+            const logItems = event.log.map(item => `
+                <li class="py-1 border-b border-gray-700 last:border-b-0">
+                    <span class="text-xs font-mono text-gray-400">[${item.time}]</span>
+                    <span class="text-sm font-semibold text-accent-blue">${item.actor}:</span>
+                    <span class="text-sm text-gray-300">${item.description}</span>
+                </li>
+            `).join('');
+
+            return `
+                <div class="bg-primary rounded-xl shadow-2xl p-6 border-t-8 ${iconBgClass}">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-3xl">${event.icon}</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">${event.title}</h3>
+                                <p class="text-sm text-gray-400">${event.type} | Início: ${event.initialTime}</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 text-xs font-bold rounded-full ${event.statusClass} shadow-md">
+                            ${event.status}
+                        </span>
+                    </div>
+
+                    <div class="mb-4 p-3 rounded-lg bg-secondary border border-gray-700">
+                        <p class="text-sm font-medium text-gray-300">Resumo Executivo:</p>
+                        <p class="text-base text-white mt-1">${event.summary}</p>
+                        <p class="text-xs mt-2 text-gray-400">Atores: ${event.actors.join(', ')}</p>
+                    </div>
+
+                    <!-- Log Completo (Detalhamento da Ação) -->
+                    <details class="group cursor-pointer">
+                        <summary class="flex justify-between items-center text-sm font-semibold text-accent-blue hover:text-white transition duration-200 list-none p-2 rounded-md bg-secondary border border-gray-700">
+                            <span>Timeline de Ações (Clique para expandir)</span>
+                            <svg class="w-4 h-4 transform group-open:rotate-180 transition duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </summary>
+                        <ul class="mt-2 p-3 bg-secondary rounded-lg border border-gray-700 log-container max-h-48 overflow-y-auto">
+                            ${logItems}
+                        </ul>
+                    </details>
+                </div>
+            `;
+        }
+
+        // Função principal para renderizar o dashboard
+        function renderDashboard() {
+            const container = document.getElementById('dashboard-container');
+            container.innerHTML = '';
+
+            eventData.forEach(day => {
+                // Seção de Data
+                let daySection = `
+                    <section class="mb-10">
+                        <h2 class="text-2xl font-bold text-white mb-6 p-2 rounded-lg bg-secondary inline-block border-l-4 border-accent-blue">
+                            🗓️ Diário de Bordo - ${day.date}
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                `;
+
+                if (day.events.length > 0) {
+                    // Renderiza os eventos
+                    daySection += day.events.map(createEventCard).join('');
+                } else {
+                    // Mensagem para dia sem eventos (como 18/11)
+                    daySection += `
+                        <div class="col-span-full bg-primary p-6 rounded-xl text-center border-2 border-dashed border-gray-700">
+                            <p class="text-xl text-gray-400">Nenhum evento crítico ou incidente registrado nesta data.</p>
+                            <p class="text-sm text-gray-500 mt-1">Status: OK/Dia Operacionalmente Limpo.</p>
+                        </div>
+                    `;
+                }
+
+                daySection += `
+                        </div>
+                    </section>
+                `;
+                container.innerHTML += daySection;
+            });
+            
+            // Renderiza as métricas no topo
+            renderSummary();
+        }
+
+        // Inicializa o dashboard ao carregar a página
+        document.addEventListener('DOMContentLoaded', renderDashboard);
+    </script>
+</body>
+</html>
