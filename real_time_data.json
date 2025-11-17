@@ -1,0 +1,138 @@
+{
+    "REAL_DATA": {
+        "AnyMarket": [
+            {
+                "title": "Erro ao carregar status. Dados podem estar desatualizados.",
+                "status": "degraded",
+                "time": "17/11 18:06",
+                "new": true
+            }
+        ],
+        "PagSeguro": [
+            {
+                "title": "Manutenção Programada - Plataforma → Conector Vtex, Wix, Wake e Nuvemshop",
+                "status": "scheduled",
+                "time": "18/11 00:00",
+                "new": true
+            }
+        ],
+        "Pagar.me": [
+            {
+                "title": "All Systems Operational",
+                "status": "operational",
+                "time": "17/11 18:06",
+                "new": false
+            }
+        ]
+    },
+    "STATES_DATA": [
+        {
+            "uf": "AC",
+            "status": "up"
+        },
+        {
+            "uf": "AL",
+            "status": "up"
+        },
+        {
+            "uf": "AP",
+            "status": "up"
+        },
+        {
+            "uf": "AM",
+            "status": "up"
+        },
+        {
+            "uf": "BA",
+            "status": "up"
+        },
+        {
+            "uf": "CE",
+            "status": "slow"
+        },
+        {
+            "uf": "DF",
+            "status": "up"
+        },
+        {
+            "uf": "ES",
+            "status": "up"
+        },
+        {
+            "uf": "GO",
+            "status": "up"
+        },
+        {
+            "uf": "MA",
+            "status": "up"
+        },
+        {
+            "uf": "MT",
+            "status": "up"
+        },
+        {
+            "uf": "MS",
+            "status": "up"
+        },
+        {
+            "uf": "MG",
+            "status": "up"
+        },
+        {
+            "uf": "PA",
+            "status": "up"
+        },
+        {
+            "uf": "PB",
+            "status": "up"
+        },
+        {
+            "uf": "PR",
+            "status": "up"
+        },
+        {
+            "uf": "PE",
+            "status": "up"
+        },
+        {
+            "uf": "PI",
+            "status": "up"
+        },
+        {
+            "uf": "RJ",
+            "status": "up"
+        },
+        {
+            "uf": "RN",
+            "status": "up"
+        },
+        {
+            "uf": "RS",
+            "status": "up"
+        },
+        {
+            "uf": "RO",
+            "status": "up"
+        },
+        {
+            "uf": "RR",
+            "status": "up"
+        },
+        {
+            "uf": "SC",
+            "status": "up"
+        },
+        {
+            "uf": "SP",
+            "status": "up"
+        },
+        {
+            "uf": "SE",
+            "status": "up"
+        },
+        {
+            "uf": "TO",
+            "status": "up"
+        }
+    ]
+}

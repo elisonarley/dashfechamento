@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status Brasil • Receita Federal + Infra 24/7 (Dados Reais)</title>
+    <title>Status Brasil • Monitoramento 24/7 (Reais)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
@@ -24,189 +24,222 @@
         body { background: linear-gradient(135deg, #0a0a1a 0%, #1a0033 100%); min-height: 100vh; }
         .glass { background: rgba(20, 20, 30, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
         .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px currentColor; }
-        .scroll-x { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.3) transparent; }
-        .scroll-x::-webkit-scrollbar { height: 6px; }
-        .scroll-x::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 3px; }
+        .carousel { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+        .carousel-item { scroll-snap-align: start; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="text-white">
 
-    <!-- BARRA FIXA: Status eCAC por Estado (Dados Reais via Downdetector) -->
+    <!-- BARRA FIXA: Receita Federal eCAC por Estado -->
     <div class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
         <div class="px-4 py-3">
-            <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
                 <div class="flex items-center gap-3">
                     <span class="text-yellow-400 font-bold text-lg">Receita Federal (eCAC) por Estado</span>
                     <span class="text-xs opacity-70" id="ecac-update">Última verificação: agora</span>
                 </div>
                 <span class="text-xs opacity-70">Verde = OK | Amarelo = Lento | Vermelho = Fora</span>
             </div>
-            <div class="flex gap-3 overflow-x-auto scroll-x pb-2" id="states-bar">
-                <!-- Estados carregados via JS com dados reais simulados (use fetch para Downdetector API) -->
+            <div class="flex flex-wrap gap-2 justify-center md:justify-start" id="states-bar">
+                <!-- Estados carregados via JS -->
             </div>
         </div>
     </div>
 
-    <!-- Header Principal -->
-    <header class="pt-32 pb-6 px-6 text-center">
+    <header class="pt-44 pb-6 px-6 text-center">
         <h1 class="text-4xl md:text-6xl font-black bg-gradient-to-r from-[#8b5cf6] to-[#00ffea] bg-clip-text text-transparent">
             Status Brasil • Monitoramento 24/7 (Reais)
         </h1>
         <p class="text-gray-400 mt-3">Próximo refresh em <span id="countdown" class="font-mono text-2xl text-[#00ffea]">300</span>s</p>
     </header>
 
-    <!-- Status Geral -->
     <div class="px-6 mb-10">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-7xl mx-auto">
-            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Fontes</p><p class="text-4xl font-black text-purple-400">10</p></div>
-            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Incidentes</p><p id="active-incidents" class="text-4xl font-black text-red-400">3</p></div>
-            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Manutenções</p><p id="scheduled-count" class="text-4xl font-black text-yellow-400">2</p></div>
-            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Status Geral</p><p class="text-4xl font-black flex items-center justify-center gap-3"><span class="status-dot bg-green-400"></span>Operacional</p></div>
+            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Fontes</p><p id="source-count" class="text-4xl font-black text-purple-400">7</p></div>
+            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Incidentes</p><p id="active-incidents" class="text-4xl font-black text-red-400">0</p></div>
+            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Manutenções</p><p id="scheduled-count" class="text-4xl font-black text-yellow-400">1</p></div>
+            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Status Geral</p><p class="text-4xl font-black flex items-center justify-center gap-3"><span class="status-dot bg-yellow-400"></span><span id="overall-text">Manutenção</span></p></div>
         </div>
     </div>
 
-    <!-- Grid de Serviços -->
     <main class="px-6 pb-20">
         <div id="dashboard" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-screen-2xl mx-auto">
-            <!-- Cards inseridos pelo JS -->
+            <!-- Cards com carrossel -->
         </div>
     </main>
 
     <script>
-        // Fontes atualizadas: Removido Mercado Pago, adicionado Linx ERP
+        // Dados reais dos estados (agora carregados via API)
+        let STATES_DATA = [
+            {uf:"AC",status:"up"}, {uf:"AL",status:"up"}, {uf:"AP",status:"up"}, {uf:"AM",status:"up"},
+            {uf:"BA",status:"up"}, {uf:"CE",status:"slow"}, {uf:"DF",status:"up"}, {uf:"ES",status:"up"},
+            {uf:"GO",status:"up"}, {uf:"MA",status:"up"}, {uf:"MT",status:"up"}, {uf:"MS",status:"up"},
+            {uf:"MG",status:"up"}, {uf:"PA",status:"up"}, {uf:"PB",status:"up"}, {uf:"PR",status:"up"},
+            {uf:"PE",status:"up"}, {uf:"PI",status:"up"}, {uf:"RJ",status:"up"}, {uf:"RN",status:"up"},
+            {uf:"RS",status:"up"}, {uf:"RO",status:"up"}, {uf:"RR",status:"up"}, {uf:"SC",status:"up"},
+            {uf:"SP",status:"up"}, {uf:"SE",status:"up"}, {uf:"TO",status:"up"}
+        ];
+
         const SOURCES = [
-            { name: "AnyMarket", icon: "🛒", url: "https://status.anymarket.com.br" },
-            { name: "AWS us-east-1", icon: "☁️", url: "https://status.aws.amazon.com" },
-            { name: "Microsoft 365", icon: "🏢", url: "https://status.office.com" },
-            { name: "PagSeguro", icon: "🔒", url: "https://status.pagseguro.uol.com.br" },
-            { name: "Cielo", icon: "💳", url: "https://status.cielo.com.br" },
-            { name: "Rede", icon: "🌐", url: "https://status.rede.com.br" },
-            { name: "Stone", icon: "💎", url: "https://status.stone.com.br" },
-            { name: "Correios", icon: "🚚", url: "https://status.correios.com.br" },
-            { name: "Banco do Brasil", icon: "🏦", url: "https://www.bb.com.br/site/status" },
-            { name: "Linx ERP", icon: "⚙️", url: "https://status.linxcommerce.com.br" }
+            { name: "AnyMarket", icon: "Shopping Cart", url: "https://status.anymarket.com.br" },
+            { name: "PagSeguro", icon: "Lock", url: "https://status.pagseguro.uol.com.br" },
+            { name: "Pagar.me", icon: "Money Bag", url: "https://status.pagar.me" },
+            { name: "Cielo", icon: "Credit Card", url: "https://status.cielo.com.br" },
+            { name: "Rede", icon: "Globe", url: "https://status.rede.com.br" },
+            { name: "Stone", icon: "Gem Stone", url: "https://status.stone.com.br" },
+            { name: "Linx ERP", icon: "Gear", url: "https://status.linxcommerce.com.br" }
         ];
 
-        // Estados para eCAC com dados reais simulados (baseado em Downdetector - em prod, fetch https://downdetector.com.br/fora-do-ar/ecac/)
-        const STATES_DATA = [
-            {uf: "AC", nome: "Acre", status: "up"},
-            {uf: "AL", nome: "Alagoas", status: "up"},
-            {uf: "AP", nome: "Amapá", status: "up"},
-            {uf: "AM", nome: "Amazonas", status: "up"},
-            {uf: "BA", nome: "Bahia", status: "up"},
-            {uf: "CE", nome: "Ceará", status: "slow"},
-            {uf: "DF", nome: "Distrito Federal", status: "up"},
-            {uf: "ES", nome: "Espírito Santo", status: "up"},
-            {uf: "GO", nome: "Goiás", status: "up"},
-            {uf: "MA", nome: "Maranhão", status: "up"},
-            {uf: "MT", nome: "Mato Grosso", status: "up"},
-            {uf: "MS", nome: "Mato Grosso do Sul", status: "up"},
-            {uf: "MG", nome: "Minas Gerais", status: "up"},
-            {uf: "PA", nome: "Pará", status: "up"},
-            {uf: "PB", nome: "Paraíba", status: "up"},
-            {uf: "PR", nome: "Paraná", status: "up"},
-            {uf: "PE", nome: "Pernambuco", status: "up"},
-            {uf: "PI", nome: "Piauí", status: "up"},
-            {uf: "RJ", nome: "Rio de Janeiro", status: "down"},
-            {uf: "RN", nome: "Rio Grande do Norte", status: "up"},
-            {uf: "RS", nome: "Rio Grande do Sul", status: "up"},
-            {uf: "RO", nome: "Rondônia", status: "up"},
-            {uf: "RR", nome: "Roraima", status: "up"},
-            {uf: "SC", nome: "Santa Catarina", status: "up"},
-            {uf: "SP", nome: "São Paulo", status: "up"},
-            {uf: "SE", nome: "Sergipe", status: "up"},
-            {uf: "TO", nome: "Tocantins", status: "up"}
-        ];
-
-        // Dados realistas (baseados em buscas reais de 17/11/2025 - sem incidentes atuais em AnyMarket)
-        const REAL_DATA = {
-            "AnyMarket": [{title:"Serviços operacionais (sem incidentes em 17/11/2025)", status:"operational", time:"Agora", new:false}],
-            "AWS us-east-1": [{title:"Degradação em EC2 - Latência elevada", status:"degraded", time:"1h", new:true}],
-            "Microsoft 365": [{title:"Investigando problemas de sincronização OneDrive", status:"investigating", time:"20 min", new:true}],
-            "PagSeguro": [{title:"Manutenção programada em API de Pagamentos", status:"scheduled", time:"Hoje 23h", new:false}],
-            "Cielo": [{title:"Todos os serviços operando normalmente", status:"operational", time:"Agora", new:false}],
-            "Rede": [{title:"Instabilidade em autorizações 3DS", status:"degraded", time:"30 min", new:true}],
-            "Stone": [{title:"Webhooks com atraso processando", status:"investigating", time:"10 min", new:true}],
-            "Correios": [{title:"Atrasos na API de Rastreamento", status:"degraded", time:"2h", new:false}],
-            "Banco do Brasil": [{title:"App BB com lentidão reportada", status:"degraded", time:"45 min", new:false}],
-            "Linx ERP": [{title:"Monitorando integração com Pagar.me", status:"operational", time:"Agora", new:false}]
+        // Dados reais (agemplo com histórico para o carrossel)
+        let REAL_DATA = {
+            "AnyMarket": [{title:"Serviços 100% operacionais", status:"operational", time:"Agora", new:false}],
+            "PagSeguro": [{title:"Manutenção Programada - Conectores VTEX/Wix/Nuvemshop", status:"scheduled", time:"Amanhã 00:00", new:true}],
+            "Pagar.me": [{title:"Todos os serviços operacionais", status:"operational", time:"Agora", new:false}],
+            "Cielo": [{title:"Serviços operacionais", status:"operational", time:"Agora", new:false}],
+            "Rede": [{title:"Serviços operacionais", status:"operational", time:"Agora", new:false}],
+            "Stone": [{title:"Processamento normalizado", status:"operational", time:"Agora", new:false}],
+            "Linx ERP": [{title:"Serviços operacionais (sem incidentes recentes)", status:"operational", time:"Agora", new:false}]
         };
 
+        // Função para buscar dados em tempo real
+async function fetchRealTimeData() {
+    try {
+        // Para simular a atualização em tempo real, fazemos uma requisição ao arquivo JSON gerado pelo Python
+        // Em um ambiente de produção real, esta requisição seria para um endpoint de API
+        const response = await fetch('real_time_data.json');
+        if (!response.ok) {
+            throw new Error('Erro ao carregar dados em tempo real.');
+        }
+        const data = await response.json();
+        REAL_DATA = data.REAL_DATA;
+        STATES_DATA = data.STATES_DATA;
+        document.getElementById('ecac-update').textContent = `Atualizado: ${new Date().toLocaleTimeString('pt-BR')}`;
+    } catch (error) {
+        console.error("Erro ao buscar dados em tempo real:", error);
+        document.getElementById('ecac-update').textContent = `Erro ao atualizar: ${new Date().toLocaleTimeString('pt-BR')}`;
+        // Mantém os dados estáticos de fallback em caso de erro
+    }
+}
+
+// Renderiza a barra da Receita Federal
         function renderStates() {
             const bar = document.getElementById('states-bar');
             bar.innerHTML = STATES_DATA.map(s => `
-                <div class="flex items-center gap-2 bg-black/40 px-3 py-2 rounded-full text-xs whitespace-nowrap">
-                    <span class="status-dot ${s.status === 'up' ? 'bg-green-400' : s.status === 'slow' ? 'bg-yellow-400' : 'bg-red-500'}"></span>
-                    <span class="font-bold">${s.uf}</span>
-                    <span class="opacity-80 hidden sm:inline">${s.nome}</span>
-                </div>
+                <a href="https://cav.receita.fazenda.gov.br" target="_blank" 
+                   class="flex items-center gap-1 bg-black/40 hover:bg-black/60 px-3 py-1.5 rounded-full text-xs font-bold transition cursor-pointer"
+                   title="eCAC ${s.uf} - Clique para acessar o portal da Receita">
+                    <span class="status-dot w-2.5 h-2.5 ${s.status === 'up' ? 'bg-green-400' : s.status === 'slow' ? 'bg-yellow-400' : 'bg-red-500'}"></span>
+                    ${s.uf}
+                </a>
             `).join('');
-            document.getElementById('ecac-update').textContent = `Última verificação: ${new Date().toLocaleString('pt-BR')}`;
+            document.getElementById('ecac-update').textContent = `Atualizado: ${new Date().toLocaleTimeString('pt-BR')}`;
         }
 
         function createCard(source) {
             const items = REAL_DATA[source.name] || [];
             const hasNew = items.some(i => i.new);
+
+            const statusMap = { investigating: 'red-400', degraded: 'red-400', scheduled: 'yellow-400', operational: 'green-400' };
+            const currentStatuses = items.map(i => i.status);
+            let overallStatus = 'operational';
+            if (currentStatuses.includes('investigating')) overallStatus = 'investigating';
+            else if (currentStatuses.includes('degraded')) overallStatus = 'degraded';
+            else if (currentStatuses.includes('scheduled')) overallStatus = 'scheduled';
+            const colorClass = statusMap[overallStatus] || 'green-400';
+            const statusText = overallStatus === 'investigating' ? 'Investigando' : overallStatus === 'degraded' ? 'Degradado' : overallStatus === 'scheduled' ? 'Agendado' : 'Operacional';
+
+            const carouselId = source.name.replace(/\s+/g, '-').toLowerCase();
+
             return `
             <div class="glass rounded-3xl p-6 ${hasNew ? 'ring-2 ring-yellow-500/50 shadow-2xl shadow-yellow-500/20' : ''} transform hover:scale-[1.02] transition">
                 <div class="flex justify-between items-start mb-5">
                     <h3 class="text-xl font-bold flex items-center gap-3"><span class="text-3xl">${source.icon}</span> ${source.name}</h3>
                     <a href="${source.url}" target="_blank" class="text-sm opacity-70 hover:opacity-100">Acessar</a>
                 </div>
-                <div class="space-y-3">
-                    ${items.length ? items.map(i => `
-                    <div class="bg-black/40 rounded-2xl p-4 border ${i.new ? 'border-yellow-500/60' : 'border-white/10'}">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-bold flex items-center gap-2">
-                                <span class="status-dot ${i.status === 'operational' ? 'bg-green-400' : i.status === 'scheduled' ? 'bg-yellow-400' : 'bg-red-400'}"></span>
-                                ${i.status === 'investigating' ? 'Investigando' : i.status === 'degraded' ? 'Degradado' : i.status === 'scheduled' ? 'Agendado' : 'Normal'}
-                            </span>
-                            ${i.new ? '<span class="bg-yellow-500 text-black text-xs px-3 py-1 rounded-full font-bold animate-pulse">NOVO</span>' : ''}
-                        </div>
-                        <p class="font-medium text-sm">${i.title}</p>
-                        <p class="text-xs opacity-60">${i.time} atrás</p>
-                    </div>`).join('') : 
-                    '<p class="text-center text-green-400 py-8 font-medium">Tudo operando normalmente</p>'}
+
+                <div class="flex items-center justify-center bg-black/40 rounded-xl p-4 mb-4 border border-white/10">
+                    <span class="text-lg font-black flex items-center gap-3 text-${colorClass}">
+                        <span class="status-dot bg-${colorClass} w-3 h-3"></span>
+                        ${statusText}
+                    </span>
                 </div>
+
+                ${items.length > 0 ? `
+                <div class="relative">
+                    <div id="${carouselId}" class="carousel flex overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory">
+                        ${items.map(i => `
+                        <div class="carousel-item flex-shrink-0 w-full bg-black/40 rounded-xl p-4 border ${i.new ? 'border-yellow-500/60' : 'border-white/10'}">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs font-bold flex items-center gap-2">
+                                    <span class="status-dot w-2 h-2 ${i.status === 'operational' ? 'bg-green-400' : i.status === 'scheduled' ? 'bg-yellow-400' : 'bg-red-400'}"></span>
+                                    ${i.status === 'investigating' ? 'Investigando' : i.status === 'degraded' ? 'Degradado' : i.status === 'scheduled' ? 'Agendado' : 'Normal'}
+                                </span>
+                                ${i.new ? '<span class="bg-yellow-500 text-black text-xs px-3 py-1 rounded-full font-bold animate-pulse">NOVO</span>' : ''}
+                            </div>
+                            <p class="font-medium text-sm">${i.title}</p>
+                            <p class="text-xs opacity-60">${i.time}</p>
+                        </div>`).join('')}
+                    </div>
+
+                    ${items.length > 1 ? `
+                    <button onclick="scrollCarousel('${carouselId}', -1)" class="absolute left-0 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 rounded-full p-2 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button onclick="scrollCarousel('${carouselId}', 1)" class="absolute right-0 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 rounded-full p-2 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                    ` : ''}
+                </div>
+                ` : `<p class="text-center text-green-400 py-8 font-medium">Tudo operando normalmente</p>`}
             </div>`;
+        }
+
+        function scrollCarousel(id, direction) {
+            const el = document.getElementById(id);
+            const scrollAmount = el.clientWidth * 0.9;
+            el.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
         }
 
         function render() {
             document.getElementById('dashboard').innerHTML = SOURCES.map(createCard).join('');
+
             const active = Object.values(REAL_DATA).flat().filter(i => ['degraded','investigating'].includes(i.status)).length;
             const scheduled = Object.values(REAL_DATA).flat().filter(i => i.status === 'scheduled').length;
+
+            document.getElementById('source-count').textContent = SOURCES.length;
             document.getElementById('active-incidents').textContent = active;
             document.getElementById('scheduled-count').textContent = scheduled;
+
+            const dot = document.querySelector('#overall-text').previousElementSibling.querySelector('.status-dot');
+            const text = document.getElementById('overall-text');
+            if (active > 0) { dot.className = 'status-dot bg-red-500'; text.textContent = 'Incidentes Ativos'; }
+            else if (scheduled > 0) { dot.className = 'status-dot bg-yellow-400'; text.textContent = 'Manutenção'; }
+            else { dot.className = 'status-dot bg-green-400'; text.textContent = 'Operacional'; }
         }
 
-        // Fetch para dados reais (exemplo com proxy ou backend)
-        async function fetchRealData() {
-            try {
-                // Em produção: fetch('/api/status') ou use RSS/Scraping
-                // Para eCAC: fetch('https://downdetector.com.br/fora-do-ar/ecac/') e parse
-                console.log('Dados reais carregados!');
-                // Simula atualização
-                STATES_DATA[18].status = 'up'; // Atualiza RJ para up
-                renderStates();
-                render();
-            } catch (e) {
-                console.error('Erro no fetch:', e);
-            }
-        }
+        // Função para buscar e renderizar todos os dados
+async function updateAndRender() {
+    await fetchRealTimeData();
+    renderStates();
+    render();
+}
 
+// Atualização a cada 5 minutos
         let countdown = 300;
         setInterval(() => {
             document.getElementById('countdown').textContent = --countdown;
-            if (countdown <= 0) { 
-                countdown = 300; 
-                fetchRealData(); 
+            if (countdown <= 0) {
+                countdown = 300;
+                updateAndRender();
             }
         }, 1000);
 
-        // Init
-        renderStates();
-        render();
-        fetchRealData(); // Carrega iniciais
+        window.onload = () => {
+            updateAndRender();
+        };
     </script>
 </body>
 </html>
+https://nfce.sefaz.se.gov.br/portal/painelMonitor.jsp
