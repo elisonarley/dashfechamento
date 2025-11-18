@@ -1,212 +1,615 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status Brasil • Receita Federal + Infra 24/7 (Dados Reais)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        glass: 'rgba(20, 20, 30, 0.65)',
-                        neon: '#00ffea',
-                        purple: '#8b5cf6',
-                    },
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background: linear-gradient(135deg, #0a0a1a 0%, #1a0033 100%); min-height: 100vh; }
-        .glass { background: rgba(20, 20, 30, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px currentColor; }
-        .scroll-x { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.3) transparent; }
-        .scroll-x::-webkit-scrollbar { height: 6px; }
-        .scroll-x::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 3px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Diário de Bordo de Monitoramento - Black Friday 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fonte Roboto (Similar a Samsung Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* One UI Dark Palette */
+      --bg-color: #000000;
+      --surface-color: #1C1C1E; /* Cinza escuro Samsung */
+      --surface-color-highlight: #2C2C2E;
+      
+      /* Cores de Acento One UI */
+      --samsung-blue: #3E91FF;
+      --samsung-red: #FF453A;
+      --samsung-orange: #FF9F0A;
+      --samsung-green: #32D74B;
+      --text-primary: #FFFFFF;
+      --text-secondary: #98989E;
+      
+      /* Backgrounds de Status (Pastel/Suave) */
+      --bg-red-subtle: rgba(255, 69, 58, 0.15);
+      --bg-orange-subtle: rgba(255, 159, 10, 0.15);
+      --bg-green-subtle: rgba(50, 215, 75, 0.15);
+      --bg-blue-subtle: rgba(62, 145, 255, 0.15);
+
+      --border-radius-card: 26px;
+      --border-radius-inner: 18px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      line-height: 1.5;
+      padding: 0;
+      /* Simula a rolagem nativa suave */
+      scroll-behavior: smooth;
+    }
+
+    /* Container Principal */
+    .app-container {
+      max-width: 800px; /* Largura típica de visualização móvel/tablet esticada */
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* === Viewing Area (Cabeçalho One UI) === */
+    .header-area {
+      padding: 60px 24px 20px 24px; /* Padding top grande para simular Viewing Area */
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .header-subtitle {
+      font-size: 14px;
+      color: var(--samsung-blue);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      font-weight: 700; /* Título Bold One UI */
+      color: var(--text-primary);
+    }
+
+    /* === Date Selector (Estilo Botão/Pílula) === */
+    .controls-area {
+      padding: 10px 24px 30px;
+    }
+
+    .select-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      padding: 16px 24px;
+      font-size: 16px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      border-radius: var(--border-radius-card);
+      border: none;
+      background-color: var(--surface-color);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    select:focus {
+      outline: none;
+      background-color: var(--surface-color-highlight);
+    }
+
+    /* Seta customizada para o select */
+    .select-wrapper::after {
+      content: '▼';
+      font-size: 12px;
+      color: var(--text-secondary);
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    /* === Conteúdo === */
+    .content { 
+      padding: 0 16px 40px; /* Margens laterais menores para cards largos */
+      display: none; 
+      animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Curva One UI */
+    }
+    .content.active { 
+      display: flex; 
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 18px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin: 10px 8px 10px; /* Alinhado com os cards */
+      padding-left: 8px;
+    }
+
+    /* === Cards de Eventos (Estilo Bolha) === */
+    .event {
+      background-color: var(--surface-color);
+      border-radius: var(--border-radius-card);
+      overflow: hidden;
+      transition: background-color 0.2s;
+      /* Sem bordas, apenas superfície */
+    }
+
+    .event:active {
+      background-color: var(--surface-color-highlight); /* Feedback de toque */
+    }
+
+    .event-header {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start; /* Alinhamento topo para textos longos */
+      cursor: pointer;
+      user-select: none;
+      gap: 16px;
+    }
+
+    /* Título do Evento */
+    .event-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    /* Indicador de Cor lateral (Barra fina típica de apps de produtividade) */
+    .event.border-red .event-title { color: var(--samsung-red); }
+    .event.border-orange .event-title { color: var(--samsung-orange); }
+    .event.border-blue .event-title { color: var(--samsung-blue); }
+    .event.border-green .event-title { color: var(--samsung-green); }
+
+
+    /* Header Right: Badge e Ícone */
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      min-width: 100px; /* Espaço fixo para alinhamento */
+    }
+
+    /* === Badges (One UI Style: Sólido Pastel) === */
+    .status-badge {
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 50px; /* Pílula perfeita */
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: none; /* Remove borda do estilo anterior */
+    }
+
+    .status-badge.badge-success {
+      background-color: var(--bg-green-subtle);
+      color: var(--samsung-green);
+    }
+
+    /* Badge Vermelho (Em Aberto) */
+    .status-badge.badge-danger {
+      background-color: var(--bg-red-subtle);
+      color: var(--samsung-red);
+    }
+    
+    /* Badge Amarelo/Laranja (Atenção/Validação) */
+    .status-badge.badge-warning {
+      background-color: var(--bg-orange-subtle);
+      color: var(--samsung-orange);
+    }
+
+    /* Badge Manutenção */
+    .status-badge.badge-maintenance {
+      background-color: var(--bg-green-subtle); /* Manutenção é planejado = verde ou neutro */
+      color: var(--samsung-green);
+    }
+
+    /* Badge Falha */
+    .status-badge.badge-fail {
+      background-color: var(--bg-red-subtle);
+      color: var(--samsung-red);
+    }
+
+    .blink {
+      animation: pulse-opacity 2s infinite;
+    }
+
+    @keyframes pulse-opacity {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .toggle-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* === Timeline Area (Dentro do Card) === */
+    .timeline-wrapper {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background-color: rgba(0,0,0,0.2); /* Levemente mais escuro que o card */
+    }
+
+    .event.expanded .timeline-wrapper {
+      max-height: 1000px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 16px 24px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: #ccc;
+    }
+
+    th {
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding-top: 24px;
+    }
+
+    td:first-child, td:nth-child(2) {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    tr:last-child td { border-bottom: none; padding-bottom: 24px; }
+
+    .status-text-green { color: var(--samsung-green); font-weight: 700; }
+    .status-text-red { color: var(--samsung-red); font-weight: 700; }
+    .status-text-orange { color: var(--samsung-orange); font-weight: 700; }
+
+    /* === Rodapé ou Decoração === */
+    .footer-spacer { height: 100px; }
+
+    @media (max-width: 768px) {
+      .header-area { padding-top: 40px; }
+      h1 { font-size: 28px; }
+      .event-header { padding: 16px 20px; }
+      .status-badge { font-size: 11px; padding: 4px 10px; }
+    }
+  </style>
 </head>
-<body class="text-white">
+<body>
 
-    <!-- BARRA FIXA: Status eCAC por Estado (Dados Reais via Downdetector) -->
-    <div class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
-        <div class="px-4 py-3">
-            <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-3">
-                    <span class="text-yellow-400 font-bold text-lg">Receita Federal (eCAC) por Estado</span>
-                    <span class="text-xs opacity-70" id="ecac-update">Última verificação: agora</span>
-                </div>
-                <span class="text-xs opacity-70">Verde = OK | Amarelo = Lento | Vermelho = Fora</span>
-            </div>
-            <div class="flex gap-3 overflow-x-auto scroll-x pb-2" id="states-bar">
-                <!-- Estados carregados via JS com dados reais simulados (use fetch para Downdetector API) -->
-            </div>
+<div class="app-container">
+  
+  <!-- Cabeçalho Estilo Viewing Area -->
+  <div class="header-area">
+    <div class="header-subtitle">War Room • Black Friday 2025</div>
+    <h1>Diário de Bordo</h1>
+  </div>
+
+  <!-- Controles -->
+  <div class="controls-area">
+    <div class="select-wrapper">
+      <select id="dateSelect" onchange="showDate(this.value)">
+        <option value="">Selecionar data...</option>
+        <option value="2025-11-17">17 Novembro (Seg)</option>
+        <option value="2025-11-18">18 Novembro (Ter)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- =============== 17/11/2025 =============== -->
+  <div id="2025-11-17" class="content">
+    <h2>Eventos de Segunda-feira</h2>
+
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">INCIDENTE #2511170003: Represamento no Faturamento (Jund)</div>
+        <div class="header-right">
+          <span class="status-badge badge-success">Resolvido</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>08:31:00</td><td>Gleice</td><td>Acionamento inicial: Faturamento paralisado.</td></tr>
+          <tr><td>08:37:00</td><td>Pablo</td><td>Verificação: Robôs do Jundiaí [OK]. Pedido das 08:10 represado na Separação liberado. Fluxo retomado.</td></tr>
+          <tr><td>08:40:00</td><td>Sistema</td><td><span class="status-text-green">RESOLVIDO</span> Fluxo de faturamento normalizado. (Causa: Represamento pontual)</td></tr>
+        </table>
+      </div>
     </div>
 
-    <!-- Header Principal -->
-    <header class="pt-32 pb-6 px-6 text-center">
-        <h1 class="text-4xl md:text-6xl font-black bg-gradient-to-r from-[#8b5cf6] to-[#00ffea] bg-clip-text text-transparent">
-            Status Brasil • Monitoramento 24/7 (Reais)
-        </h1>
-        <p class="text-gray-400 mt-3">Próximo refresh em <span id="countdown" class="font-mono text-2xl text-[#00ffea]">300</span>s</p>
-    </header>
-
-    <!-- Status Geral -->
-    <div class="px-6 mb-10">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-7xl mx-auto">
-            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Fontes</p><p class="text-4xl font-black text-purple-400">10</p></div>
-            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Incidentes</p><p id="active-incidents" class="text-4xl font-black text-red-400">3</p></div>
-            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Manutenções</p><p id="scheduled-count" class="text-4xl font-black text-yellow-400">2</p></div>
-            <div class="glass rounded-2xl p-6 text-center"><p class="text-gray-400 text-sm">Status Geral</p><p class="text-4xl font-black flex items-center justify-center gap-3"><span class="status-dot bg-green-400"></span>Operacional</p></div>
+    <div class="event border-orange" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">WARNING: Disco Insuficiente – SRV-DONATELLO (G:)</div>
+        <div class="header-right">
+          <span class="status-badge badge-success">Normalizado</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>08:09:00</td><td>Zabbix</td><td>Alerta de disco (G:). Free: 573.1 GB.</td></tr>
+          <tr><td>08:11:00</td><td>Gabriel</td><td>Hipótese: Falha na exclusão do backup anterior. Acionado time de DB.</td></tr>
+          <tr><td>10:03:00</td><td>G. Soares</td><td>Ação: Ajuste de trigger para 500 GB.</td></tr>
+          <tr><td>10:20:00</td><td>G. Soares</td><td>Movendo backup full + checkdb (G: -> E:). Upload para S3 agendado.</td></tr>
+          <tr><td>11:16:00</td><td>Monitor</td><td><span class="status-text-green">NORMALIZADO</span> Disco retornou para 42% de uso.</td></tr>
+        </table>
+      </div>
     </div>
 
-    <!-- Grid de Serviços -->
-    <main class="px-6 pb-20">
-        <div id="dashboard" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-screen-2xl mx-auto">
-            <!-- Cards inseridos pelo JS -->
+    <div class="event border-blue" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">INFO: Alto Consumo de Disco – PROD-WMS-INTEGRADOR (/)</div>
+        <div class="header-right">
+          <span class="status-badge badge-success">Resolvido</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
-    </main>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>07:54:00</td><td>Pablo</td><td>Acionamento: Alerta filesystem root (/). Utilização: 97%.</td></tr>
+          <tr><td>08:46:00</td><td>Murilo</td><td>Suporte N2 acionado para limpeza de logs.</td></tr>
+          <tr><td>09:44:00</td><td>Murilo</td><td><span class="status-text-green">RESOLVIDO</span> Espaço recuperado após limpeza de temps.</td></tr>
+        </table>
+      </div>
+    </div>
 
-    <script>
-        // Fontes atualizadas: Removido Mercado Pago, adicionado Linx ERP
-        const SOURCES = [
-            { name: "AnyMarket", icon: "🛒", url: "https://status.anymarket.com.br" },
-            { name: "AWS us-east-1", icon: "☁️", url: "https://status.aws.amazon.com" },
-            { name: "Microsoft 365", icon: "🏢", url: "https://status.office.com" },
-            { name: "PagSeguro", icon: "🔒", url: "https://status.pagseguro.uol.com.br" },
-            { name: "Cielo", icon: "💳", url: "https://status.cielo.com.br" },
-            { name: "Rede", icon: "🌐", url: "https://status.rede.com.br" },
-            { name: "Stone", icon: "💎", url: "https://status.stone.com.br" },
-            { name: "Correios", icon: "🚚", url: "https://status.correios.com.br" },
-            { name: "Banco do Brasil", icon: "🏦", url: "https://www.bb.com.br/site/status" },
-            { name: "Linx ERP", icon: "⚙️", url: "https://status.linxcommerce.com.br" }
-        ];
+    <div class="event border-orange" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">WARNING: Instabilidade Link Jundiaí</div>
+        <div class="header-right">
+          <span class="status-badge badge-success">Normalizado</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>16:25:00</td><td>Elison</td><td>Identificada latência alta/perda de pacote em Jundiaí.</td></tr>
+          <tr><td>16:28:00</td><td>Matheus</td><td>Queda confirmada de ~3min. Oscilação diária padrão da operadora.</td></tr>
+          <tr><td>16:30:00</td><td>Elison</td><td>Serviços normalizados.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
 
-        // Estados para eCAC com dados reais simulados (baseado em Downdetector - em prod, fetch https://downdetector.com.br/fora-do-ar/ecac/)
-        const STATES_DATA = [
-            {uf: "AC", nome: "Acre", status: "up"},
-            {uf: "AL", nome: "Alagoas", status: "up"},
-            {uf: "AP", nome: "Amapá", status: "up"},
-            {uf: "AM", nome: "Amazonas", status: "up"},
-            {uf: "BA", nome: "Bahia", status: "up"},
-            {uf: "CE", nome: "Ceará", status: "slow"},
-            {uf: "DF", nome: "Distrito Federal", status: "up"},
-            {uf: "ES", nome: "Espírito Santo", status: "up"},
-            {uf: "GO", nome: "Goiás", status: "up"},
-            {uf: "MA", nome: "Maranhão", status: "up"},
-            {uf: "MT", nome: "Mato Grosso", status: "up"},
-            {uf: "MS", nome: "Mato Grosso do Sul", status: "up"},
-            {uf: "MG", nome: "Minas Gerais", status: "up"},
-            {uf: "PA", nome: "Pará", status: "up"},
-            {uf: "PB", nome: "Paraíba", status: "up"},
-            {uf: "PR", nome: "Paraná", status: "up"},
-            {uf: "PE", nome: "Pernambuco", status: "up"},
-            {uf: "PI", nome: "Piauí", status: "up"},
-            {uf: "RJ", nome: "Rio de Janeiro", status: "down"},
-            {uf: "RN", nome: "Rio Grande do Norte", status: "up"},
-            {uf: "RS", nome: "Rio Grande do Sul", status: "up"},
-            {uf: "RO", nome: "Rondônia", status: "up"},
-            {uf: "RR", nome: "Roraima", status: "up"},
-            {uf: "SC", nome: "Santa Catarina", status: "up"},
-            {uf: "SP", nome: "São Paulo", status: "up"},
-            {uf: "SE", nome: "Sergipe", status: "up"},
-            {uf: "TO", nome: "Tocantins", status: "up"}
-        ];
+  <!-- =============== 18/11/2025 =============== -->
+  <div id="2025-11-18" class="content">
+    <h2>Eventos de Hoje</h2>
 
-        // Dados realistas (baseados em buscas reais de 17/11/2025 - sem incidentes atuais em AnyMarket)
-        const REAL_DATA = {
-            "AnyMarket": [{title:"Serviços operacionais (sem incidentes em 17/11/2025)", status:"operational", time:"Agora", new:false}],
-            "AWS us-east-1": [{title:"Degradação em EC2 - Latência elevada", status:"degraded", time:"1h", new:true}],
-            "Microsoft 365": [{title:"Investigando problemas de sincronização OneDrive", status:"investigating", time:"20 min", new:true}],
-            "PagSeguro": [{title:"Manutenção programada em API de Pagamentos", status:"scheduled", time:"Hoje 23h", new:false}],
-            "Cielo": [{title:"Todos os serviços operando normalmente", status:"operational", time:"Agora", new:false}],
-            "Rede": [{title:"Instabilidade em autorizações 3DS", status:"degraded", time:"30 min", new:true}],
-            "Stone": [{title:"Webhooks com atraso processando", status:"investigating", time:"10 min", new:true}],
-            "Correios": [{title:"Atrasos na API de Rastreamento", status:"degraded", time:"2h", new:false}],
-            "Banco do Brasil": [{title:"App BB com lentidão reportada", status:"degraded", time:"45 min", new:false}],
-            "Linx ERP": [{title:"Monitorando integração com Pagar.me", status:"operational", time:"Agora", new:false}]
-        };
+    <!-- Evento Persistente -->
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">CRITICAL: Espaço em Disco - GLPI-PRD-APLICACAO [/data] (Persistente)</div>
+        <div class="header-right">
+          <span class="status-badge badge-danger blink">Em Aberto</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>17/11 12:10</td><td>Elison Arley</td><td>Questiona retorno do GLPI. Uso de disco em 95.7% (156.4GB total).</td></tr>
+          <tr><td>17/11 12:10</td><td>Zabbix</td><td>PROBLEM: FS [/data] Critically low (used > 90%).</td></tr>
+          <tr><td>18/11 12:46</td><td>Fábio Jose</td><td><span class="status-text-red">URGENTE</span> Necessidade de RDM Emergencial para expurgo de base. Cobrança de mapeamento ao Gabriel Ribeiro.</td></tr>
+          <tr><td>18/11 12:46</td><td>Fábio Jose</td><td>Kaue Silva adicionado ao chat para acompanhamento.</td></tr>
+        </table>
+      </div>
+    </div>
 
-        function renderStates() {
-            const bar = document.getElementById('states-bar');
-            bar.innerHTML = STATES_DATA.map(s => `
-                <div class="flex items-center gap-2 bg-black/40 px-3 py-2 rounded-full text-xs whitespace-nowrap">
-                    <span class="status-dot ${s.status === 'up' ? 'bg-green-400' : s.status === 'slow' ? 'bg-yellow-400' : 'bg-red-500'}"></span>
-                    <span class="font-bold">${s.uf}</span>
-                    <span class="opacity-80 hidden sm:inline">${s.nome}</span>
-                </div>
-            `).join('');
-            document.getElementById('ecac-update').textContent = `Última verificação: ${new Date().toLocaleString('pt-BR')}`;
-        }
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</div>
+        <div class="header-right">
+          <span class="status-badge badge-danger blink">Em Aberto</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>07:00:27</td><td>L. Gomes</td><td>PROBLEM: FS [/] Critically low (> 90%, total 7.6GB). Atual: 90.9%</td></tr>
+          <tr><td>07:47:00</td><td>L. Gomes</td><td>Escalado para o NOC.</td></tr>
+          <tr><td>10:21:00</td><td>Operação</td><td><span class="status-text-red">EM ABERTO</span> Aguardando ação corretiva.</td></tr>
+        </table>
+      </div>
+    </div>
 
-        function createCard(source) {
-            const items = REAL_DATA[source.name] || [];
-            const hasNew = items.some(i => i.new);
-            return `
-            <div class="glass rounded-3xl p-6 ${hasNew ? 'ring-2 ring-yellow-500/50 shadow-2xl shadow-yellow-500/20' : ''} transform hover:scale-[1.02] transition">
-                <div class="flex justify-between items-start mb-5">
-                    <h3 class="text-xl font-bold flex items-center gap-3"><span class="text-3xl">${source.icon}</span> ${source.name}</h3>
-                    <a href="${source.url}" target="_blank" class="text-sm opacity-70 hover:opacity-100">Acessar</a>
-                </div>
-                <div class="space-y-3">
-                    ${items.length ? items.map(i => `
-                    <div class="bg-black/40 rounded-2xl p-4 border ${i.new ? 'border-yellow-500/60' : 'border-white/10'}">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-bold flex items-center gap-2">
-                                <span class="status-dot ${i.status === 'operational' ? 'bg-green-400' : i.status === 'scheduled' ? 'bg-yellow-400' : 'bg-red-400'}"></span>
-                                ${i.status === 'investigating' ? 'Investigando' : i.status === 'degraded' ? 'Degradado' : i.status === 'scheduled' ? 'Agendado' : 'Normal'}
-                            </span>
-                            ${i.new ? '<span class="bg-yellow-500 text-black text-xs px-3 py-1 rounded-full font-bold animate-pulse">NOVO</span>' : ''}
-                        </div>
-                        <p class="font-medium text-sm">${i.title}</p>
-                        <p class="text-xs opacity-60">${i.time} atrás</p>
-                    </div>`).join('') : 
-                    '<p class="text-center text-green-400 py-8 font-medium">Tudo operando normalmente</p>'}
-                </div>
-            </div>`;
-        }
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">CRITICAL: Disco Criticamente Baixo - SRV-PAOLLO [/]</div>
+        <div class="header-right">
+          <span class="status-badge badge-maintenance">Manutenção</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>08:42:43</td><td>Zabbix</td><td>PROBLEM: FS [/] Critically low (> 90%, total 44.0GB). Atual: 92.6%</td></tr>
+          <tr><td>10:49:00</td><td>Operação</td><td><span class="status-text-red">EM ABERTO</span> Ainda sem resposta / ação corretiva registrada.</td></tr>
+          <tr><td>14:56:00</td><td>Daily Teams</td><td><span class="status-text-green">MANUTENÇÃO</span> Kaue informou que está realizando manutenção no servidor e ficará indisponível.</td></tr>
+        </table>
+      </div>
+    </div>
 
-        function render() {
-            document.getElementById('dashboard').innerHTML = SOURCES.map(createCard).join('');
-            const active = Object.values(REAL_DATA).flat().filter(i => ['degraded','investigating'].includes(i.status)).length;
-            const scheduled = Object.values(REAL_DATA).flat().filter(i => i.status === 'scheduled').length;
-            document.getElementById('active-incidents').textContent = active;
-            document.getElementById('scheduled-count').textContent = scheduled;
-        }
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">FALHA: Rotinas de Backup - SRV-DONATELLO</div>
+        <div class="header-right">
+          <span class="status-badge badge-warning blink">Validação</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>07:39:00</td><td>L. Gomes</td><td>Reportado falha em jobs SQL no Donatello.</td></tr>
+          <tr><td>08:14:00</td><td>G. Soares</td><td>Diagnóstico: Latência alta de escrita (Disco G:). Backup rodando há 14h.</td></tr>
+          <tr><td>08:20:00</td><td>L. Gomes</td><td>NOC notificado. Acionar Equinix/Infra.</td></tr>
+          <tr><td>12:07:00</td><td>G. Soares</td><td>Backup travado (previsão de término seria 19/11 20h) foi CANCELADO. Equinix deve tomar ação sobre desempenho do disco.</td></tr>
+          <tr><td>12:58:00</td><td>Fabio Jose</td><td>Contato com a Equinix realizado. Solicitada agenda na parte da tarde com participação da equipe de banco.</td></tr>
+          <tr><td>13:08:00</td><td>Fabio Jose</td><td><span class="status-text-orange">RESPOSTA EQUINIX:</span> "Ocorreu uma falha de rede na estrutura do backup, gerando incremento no disco. Foi efetuada correção."</td></tr>
+          <tr><td>13:08:00</td><td>Elison Arley</td><td><span class="status-text-orange">AGUARDANDO VALIDAÇÃO</span> Solicitado verificação para confirmar estabilidade.</td></tr>
+          <tr><td colspan="3" style="font-style:italic; opacity: 0.7;">Alertas Zabbix correlacionados: AlliedCorreios, AlliedServicos, Cotacao, DBADashDB, JUNDSOFT (>8h delay).</td></tr>
+        </table>
+      </div>
+    </div>
 
-        // Fetch para dados reais (exemplo com proxy ou backend)
-        async function fetchRealData() {
-            try {
-                // Em produção: fetch('/api/status') ou use RSS/Scraping
-                // Para eCAC: fetch('https://downdetector.com.br/fora-do-ar/ecac/') e parse
-                console.log('Dados reais carregados!');
-                // Simula atualização
-                STATES_DATA[18].status = 'up'; // Atualiza RJ para up
-                renderStates();
-                render();
-            } catch (e) {
-                console.error('Erro no fetch:', e);
-            }
-        }
+    <div class="event border-green" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">MAINTENANCE: Agentes Zabbix (MASACCIO / GIORGIONE)</div>
+        <div class="header-right">
+          <span class="status-badge badge-success">Concluído</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>14/11 10:02</td><td>Zabbix</td><td>MASACCIO: Agent unavailable (4d+).</td></tr>
+          <tr><td>13/11 17:02</td><td>Zabbix</td><td>GIORGIONE: Agent unavailable (4d+).</td></tr>
+          <tr><td>10:34:28</td><td>NOC</td><td>Solicitação de janela de manutenção até fim do dia 18/11 para análise.</td></tr>
+          <tr><td>10:35:00</td><td>Kaue Silva</td><td>Solicitou desativação e remoção posterior da monitoria.</td></tr>
+          <tr><td>10:37:00</td><td>NOC</td><td>Monitoração pausada.</td></tr>
+          <tr><td>10:38:00</td><td>Elison Arley</td><td><span class="status-text-green">CONCLUÍDO</span> Servidores Desativados.</td></tr>
+        </table>
+      </div>
+    </div>
 
-        let countdown = 300;
-        setInterval(() => {
-            document.getElementById('countdown').textContent = --countdown;
-            if (countdown <= 0) { 
-                countdown = 300; 
-                fetchRealData(); 
-            }
-        }, 1000);
+    <div class="event border-orange" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">WARNING: Alta Utilização de CPU - RBPSRVFS01</div>
+        <div class="header-right">
+          <span class="status-badge badge-success">Resolvido</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>10:48:20</td><td>Zabbix</td><td>PROBLEM: High CPU utilization (> 90% por 5m). Atual: 99.97%. Duração: 9m 16s.</td></tr>
+          <tr><td>11:00:00</td><td>Elison Arley</td><td>Informado no grupo do NOC.</td></tr>
+          <tr><td>11:01:00</td><td>Murilo R.</td><td>Informado que o Ricardo Henrique está rodando um scan manual do Windows Defender.</td></tr>
+          <tr><td>11:05:00</td><td>Fabio Santos</td><td><span class="status-text-green">RESOLVIDO</span> Scan pausado após alinhamento sobre janela de atividade. CPU normalizada.</td></tr>
+        </table>
+      </div>
+    </div>
 
-        // Init
-        renderStates();
-        render();
-        fetchRealData(); // Carrega iniciais
-    </script>
+    <div class="event border-orange" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">WARNING: Alta Utilização de CPU - WHISKEY</div>
+        <div class="header-right">
+          <span class="status-badge badge-warning blink">Em Análise</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>10:11:38</td><td>Zabbix</td><td>PROBLEM: High CPU utilization (> 90% por 5m). Atual: 100%. Duração: 47m 38s.</td></tr>
+          <tr><td>11:00:00</td><td>Elison Arley</td><td>Informado no grupo do NOC.</td></tr>
+          <tr><td>11:01:00</td><td>Murilo R.</td><td>Informado que o Ricardo Henrique está rodando um scan manual do Windows Defender.</td></tr>
+          <tr><td>11:05:00</td><td>Fabio Santos</td><td>Informado inicialmente que Scan foi pausado e CPU normalizada.</td></tr>
+          <tr><td>13:06:00</td><td>Elison Arley</td><td><span class="status-text-orange">ALERTA</span> Consumo de CPU continua alto mesmo após o "stop".</td></tr>
+          <tr><td>14:30:00</td><td>Murillo</td><td><span class="status-text-red">DIAGNÓSTICO</span> Em reunião com Ricardo, verificado que o Defender <b>não</b> havia sido parado anteriormente.</td></tr>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Novo Evento Atualizado: Queda de Link -->
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">CRITICAL: Queda de Link (Americanet) - FGT_JDI</div>
+        <div class="header-right">
+          <span class="status-badge badge-warning blink">Validação</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>14:26:32</td><td>Elison Arley</td><td>PROBLEM: FGT_JDI. Identificado queda no Link da Americanet em Jundiaí.</td></tr>
+          <tr><td>14:29:00</td><td>Matheus (JDI)</td><td>Evidência (gráfico de tráfego) enviada confirmando a queda.</td></tr>
+          <tr><td>15:11:00</td><td>Matheus (JDI)</td><td><span class="status-text-red">CRÍTICO</span> Incidente no backbone principal do provedor. Indisponibilidade total na região. Previsão de até 8h. Ticket: <b>#2511188538</b>.</td></tr>
+          <tr><td>16:59:00</td><td>Matheus (JDI)</td><td>Indisponibilidade reportada no TS-JUND load balancer.</td></tr>
+          <tr><td>17:20:00</td><td>Elison Arley</td><td><span class="status-text-orange">RESTABELECIDO</span> Acesso restabelecido. Aguardando retorno de Luiz Galante sobre as ações tomadas.</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+  
+  <!-- Footer com Timestamp -->
+  <div style="text-align: center; padding: 20px; color: var(--text-secondary); font-size: 12px;">
+    Última atualização: <span id="last-updated"></span>
+  </div>
+  
+  <div class="footer-spacer"></div>
+</div>
+
+<script>
+  function showDate(value) {
+    const contents = document.querySelectorAll('.content');
+    contents.forEach(el => el.classList.remove('active'));
+    
+    if (value) {
+      setTimeout(() => {
+        document.getElementById(value).classList.add('active');
+      }, 50);
+    }
+  }
+  
+  function toggleEvent(element) {
+    element.classList.toggle('expanded');
+  }
+
+  const today = "2025-11-18";
+  if (document.getElementById(today)) {
+    document.getElementById('dateSelect').value = today;
+    showDate(today);
+  }
+
+  // Atualiza o timestamp com a data/hora atual
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const formattedTime = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  document.getElementById('last-updated').textContent = `${formattedDate} às ${formattedTime}`;
+</script>
+
 </body>
 </html>
