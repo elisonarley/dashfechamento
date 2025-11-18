@@ -405,16 +405,11 @@
         </table>
       </div>
     </div>
-  </div>
-
-  <!-- =============== 18/11/2025 =============== -->
-  <div id="2025-11-18" class="content">
-    <h2>Eventos de Hoje</h2>
-
-    <!-- Evento Persistente -->
+    
+    <!-- Status (CRITICAL/EM ABERTO) - Persistente do dia 17/11 -->
     <div class="event border-red" onclick="toggleEvent(this)">
       <div class="event-header">
-        <div class="event-title">CRITICAL: Espaço em Disco - GLPI-PRD-APLICACAO [/data] (Persistente)</div>
+        <div class="event-title">CRITICAL: Espaço em Disco - GLPI-PRD-APLICACAO [/data]</div>
         <div class="header-right">
           <span class="status-badge badge-danger blink">Em Aberto</span>
           <span class="toggle-text">Detalhes ▼</span>
@@ -427,9 +422,32 @@
           <tr><td>17/11 12:10</td><td>Zabbix</td><td>PROBLEM: FS [/data] Critically low (used > 90%).</td></tr>
           <tr><td>18/11 12:46</td><td>Fábio Jose</td><td><span class="status-text-red">URGENTE</span> Necessidade de RDM Emergencial para expurgo de base. Cobrança de mapeamento ao Gabriel Ribeiro.</td></tr>
           <tr><td>18/11 12:46</td><td>Fábio Jose</td><td>Kaue Silva adicionado ao chat para acompanhamento.</td></tr>
+          <tr><td>18/11 16:12</td><td>Fábio Jose</td><td>Cobrança: Gabriel Ribeiro Viana Aguiar algum retorno?</td></tr>
         </table>
       </div>
     </div>
+
+    <div class="event border-orange" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">WARNING: Site Sem Resposta (TRADE CREDIX WORKER CONSUMER DLQ)</div>
+        <div class="header-right">
+          <span class="status-badge badge-fail">Ignorado</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>17/11 15:49</td><td>Zabbix</td><td>PROBLEM: Site sem responder há mais de 5 min. Status: *UNKNOWN*. Duração: 1d 1h 2m.</td></tr>
+          <tr><td>16:00:00</td><td>Callel</td><td><span class="status-text-orange">IGNORADO</span> Devido ao *freezing* (período de congelamento de mudanças/serviços), será tratado após a Black Friday.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============== 18/11/2025 =============== -->
+  <div id="2025-11-18" class="content">
+    <h2>Eventos de Hoje</h2>
 
     <div class="event border-red" onclick="toggleEvent(this)">
       <div class="event-header">
@@ -463,6 +481,7 @@
           <tr><td>08:42:43</td><td>Zabbix</td><td>PROBLEM: FS [/] Critically low (> 90%, total 44.0GB). Atual: 92.6%</td></tr>
           <tr><td>10:49:00</td><td>Operação</td><td><span class="status-text-red">EM ABERTO</span> Ainda sem resposta / ação corretiva registrada.</td></tr>
           <tr><td>14:56:00</td><td>Daily Teams</td><td><span class="status-text-green">MANUTENÇÃO</span> Kaue informou que está realizando manutenção no servidor e ficará indisponível.</td></tr>
+          <tr><td>16:32:00</td><td>Kaue Silva</td><td>Solicitou que o Paollo seja deixado em manutenção por 30 dias para resolver a questão comercial dos discos, pois ficará alarmando.</td></tr>
         </table>
       </div>
     </div>
@@ -483,7 +502,7 @@
           <tr><td>08:20:00</td><td>L. Gomes</td><td>NOC notificado. Acionar Equinix/Infra.</td></tr>
           <tr><td>12:07:00</td><td>G. Soares</td><td>Backup travado (previsão de término seria 19/11 20h) foi CANCELADO. Equinix deve tomar ação sobre desempenho do disco.</td></tr>
           <tr><td>12:58:00</td><td>Fabio Jose</td><td>Contato com a Equinix realizado. Solicitada agenda na parte da tarde com participação da equipe de banco.</td></tr>
-          <tr><td>13:08:00</td><td>Fabio Jose</td><td><span class="status-text-orange">RESPOSTA EQUINIX:</span> "Ocorreu uma falha de rede na estrutura do backup, gerando incremento no disco. Foi efetuada correção."</td></tr>
+          <tr><td>13:08:00</td><td>Fabio Jose</td><td><span class="status-text-orange">RESPOSTA EQUINIX:</span> "Ocorreu uma falha de rede na estrutura do backup, onde a rotina ficou em status de execução, gerando incremento no disco do servidor. Foi efetuada correção."</td></tr>
           <tr><td>13:08:00</td><td>Elison Arley</td><td><span class="status-text-orange">AGUARDANDO VALIDAÇÃO</span> Solicitado verificação para confirmar estabilidade.</td></tr>
           <tr><td colspan="3" style="font-style:italic; opacity: 0.7;">Alertas Zabbix correlacionados: AlliedCorreios, AlliedServicos, Cotacao, DBADashDB, JUNDSOFT (>8h delay).</td></tr>
         </table>
@@ -494,7 +513,7 @@
       <div class="event-header">
         <div class="event-title">MAINTENANCE: Agentes Zabbix (MASACCIO / GIORGIONE)</div>
         <div class="header-right">
-          <span class="status-badge badge-maintenance">Manutenção</span>
+          <span class="status-badge badge-success">Concluído</span>
           <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
@@ -504,7 +523,9 @@
           <tr><td>14/11 10:02</td><td>Zabbix</td><td>MASACCIO: Agent unavailable (4d+).</td></tr>
           <tr><td>13/11 17:02</td><td>Zabbix</td><td>GIORGIONE: Agent unavailable (4d+).</td></tr>
           <tr><td>10:34:28</td><td>NOC</td><td>Solicitação de janela de manutenção até fim do dia 18/11 para análise.</td></tr>
-          <tr><td>10:37:00</td><td>NOC</td><td><span class="status-text-green">MANUTENÇÃO</span> Monitoração pausada (aprovado por Kaue Silva).</td></tr>
+          <tr><td>10:35:00</td><td>Kaue Silva</td><td>Solicitou desativação e remoção posterior da monitoria.</td></tr>
+          <tr><td>10:37:00</td><td>NOC</td><td>Monitoração pausada.</td></tr>
+          <tr><td>10:38:00</td><td>Elison Arley</td><td><span class="status-text-green">CONCLUÍDO</span> Servidores Desativados.</td></tr>
         </table>
       </div>
     </div>
@@ -532,7 +553,7 @@
       <div class="event-header">
         <div class="event-title">WARNING: Alta Utilização de CPU - WHISKEY</div>
         <div class="header-right">
-          <span class="status-badge badge-warning blink">Em Análise</span>
+          <span class="status-badge badge-success">Resolvido</span>
           <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
@@ -545,11 +566,12 @@
           <tr><td>11:05:00</td><td>Fabio Santos</td><td>Informado inicialmente que Scan foi pausado e CPU normalizada.</td></tr>
           <tr><td>13:06:00</td><td>Elison Arley</td><td><span class="status-text-orange">ALERTA</span> Consumo de CPU continua alto mesmo após o "stop".</td></tr>
           <tr><td>14:30:00</td><td>Murillo</td><td><span class="status-text-red">DIAGNÓSTICO</span> Em reunião com Ricardo, verificado que o Defender <b>não</b> havia sido parado anteriormente.</td></tr>
+          <tr><td>15:20:00</td><td>Elison Arley</td><td><span class="status-text-green">RESOLVIDO</span> Verificado que o uso de CPU está normalizado.</td></tr>
         </table>
       </div>
     </div>
     
-    <!-- Novo Evento Atualizado: Queda de Link -->
+    <!-- Evento Atualizado: Queda de Link - Status regressivo devido a re-falha -->
     <div class="event border-red" onclick="toggleEvent(this)">
       <div class="event-header">
         <div class="event-title">CRITICAL: Queda de Link (Americanet) - FGT_JDI</div>
@@ -563,17 +585,19 @@
           <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
           <tr><td>14:26:32</td><td>Elison Arley</td><td>PROBLEM: FGT_JDI. Identificado queda no Link da Americanet em Jundiaí.</td></tr>
           <tr><td>14:29:00</td><td>Matheus (JDI)</td><td>Evidência (gráfico de tráfego) enviada confirmando a queda.</td></tr>
-          <tr><td>15:11:00</td><td>Matheus (JDI)</td><td><span class="status-text-red">CRÍTICO</span> Incidente no backbone principal do provedor. Indisponibilidade total na região.</td></tr>
-          <tr><td>15:11:00</td><td>Matheus (JDI)</td><td>Previsão de até 8h. Ticket aberto: <b>#2511188538</b>. Monitorando com Elison.</td></tr>
+          <tr><td>15:11:00</td><td>Matheus (JDI)</td><td><span class="status-text-red">CRÍTICO</span> Incidente no backbone principal do provedor. Indisponibilidade total na região. Previsão de até 8h. Ticket: <b>#2511188538</b>.</td></tr>
+          <tr><td>16:59:00</td><td>Matheus (JDI)</td><td>Indisponibilidade reportada no TS-JUND load balancer.</td></tr>
+          <tr><td>17:20:00</td><td>Elison Arley</td><td><span class="status-text-orange">TENTATIVA DE RESTABELECIMENTO</span> Acesso ao TS-JUND restabelecido momentaneamente. Aguardando retorno de Luiz Galante sobre as ações tomadas.</td></tr>
+          <tr><td>17:21:00</td><td>Elison Arley</td><td><span class="status-text-red">RE-FALHA</span> Link da operadora Americanet Continua fora.</td></tr>
         </table>
       </div>
     </div>
 
   </div>
   
-  <!-- Footer com Timestamp -->
+  <!-- Footer com Timestamp Fixo da Última Edição -->
   <div style="text-align: center; padding: 20px; color: var(--text-secondary); font-size: 12px;">
-    Última atualização: <span id="last-updated"></span>
+    Última atualização do Diário: <span id="last-updated">18/11/2025 às 18:05</span>
   </div>
   
   <div class="footer-spacer"></div>
@@ -595,17 +619,14 @@
     element.classList.toggle('expanded');
   }
 
+  // Define a data padrão ao carregar
   const today = "2025-11-18";
   if (document.getElementById(today)) {
     document.getElementById('dateSelect').value = today;
     showDate(today);
   }
-
-  // Atualiza o timestamp com a data/hora atual
-  const now = new Date();
-  const formattedDate = now.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  const formattedTime = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-  document.getElementById('last-updated').textContent = `${formattedDate} às ${formattedTime}`;
+  
+  // O timestamp é fixo para refletir o momento da última edição manual.
 </script>
 
 </body>
