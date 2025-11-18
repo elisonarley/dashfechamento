@@ -456,6 +456,27 @@
       <h2>Log de Eventos: 18/11/2025</h2>
     </div>
 
+    <!-- Novo Evento Persistente (Do PDF Atualizado) -->
+    <div class="event" onclick="toggleEvent(this)">
+      <div class="event-header red">
+        <span class="event-title">CRITICAL: Espaço em Disco - GLPI-PRD-APLICACAO [/data] (Persistente desde 17/11)</span>
+        <div class="header-right">
+          <span class="status-badge blink">Em Aberto</span>
+          <span class="timeline-hint">Ver Timeline</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>17/11 12:10</td><td>Elison Arley</td><td>Questiona retorno do GLPI. Uso de disco em 95.7% (156.4GB total).</td></tr>
+          <tr><td>17/11 12:10</td><td>Zabbix</td><td>PROBLEM: FS [/data] Critically low (used > 90%).</td></tr>
+          <tr><td>18/11 12:46</td><td>Fábio Jose</td><td><span class="status-red">URGENTE</span> Necessidade de RDM Emergencial para expurgo de base. Cobrança de mapeamento ao Gabriel Ribeiro.</td></tr>
+          <tr><td>18/11 12:46</td><td>Fábio Jose</td><td>Kaue Silva adicionado ao chat para acompanhamento.</td></tr>
+        </table>
+      </div>
+    </div>
+
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header red">
         <span class="event-title">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</span>
@@ -488,6 +509,7 @@
         <table>
           <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
           <tr><td>08:42:43</td><td>Zabbix</td><td>PROBLEM: FS [/] Critically low (> 90%, total 44.0GB). Atual: 92.6%</td></tr>
+          <tr><td>10:49:00</td><td>Operação</td><td><span class="status-red">EM ABERTO</span> Ainda sem resposta / ação corretiva registrada.</td></tr>
         </table>
       </div>
     </div>
@@ -507,6 +529,7 @@
           <tr><td>07:39:00</td><td>L. Gomes</td><td>Reportado falha em jobs SQL no Donatello.</td></tr>
           <tr><td>08:14:00</td><td>G. Soares</td><td>Diagnóstico: Latência alta de escrita (Disco G:). Backup rodando há 14h.</td></tr>
           <tr><td>08:20:00</td><td>L. Gomes</td><td>NOC notificado. Acionar Equinix/Infra.</td></tr>
+          <tr><td>12:07:00</td><td>G. Soares</td><td>Backup travado (previsão de término seria 19/11 20h) foi CANCELADO. Equinix deve tomar ação sobre desempenho do disco.</td></tr>
           <tr><td colspan="3" style="font-style:italic; opacity: 0.7;">Alertas Zabbix correlacionados: AlliedCorreios, AlliedServicos, Cotacao, DBADashDB, JUNDSOFT (>8h delay).</td></tr>
         </table>
       </div>
