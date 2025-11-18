@@ -167,19 +167,19 @@
       display: inline-block;
     }
 
+    /* Estilos do Evento Ajustados para Accordion */
     .event {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--glass-border);
       border-radius: 12px;
       overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.3s ease;
     }
 
     .event:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-      border-color: rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .event-header {
@@ -187,15 +187,46 @@
       font-weight: 600;
       font-size: 16px;
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer; /* Indica clicável */
+      user-select: none;
+    }
+
+    .event-title-group {
+      display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid var(--glass-border);
     }
 
     .event-header.red { background: var(--red-bg); color: var(--red); border-left: 4px solid var(--red); text-shadow: var(--red-glow); }
     .event-header.orange { background: var(--orange-bg); color: var(--orange); border-left: 4px solid var(--orange); }
     .event-header.blue { background: var(--blue-bg); color: var(--blue); border-left: 4px solid var(--blue); }
     .event-header.green { background: var(--green-bg); color: var(--green); border-left: 4px solid var(--green); text-shadow: var(--green-glow); }
+
+    /* Ícone de seta */
+    .toggle-icon {
+      font-size: 12px;
+      opacity: 0.7;
+      transition: transform 0.3s ease;
+    }
+    
+    .event.expanded .toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Wrapper da Timeline (Tabela) */
+    .timeline-wrapper {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .event.expanded .timeline-wrapper {
+      max-height: 1000px; /* Valor alto para permitir expansão */
+      transition: max-height 0.4s ease-in-out;
+    }
 
     table {
       width: 100%;
@@ -222,7 +253,6 @@
       color: var(--text-primary);
     }
 
-    /* Usar fonte mono para horários e nomes de servidores para ar tech */
     td:first-child, td:nth-child(2) {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
@@ -252,12 +282,26 @@
       text-transform: uppercase;
     }
 
+    .timeline-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-right: 10px;
+      font-weight: 400;
+      opacity: 0.6;
+      display: none;
+    }
+
+    .event:hover .timeline-hint {
+      display: inline;
+    }
+
     @media (max-width: 768px) {
       .header, .date-selector, .content { padding-left: 20px; padding-right: 20px; }
       .window { border-radius: 0; border: none; background: transparent; box-shadow: none; }
-      .event-header { font-size: 15px; flex-direction: column; align-items: flex-start; }
+      .event-header { font-size: 15px; }
       th, td { padding: 12px 16px; }
       td:first-child { white-space: nowrap; }
+      .timeline-hint { display: none; }
     }
   </style>
 </head>
@@ -291,46 +335,78 @@
       <h2>Log de Eventos: 17/11/2025</h2>
     </div>
 
-    <div class="event">
-      <div class="event-header red">INCIDENTE #2511170003: Represamento no Faturamento (Jund)</div>
-      <table>
-        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>08:31:00</td><td>Gleice</td><td>Acionamento inicial: Faturamento paralisado.</td></tr>
-        <tr><td>08:37:00</td><td>Pablo</td><td>Verificação: Robôs do Jundiaí [OK]. Pedido das 08:10 represado na Separação liberado. Fluxo retomado.</td></tr>
-        <tr><td>08:40:00</td><td>Sistema</td><td><span class="status-green">RESOLVIDO</span> Fluxo de faturamento normalizado. (Causa: Represamento pontual)</td></tr>
-      </table>
+    <div class="event" onclick="toggleEvent(this)">
+      <div class="event-header red">
+        <span class="event-title-group">INCIDENTE #2511170003: Represamento no Faturamento (Jund)</span>
+        <div>
+          <span class="timeline-hint">Ver Timeline</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>08:31:00</td><td>Gleice</td><td>Acionamento inicial: Faturamento paralisado.</td></tr>
+          <tr><td>08:37:00</td><td>Pablo</td><td>Verificação: Robôs do Jundiaí [OK]. Pedido das 08:10 represado na Separação liberado. Fluxo retomado.</td></tr>
+          <tr><td>08:40:00</td><td>Sistema</td><td><span class="status-green">RESOLVIDO</span> Fluxo de faturamento normalizado. (Causa: Represamento pontual)</td></tr>
+        </table>
+      </div>
     </div>
 
-    <div class="event">
-      <div class="event-header orange">WARNING: Disco Insuficiente – SRV-DONATELLO (G:)</div>
-      <table>
-        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>08:09:00</td><td>Zabbix</td><td>Alerta de disco (G:). Free: 573.1 GB.</td></tr>
-        <tr><td>08:11:00</td><td>Gabriel</td><td>Hipótese: Falha na exclusão do backup anterior. Acionado time de DB.</td></tr>
-        <tr><td>10:03:00</td><td>G. Soares</td><td>Ação: Ajuste de trigger para 500 GB.</td></tr>
-        <tr><td>10:20:00</td><td>G. Soares</td><td>Movendo backup full + checkdb (G: -> E:). Upload para S3 agendado.</td></tr>
-        <tr><td>11:16:00</td><td>Monitor</td><td><span class="status-green">NORMALIZADO</span> Disco retornou para 42% de uso.</td></tr>
-      </table>
+    <div class="event" onclick="toggleEvent(this)">
+      <div class="event-header orange">
+        <span class="event-title-group">WARNING: Disco Insuficiente – SRV-DONATELLO (G:)</span>
+        <div>
+          <span class="timeline-hint">Ver Timeline</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>08:09:00</td><td>Zabbix</td><td>Alerta de disco (G:). Free: 573.1 GB.</td></tr>
+          <tr><td>08:11:00</td><td>Gabriel</td><td>Hipótese: Falha na exclusão do backup anterior. Acionado time de DB.</td></tr>
+          <tr><td>10:03:00</td><td>G. Soares</td><td>Ação: Ajuste de trigger para 500 GB.</td></tr>
+          <tr><td>10:20:00</td><td>G. Soares</td><td>Movendo backup full + checkdb (G: -> E:). Upload para S3 agendado.</td></tr>
+          <tr><td>11:16:00</td><td>Monitor</td><td><span class="status-green">NORMALIZADO</span> Disco retornou para 42% de uso.</td></tr>
+        </table>
+      </div>
     </div>
 
-    <div class="event">
-      <div class="event-header blue">INFO: Alto Consumo de Disco – PROD-WMS-INTEGRADOR (/)</div>
-      <table>
-        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>07:54:00</td><td>Pablo</td><td>Acionamento: Alerta filesystem root (/). Utilização: 97%.</td></tr>
-        <tr><td>08:46:00</td><td>Murilo</td><td>Suporte N2 acionado para limpeza de logs.</td></tr>
-        <tr><td>09:44:00</td><td>Murilo</td><td><span class="status-green">RESOLVIDO</span> Espaço recuperado após limpeza de temps.</td></tr>
-      </table>
+    <div class="event" onclick="toggleEvent(this)">
+      <div class="event-header blue">
+        <span class="event-title-group">INFO: Alto Consumo de Disco – PROD-WMS-INTEGRADOR (/)</span>
+        <div>
+          <span class="timeline-hint">Ver Timeline</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>07:54:00</td><td>Pablo</td><td>Acionamento: Alerta filesystem root (/). Utilização: 97%.</td></tr>
+          <tr><td>08:46:00</td><td>Murilo</td><td>Suporte N2 acionado para limpeza de logs.</td></tr>
+          <tr><td>09:44:00</td><td>Murilo</td><td><span class="status-green">RESOLVIDO</span> Espaço recuperado após limpeza de temps.</td></tr>
+        </table>
+      </div>
     </div>
 
-    <div class="event">
-      <div class="event-header orange">WARNING: Instabilidade Link Jundiaí</div>
-      <table>
-        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>16:25:00</td><td>Elison</td><td>Identificada latência alta/perda de pacote em Jundiaí.</td></tr>
-        <tr><td>16:28:00</td><td>Matheus</td><td>Queda confirmada de ~3min. Oscilação diária padrão da operadora.</td></tr>
-        <tr><td>16:30:00</td><td>Elison</td><td>Serviços normalizados.</td></tr>
-      </table>
+    <div class="event" onclick="toggleEvent(this)">
+      <div class="event-header orange">
+        <span class="event-title-group">WARNING: Instabilidade Link Jundiaí</span>
+        <div>
+          <span class="timeline-hint">Ver Timeline</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>16:25:00</td><td>Elison</td><td>Identificada latência alta/perda de pacote em Jundiaí.</td></tr>
+          <tr><td>16:28:00</td><td>Matheus</td><td>Queda confirmada de ~3min. Oscilação diária padrão da operadora.</td></tr>
+          <tr><td>16:30:00</td><td>Elison</td><td>Serviços normalizados.</td></tr>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -341,60 +417,95 @@
       <h2>Log de Eventos: 18/11/2025</h2>
     </div>
 
-    <div class="event">
-      <div class="event-header red">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</div>
-      <table>
-        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>07:00:27</td><td>L. Gomes</td><td>PROBLEM: FS [/] Critically low (> 90%, total 7.6GB). Atual: 90.9%</td></tr>
-        <tr><td>07:47:00</td><td>L. Gomes</td><td>Escalado para o NOC.</td></tr>
-        <tr><td>10:21:00</td><td>Operação</td><td><span class="status-red">EM ABERTO</span> Aguardando ação corretiva.</td></tr>
-      </table>
+    <div class="event" onclick="toggleEvent(this)">
+      <div class="event-header red">
+        <span class="event-title-group">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</span>
+        <div>
+          <span class="timeline-hint">Ver Timeline</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>07:00:27</td><td>L. Gomes</td><td>PROBLEM: FS [/] Critically low (> 90%, total 7.6GB). Atual: 90.9%</td></tr>
+          <tr><td>07:47:00</td><td>L. Gomes</td><td>Escalado para o NOC.</td></tr>
+          <tr><td>10:21:00</td><td>Operação</td><td><span class="status-red">EM ABERTO</span> Aguardando ação corretiva.</td></tr>
+        </table>
+      </div>
     </div>
 
-    <div class="event">
-      <div class="event-header red">CRITICAL: Disco Criticamente Baixo - SRV-PAOLLO [/]</div>
-      <table>
-        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>08:42:43</td><td>Zabbix</td><td>PROBLEM: FS [/] Critically low (> 90%, total 44.0GB). Atual: 92.6%</td></tr>
-      </table>
+    <div class="event" onclick="toggleEvent(this)">
+      <div class="event-header red">
+        <span class="event-title-group">CRITICAL: Disco Criticamente Baixo - SRV-PAOLLO [/]</span>
+        <div>
+          <span class="timeline-hint">Ver Timeline</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>08:42:43</td><td>Zabbix</td><td>PROBLEM: FS [/] Critically low (> 90%, total 44.0GB). Atual: 92.6%</td></tr>
+        </table>
+      </div>
     </div>
 
-    <div class="event">
-      <div class="event-header red">FALHA: Rotinas de Backup - SRV-DONATELLO</div>
-      <table>
-        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>07:39:00</td><td>L. Gomes</td><td>Reportado falha em jobs SQL no Donatello.</td></tr>
-        <tr><td>08:14:00</td><td>G. Soares</td><td>Diagnóstico: Latência alta de escrita (Disco G:). Backup rodando há 14h.</td></tr>
-        <tr><td>08:20:00</td><td>L. Gomes</td><td>NOC notificado. Acionar Equinix/Infra.</td></tr>
-        <tr><td colspan="3" style="font-style:italic; opacity: 0.7;">Alertas Zabbix correlacionados: AlliedCorreios, AlliedServicos, Cotacao, DBADashDB, JUNDSOFT (>8h delay).</td></tr>
-      </table>
+    <div class="event" onclick="toggleEvent(this)">
+      <div class="event-header red">
+        <span class="event-title-group">FALHA: Rotinas de Backup - SRV-DONATELLO</span>
+        <div>
+          <span class="timeline-hint">Ver Timeline</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>07:39:00</td><td>L. Gomes</td><td>Reportado falha em jobs SQL no Donatello.</td></tr>
+          <tr><td>08:14:00</td><td>G. Soares</td><td>Diagnóstico: Latência alta de escrita (Disco G:). Backup rodando há 14h.</td></tr>
+          <tr><td>08:20:00</td><td>L. Gomes</td><td>NOC notificado. Acionar Equinix/Infra.</td></tr>
+          <tr><td colspan="3" style="font-style:italic; opacity: 0.7;">Alertas Zabbix correlacionados: AlliedCorreios, AlliedServicos, Cotacao, DBADashDB, JUNDSOFT (>8h delay).</td></tr>
+        </table>
+      </div>
     </div>
 
-    <div class="event">
-      <div class="event-header green">MAINTENANCE: Agentes Zabbix (MASACCIO / GIORGIONE)</div>
-      <table>
-        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>14/11 10:02</td><td>Zabbix</td><td>MASACCIO: Agent unavailable (4d+).</td></tr>
-        <tr><td>13/11 17:02</td><td>Zabbix</td><td>GIORGIONE: Agent unavailable (4d+).</td></tr>
-        <tr><td>10:34:28</td><td>NOC</td><td>Solicitação de janela de manutenção até fim do dia 18/11 para análise.</td></tr>
-        <tr><td>10:37:00</td><td>NOC</td><td><span class="status-green">MANUTENÇÃO</span> Monitoração pausada (aprovado por Kaue Silva).</td></tr>
-      </table>
+    <div class="event" onclick="toggleEvent(this)">
+      <div class="event-header green">
+        <span class="event-title-group">MAINTENANCE: Agentes Zabbix (MASACCIO / GIORGIONE)</span>
+        <div>
+          <span class="timeline-hint">Ver Timeline</span>
+          <span class="toggle-icon">▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>14/11 10:02</td><td>Zabbix</td><td>MASACCIO: Agent unavailable (4d+).</td></tr>
+          <tr><td>13/11 17:02</td><td>Zabbix</td><td>GIORGIONE: Agent unavailable (4d+).</td></tr>
+          <tr><td>10:34:28</td><td>NOC</td><td>Solicitação de janela de manutenção até fim do dia 18/11 para análise.</td></tr>
+          <tr><td>10:37:00</td><td>NOC</td><td><span class="status-green">MANUTENÇÃO</span> Monitoração pausada (aprovado por Kaue Silva).</td></tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
   function showDate(value) {
-    // Fade out
     const contents = document.querySelectorAll('.content');
     contents.forEach(el => el.classList.remove('active'));
     
     if (value) {
-      // Delay slight to allow logic to catch up, looks smoother
       setTimeout(() => {
         document.getElementById(value).classList.add('active');
       }, 50);
     }
+  }
+  
+  function toggleEvent(element) {
+    // Toggle da classe expanded no elemento pai (.event)
+    element.classList.toggle('expanded');
   }
 
   const today = "2025-11-18";
