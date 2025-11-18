@@ -324,6 +324,7 @@
         <option value="">Selecionar data...</option>
         <option value="2025-11-17">17 Novembro (Seg)</option>
         <option value="2025-11-18">18 Novembro (Ter)</option>
+        <option value="2025-11-19">19 Novembro (Qua)</option>
       </select>
     </div>
   </div>
@@ -589,17 +590,38 @@
           <tr><td>14:29:00</td><td>Matheus (JDI)</td><td>Evidência (gráfico de tráfego) enviada confirmando a queda.</td></tr>
           <tr><td>15:11:00</td><td>Matheus (JDI)</td><td><span class="status-text-red">CRÍTICO</span> Incidente no backbone principal do provedor. Indisponibilidade total na região. Previsão de até 8h. Ticket: <b>#2511188538</b>.</td></tr>
           <tr><td>16:59:00</td><td>Matheus (JDI)</td><td>Indisponibilidade reportada no TS-JUND load balancer.</td></tr>
-          <tr><td>17:20:00</td><td>Elison Arley</td><td><span class="status-text-orange">TENTATIVA DE RESTABELECIMENTO</span> Acesso ao TS-JUND restabelecido momentaneamente. Aguardando retorno de Luiz Galante sobre as ações tomadas.</td></tr>
+          <tr><td>17:20:00</td><td>Elison Arley</td><td><span class="status-text-orange">TENTATIVA DE RESTABELECIMENTO</span> Acesso ao TS-JUND restabelecido momentaneamente. Internet operando por apenas um link. Aguardando retorno de Luiz Galante.</td></tr>
           <tr><td>17:21:00</td><td>Elison Arley</td><td><span class="status-text-red">RE-FALHA</span> Link da operadora Americanet Continua fora.</td></tr>
         </table>
       </div>
     </div>
 
   </div>
+
+  <!-- =============== 19/11/2025 =============== -->
+  <div id="2025-11-19" class="content">
+    <h2>Acompanhamento (Próximo Dia)</h2>
+
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">ACOMP: Rotinas de Backup - SRV-DONATELLO</div>
+        <div class="header-right">
+          <span class="status-badge badge-warning">Cobrança</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>10:00:00</td><td>Elison Arley</td><td>Cobrar Time de Banco se o Backup foi realizado com sucesso após a alteração de horário do Image Level pela Equinix.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
   
   <!-- Footer com Timestamp Fixo da Última Edição -->
   <div style="text-align: center; padding: 20px; color: var(--text-secondary); font-size: 12px;">
-    Última atualização do Diário: <span id="last-updated">18/11/2025 às 18:21</span>
+    Última atualização do Diário: <span id="last-updated">18/11/2025 às 18:32</span>
   </div>
   
   <div class="footer-spacer"></div>
@@ -621,14 +643,12 @@
     element.classList.toggle('expanded');
   }
 
-  // Define a data padrão ao carregar
-  const today = "2025-11-18";
-  if (document.getElementById(today)) {
-    document.getElementById('dateSelect').value = today;
-    showDate(today);
+  // Define a data padrão ao carregar (Preferência: último dia com dados)
+  const lastDay = "2025-11-18";
+  if (document.getElementById(lastDay)) {
+    document.getElementById('dateSelect').value = lastDay;
+    showDate(lastDay);
   }
-  
-  // O timestamp é fixo para refletir o momento da última edição manual.
 </script>
 
 </body>
