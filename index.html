@@ -152,11 +152,6 @@
       animation: slideUp 0.4s ease-out;
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     h2 {
       font-size: 20px;
       color: var(--text-secondary);
@@ -191,12 +186,51 @@
       align-items: center;
       cursor: pointer; /* Indica clicável */
       user-select: none;
+      gap: 20px;
     }
 
-    .event-title-group {
+    .event-title {
+      flex: 1; /* Ocupa o espaço da esquerda */
+    }
+
+    .header-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
+    }
+
+    /* Badge Style & Animation */
+    @keyframes blink-animation {
+      0% { opacity: 1; box-shadow: 0 0 5px currentColor; }
+      50% { opacity: 0.5; box-shadow: 0 0 15px currentColor; }
+      100% { opacity: 1; box-shadow: 0 0 5px currentColor; }
+    }
+
+    .status-badge {
+      font-size: 10px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid currentColor;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Badge Verde para Resolvido/Normalizado independente da cor do evento */
+    .status-badge.badge-success {
+      color: var(--green);
+      border-color: var(--green);
+      background: rgba(74, 222, 128, 0.1);
+      box-shadow: 0 0 8px rgba(74, 222, 128, 0.2);
+    }
+
+    /* Classe para piscar */
+    .blink {
+      animation: blink-animation 1.5s infinite ease-in-out;
     }
 
     .event-header.red { background: var(--red-bg); color: var(--red); border-left: 4px solid var(--red); text-shadow: var(--red-glow); }
@@ -285,7 +319,7 @@
     .timeline-hint {
       font-size: 12px;
       color: var(--text-secondary);
-      margin-right: 10px;
+      margin-right: 4px;
       font-weight: 400;
       opacity: 0.6;
       display: none;
@@ -298,7 +332,8 @@
     @media (max-width: 768px) {
       .header, .date-selector, .content { padding-left: 20px; padding-right: 20px; }
       .window { border-radius: 0; border: none; background: transparent; box-shadow: none; }
-      .event-header { font-size: 15px; }
+      .event-header { font-size: 15px; flex-direction: column; align-items: flex-start; gap: 12px; }
+      .header-right { width: 100%; justify-content: space-between; }
       th, td { padding: 12px 16px; }
       td:first-child { white-space: nowrap; }
       .timeline-hint { display: none; }
@@ -337,8 +372,9 @@
 
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header red">
-        <span class="event-title-group">INCIDENTE #2511170003: Represamento no Faturamento (Jund)</span>
-        <div>
+        <span class="event-title">INCIDENTE #2511170003: Represamento no Faturamento (Jund)</span>
+        <div class="header-right">
+          <span class="status-badge badge-success">Resolvido</span>
           <span class="timeline-hint">Ver Timeline</span>
           <span class="toggle-icon">▼</span>
         </div>
@@ -355,8 +391,9 @@
 
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header orange">
-        <span class="event-title-group">WARNING: Disco Insuficiente – SRV-DONATELLO (G:)</span>
-        <div>
+        <span class="event-title">WARNING: Disco Insuficiente – SRV-DONATELLO (G:)</span>
+        <div class="header-right">
+          <span class="status-badge badge-success">Normalizado</span>
           <span class="timeline-hint">Ver Timeline</span>
           <span class="toggle-icon">▼</span>
         </div>
@@ -375,8 +412,9 @@
 
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header blue">
-        <span class="event-title-group">INFO: Alto Consumo de Disco – PROD-WMS-INTEGRADOR (/)</span>
-        <div>
+        <span class="event-title">INFO: Alto Consumo de Disco – PROD-WMS-INTEGRADOR (/)</span>
+        <div class="header-right">
+          <span class="status-badge badge-success">Resolvido</span>
           <span class="timeline-hint">Ver Timeline</span>
           <span class="toggle-icon">▼</span>
         </div>
@@ -393,8 +431,9 @@
 
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header orange">
-        <span class="event-title-group">WARNING: Instabilidade Link Jundiaí</span>
-        <div>
+        <span class="event-title">WARNING: Instabilidade Link Jundiaí</span>
+        <div class="header-right">
+          <span class="status-badge badge-success">Normalizado</span>
           <span class="timeline-hint">Ver Timeline</span>
           <span class="toggle-icon">▼</span>
         </div>
@@ -419,8 +458,9 @@
 
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header red">
-        <span class="event-title-group">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</span>
-        <div>
+        <span class="event-title">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</span>
+        <div class="header-right">
+          <span class="status-badge blink">Em Aberto</span>
           <span class="timeline-hint">Ver Timeline</span>
           <span class="toggle-icon">▼</span>
         </div>
@@ -437,8 +477,9 @@
 
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header red">
-        <span class="event-title-group">CRITICAL: Disco Criticamente Baixo - SRV-PAOLLO [/]</span>
-        <div>
+        <span class="event-title">CRITICAL: Disco Criticamente Baixo - SRV-PAOLLO [/]</span>
+        <div class="header-right">
+          <span class="status-badge blink">Em Aberto</span>
           <span class="timeline-hint">Ver Timeline</span>
           <span class="toggle-icon">▼</span>
         </div>
@@ -453,8 +494,9 @@
 
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header red">
-        <span class="event-title-group">FALHA: Rotinas de Backup - SRV-DONATELLO</span>
-        <div>
+        <span class="event-title">FALHA: Rotinas de Backup - SRV-DONATELLO</span>
+        <div class="header-right">
+          <span class="status-badge blink">Falha</span>
           <span class="timeline-hint">Ver Timeline</span>
           <span class="toggle-icon">▼</span>
         </div>
@@ -472,8 +514,9 @@
 
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header green">
-        <span class="event-title-group">MAINTENANCE: Agentes Zabbix (MASACCIO / GIORGIONE)</span>
-        <div>
+        <span class="event-title">MAINTENANCE: Agentes Zabbix (MASACCIO / GIORGIONE)</span>
+        <div class="header-right">
+          <span class="status-badge">Manutenção</span>
           <span class="timeline-hint">Ver Timeline</span>
           <span class="toggle-icon">▼</span>
         </div>
@@ -489,12 +532,11 @@
       </div>
     </div>
 
-    <!-- Novos Eventos Adicionados (Page 6 & 7 do PDF) -->
-
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header orange">
-        <span class="event-title-group">WARNING: Alta Utilização de CPU - RBPSRVFS01</span>
-        <div>
+        <span class="event-title">WARNING: Alta Utilização de CPU - RBPSRVFS01</span>
+        <div class="header-right">
+          <span class="status-badge badge-success">Resolvido</span>
           <span class="timeline-hint">Ver Timeline</span>
           <span class="toggle-icon">▼</span>
         </div>
@@ -512,8 +554,9 @@
 
     <div class="event" onclick="toggleEvent(this)">
       <div class="event-header orange">
-        <span class="event-title-group">WARNING: Alta Utilização de CPU - WHISKEY</span>
-        <div>
+        <span class="event-title">WARNING: Alta Utilização de CPU - WHISKEY</span>
+        <div class="header-right">
+          <span class="status-badge badge-success">Resolvido</span>
           <span class="timeline-hint">Ver Timeline</span>
           <span class="toggle-icon">▼</span>
         </div>
