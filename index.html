@@ -77,9 +77,56 @@
       color: var(--text-primary);
     }
 
-    /* === Date Selector (Estilo Botão/Pílula) === */
+    /* === Date Selector & Filter Button === */
     .controls-area {
       padding: 10px 24px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .filter-button {
+      background-color: var(--samsung-red);
+      color: var(--text-primary);
+      padding: 14px 24px;
+      border: none;
+      border-radius: var(--border-radius-card);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.2s, transform 0.1s;
+      box-shadow: 0 4px 15px rgba(255, 69, 58, 0.4);
+    }
+    .filter-button:hover {
+      background-color: #cc372f;
+    }
+    .filter-button:active {
+      transform: scale(0.98);
+    }
+    .filter-button.inactive {
+        background-color: var(--surface-color);
+        box-shadow: none;
+        color: var(--text-secondary);
+    }
+    .filter-button.inactive .blink {
+        animation: none; /* Desativa a animação quando o botão está inativo/filtrando */
+    }
+    .filter-button.active-filter {
+        background-color: var(--samsung-blue);
+        box-shadow: 0 4px 15px rgba(62, 145, 255, 0.4);
+    }
+    
+    .filter-count {
+      background-color: var(--surface-color-highlight);
+      color: var(--samsung-red);
+      padding: 2px 10px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 700;
     }
 
     .select-wrapper {
@@ -120,8 +167,47 @@
       transform: translateY(-50%);
       pointer-events: none;
     }
+    
+    /* Container para a Lista de Incidentes Abertos (abaixo do botão) */
+    #openIncidentsContainer {
+        padding: 0 16px;
+        margin-top: 10px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-    /* === Conteúdo === */
+    #openIncidentsList {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s;
+    }
+    
+    #openIncidentsList.expanded {
+        max-height: 2000px; /* Valor alto para garantir expansão */
+        padding-top: 20px;
+    }
+    
+    #openIncidentsList h2 {
+        padding-left: 8px;
+        margin-top: 0;
+    }
+
+    /* Estilo para os cards clonados no filtro */
+    .open-incident-clone {
+        border: 2px solid var(--samsung-red); /* Borda destacada para urgência */
+        background-color: var(--surface-color-highlight);
+        transform: scale(0.98); /* Levemente menor para diferenciar do dia ativo */
+        transition: transform 0.2s;
+    }
+    .open-incident-clone .toggle-text {
+      color: var(--samsung-blue);
+      font-weight: 700;
+    }
+
+
+    /* === Conteúdo das Datas === */
     .content { 
       padding: 0 16px 40px; /* Margens laterais menores para cards largos */
       display: none; 
@@ -151,8 +237,16 @@
       background-color: var(--surface-color);
       border-radius: var(--border-radius-card);
       overflow: hidden;
-      transition: background-color 0.2s;
-      /* Sem bordas, apenas superfície */
+      transition: background-color 0.2s, opacity 0.3s, max-height 0.3s;
+      /* Propriedades para controle de filtro */
+      max-height: 500px;
+      opacity: 1;
+    }
+    
+    /* Esta classe agora é inútil, mas mantida para evitar quebras em transições */
+    .event.hidden-by-filter {
+        /* max-height, opacity, etc. devem ser controlados no JS, mas mantidos para CSS de transição */
+        display: none; 
     }
 
     .event:active {
@@ -319,6 +413,17 @@
 
   <!-- Controles -->
   <div class="controls-area">
+    <button id="filterButton" class="filter-button inactive" onclick="toggleFilter()">
+        <span id="filterText">Visualizar </span>
+        <span id="openCount" class="filter-count blink">0</span>
+        <span id="filterLabel"> Incidentes Críticos Abertos</span>
+    </button>
+    <div id="openIncidentsContainer">
+        <div id="openIncidentsList">
+            <!-- Eventos abertos serão injetados aqui -->
+        </div>
+    </div>
+    
     <div class="select-wrapper">
       <select id="dateSelect" onchange="showDate(this.value)">
         <option value="">Selecionar data...</option>
@@ -328,6 +433,10 @@
       </select>
     </div>
   </div>
+
+  <!-- ============================================== -->
+  <!-- CONTEÚDO DOS DIAS (Mantido oculto no HTML, visível via JS) -->
+  <!-- ============================================== -->
 
   <!-- =============== 17/11/2025 =============== -->
   <div id="2025-11-17" class="content">
@@ -628,13 +737,103 @@
 </div>
 
 <script>
+  let isFilterActive = false;
+
+  // Função para contar e renderizar os incidentes abertos de TODOS os dias
+  function renderOpenIncidents() {
+    const listContainer = document.getElementById('openIncidentsList');
+    listContainer.innerHTML = ''; // Limpa a lista anterior
+    
+    const allContentAreas = document.querySelectorAll('.content');
+    let totalOpenCount = 0;
+    
+    // Iterar sobre todos os dias (17, 18, 19...)
+    allContentAreas.forEach(contentArea => {
+        const events = contentArea.querySelectorAll('.event');
+        
+        events.forEach(event => {
+            const isCritical = event.querySelector('.status-badge.blink');
+            const isCobrando = event.querySelector('.status-badge.badge-warning');
+            
+            // Inclui incidentes EM ABERTO (blink) e ACOMPANHAMENTO/COBRANÇA (badge-warning)
+            if (isCritical || isCobrando) {
+                totalOpenCount++;
+                
+                // 1. Clonar o evento para o contêiner flutuante
+                const clone = event.cloneNode(true);
+                clone.classList.add('open-incident-clone');
+                clone.classList.remove('expanded');
+                clone.removeAttribute('onclick');
+                
+                // 2. Ajustar a ação de clique do clone para abrir a timeline
+                const header = clone.querySelector('.event-header');
+                header.onclick = function() {
+                    this.parentElement.classList.toggle('expanded');
+                };
+
+                // 3. Adicionar uma tag de origem (ex: 17/11) ao título
+                const originalDate = contentArea.id.replace('2025-', '').replace('-', '/');
+                const titleElement = clone.querySelector('.event-title');
+                if (titleElement) {
+                    titleElement.innerHTML = `<span style="font-weight: 900; color: var(--samsung-red); margin-right: 8px;">[${originalDate}]</span> ${titleElement.innerHTML}`;
+                }
+                
+                listContainer.appendChild(clone);
+            }
+        });
+    });
+    
+    // Atualiza o contador no botão
+    const filterButton = document.getElementById('filterButton');
+    const openCountSpan = document.getElementById('openCount');
+    
+    openCountSpan.textContent = totalOpenCount;
+
+    if (totalOpenCount > 0) {
+        filterButton.classList.remove('inactive');
+        filterButton.classList.add('active');
+        filterButton.disabled = false;
+        openCountSpan.classList.add('blink');
+    } else {
+        filterButton.classList.add('inactive');
+        filterButton.classList.remove('active');
+        filterButton.disabled = true;
+        openCountSpan.classList.remove('blink');
+    }
+  }
+
+  // Função principal de filtro (agora apenas gerencia a exibição da lista global)
+  function toggleFilter() {
+    const listContainer = document.getElementById('openIncidentsList');
+    
+    // Alterna o estado do filtro (expande/contrai a lista)
+    isFilterActive = !isFilterActive;
+    listContainer.classList.toggle('expanded', isFilterActive);
+    
+    const filterButton = document.getElementById('filterButton');
+    filterButton.classList.toggle('active-filter', isFilterActive);
+    
+    if (isFilterActive) {
+      filterButton.querySelector('#filterText').textContent = 'Ocultar ';
+    } else {
+      filterButton.querySelector('#filterText').textContent = 'Visualizar ';
+    }
+  }
+  
+  // Função para exibir o conteúdo da data selecionada
   function showDate(value) {
+    // Garante que o filtro esteja fechado ao mudar a data
+    if (isFilterActive) {
+        toggleFilter();
+    }
+    
     const contents = document.querySelectorAll('.content');
     contents.forEach(el => el.classList.remove('active'));
     
     if (value) {
       setTimeout(() => {
         document.getElementById(value).classList.add('active');
+        // A contagem não precisa ser atualizada aqui, pois é global
       }, 50);
     }
   }
@@ -643,12 +842,18 @@
     element.classList.toggle('expanded');
   }
 
-  // Define a data padrão ao carregar (Preferência: último dia com dados)
-  const lastDay = "2025-11-18";
-  if (document.getElementById(lastDay)) {
-    document.getElementById('dateSelect').value = lastDay;
-    showDate(lastDay);
-  }
+  // Inicialização ao carregar a página
+  window.onload = function() {
+    // 1. Renderiza os incidentes abertos globalmente
+    renderOpenIncidents();
+    
+    // 2. Define a data padrão ao carregar (Preferência: último dia com dados)
+    const lastDay = "2025-11-18";
+    if (document.getElementById(lastDay)) {
+      document.getElementById('dateSelect').value = lastDay;
+      showDate(lastDay);
+    }
+  };
 </script>
 
 </body>
