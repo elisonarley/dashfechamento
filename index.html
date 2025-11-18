@@ -215,6 +215,12 @@
       background-color: var(--bg-red-subtle);
       color: var(--samsung-red);
     }
+    
+    /* Badge Amarelo/Laranja (Atenção/Validação) */
+    .status-badge.badge-warning {
+      background-color: var(--bg-orange-subtle);
+      color: var(--samsung-orange);
+    }
 
     /* Badge Manutenção */
     .status-badge.badge-maintenance {
@@ -288,6 +294,7 @@
 
     .status-text-green { color: var(--samsung-green); font-weight: 700; }
     .status-text-red { color: var(--samsung-red); font-weight: 700; }
+    .status-text-orange { color: var(--samsung-orange); font-weight: 700; }
 
     /* === Rodapé ou Decoração === */
     .footer-spacer { height: 100px; }
@@ -463,7 +470,8 @@
       <div class="event-header">
         <div class="event-title">FALHA: Rotinas de Backup - SRV-DONATELLO</div>
         <div class="header-right">
-          <span class="status-badge badge-fail blink">Falha</span>
+          <!-- Atualizado para Warning piscando pois aguarda validação -->
+          <span class="status-badge badge-warning blink">Validação</span>
           <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
@@ -474,6 +482,9 @@
           <tr><td>08:14:00</td><td>G. Soares</td><td>Diagnóstico: Latência alta de escrita (Disco G:). Backup rodando há 14h.</td></tr>
           <tr><td>08:20:00</td><td>L. Gomes</td><td>NOC notificado. Acionar Equinix/Infra.</td></tr>
           <tr><td>12:07:00</td><td>G. Soares</td><td>Backup travado (previsão de término seria 19/11 20h) foi CANCELADO. Equinix deve tomar ação sobre desempenho do disco.</td></tr>
+          <tr><td>12:58:00</td><td>Fabio Jose</td><td>Contato com a Equinix realizado. Solicitada agenda na parte da tarde com participação da equipe de banco.</td></tr>
+          <tr><td>13:08:00</td><td>Fabio Jose</td><td><span class="status-text-orange">RESPOSTA EQUINIX:</span> "Ocorreu uma falha de rede na estrutura do backup, gerando incremento no disco. Foi efetuada correção."</td></tr>
+          <tr><td>13:08:00</td><td>Elison Arley</td><td><span class="status-text-orange">AGUARDANDO VALIDAÇÃO</span> Solicitado verificação para confirmar estabilidade.</td></tr>
           <tr><td colspan="3" style="font-style:italic; opacity: 0.7;">Alertas Zabbix correlacionados: AlliedCorreios, AlliedServicos, Cotacao, DBADashDB, JUNDSOFT (>8h delay).</td></tr>
         </table>
       </div>
