@@ -571,6 +571,11 @@
 
   </div>
   
+  <!-- Footer com Timestamp -->
+  <div style="text-align: center; padding: 20px; color: var(--text-secondary); font-size: 12px;">
+    Última atualização: <span id="last-updated"></span>
+  </div>
+  
   <div class="footer-spacer"></div>
 </div>
 
@@ -595,6 +600,12 @@
     document.getElementById('dateSelect').value = today;
     showDate(today);
   }
+
+  // Atualiza o timestamp com a data/hora atual
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const formattedTime = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  document.getElementById('last-updated').textContent = `${formattedDate} às ${formattedTime}`;
 </script>
 
 </body>
