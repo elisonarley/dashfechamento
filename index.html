@@ -1,506 +1,266 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diário de Bordo de Monitoramento</title>
-    <!-- Carregamento do Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Carregamento do Flatpickr (Seletor de Datas) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <meta charset="UTF-8">
+  <title>Diário de Bordo de Monitoramento - Black Friday 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --text: #1d1d1f;
+      --card: #ffffff;
+      --border: #d2d2d7;
+      --red: #ff3b30;
+      --orange: #ff9500;
+      --green: #34c759;
+      --blue: #007aff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1c1c1e;
+        --text: #f5f5f7;
+        --card: #2c2c2e;
+        --border: #38383a;
+      }
+    }
 
-    <!-- Configuração do Tailwind para cor e fonte -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-bg': '#0a0a0a', // Fundo principal ultra escuro
-                        'secondary-bg': '#181818', // Fundo de cards/elementos
-                        'card-bg': '#1e1e1e', // Cor principal do card, para profundidade
-                        'text-light': '#f0f0f0', // Texto claro
-                        'text-muted': '#a0a0a0', // Texto secundário/cinza
-                        'brand-purple': '#8a2be2', // Roxo mais vivo (Blue Violet)
-                        'brand-blue': '#4a90e2', // Azul para links/destaques
-                        'status-resolved': '#10b981', // Verde esmeralda para resolvido
-                        'status-warning': '#f59e0b', // Amarelo para aviso
-                        'status-critical': '#ef4444', // Vermelho para crítico
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'], // Usando Inter
-                    },
-                    boxShadow: {
-                        'inner-dark': 'inset 0 2px 4px rgba(0, 0, 0, 0.4)', // Sombra interna sutil
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a; /* Cor de fundo principal */
-            color: #f0f0f0; /* Cor de texto padrão */
-        }
-        /* Estilos de scrollbar customizados para dark mode */
-        .log-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        .log-container::-webkit-scrollbar-thumb {
-            background-color: #4b5563; /* Gray-600 */
-            border-radius: 3px;
-        }
-        .log-container::-webkit-scrollbar-track {
-            background: #1f2937; /* Gray-800 */
-        }
-        
-        /* Estilo para o Flatpickr se integrar ao tema escuro */
-        .flatpickr-calendar {
-            background: #1e1e1e !important; /* Fundo do calendário */
-            border: 1px solid #333 !important;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7) !important;
-        }
-        .flatpickr-day, .flatpickr-weekday, .flatpickr-month, .flatpickr-year {
-            color: #f0f0f0 !important;
-        }
-        .flatpickr-day.selected, .flatpickr-day.today.selected {
-            background: #8a2be2 !important; /* Cor de seleção */
-            border-color: #8a2be2 !important;
-            color: #ffffff !important;
-        }
-        .flatpickr-day.today {
-            border-color: #4a90e2 !important; /* Cor para o dia de hoje */
-            color: #4a90e2 !important;
-        }
-        .flatpickr-day.inRange {
-            background: rgba(138, 43, 226, 0.3) !important; /* Range selecionado */
-            border-color: rgba(138, 43, 226, 0.3) !important;
-        }
-        
-        /* Adicionando um estilo para o efeito de "Neo-Dark" nos cards */
-        .card-neo-dark {
-            background-color: #1e1e1e;
-            border: 1px solid rgba(138, 43, 226, 0.1);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.05);
-        }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px 0;
+    }
 
-        /* Estilo para a badge de status mais sofisticada */
-        .badge-resolved {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 2px 5px rgba(16, 185, 129, 0.4);
-        }
-        .badge-critical {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4);
-        }
-        .badge-warning {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            box-shadow: 0 2px 5px rgba(245, 158, 11, 0.4);
-        }
-        .badge-normalized {
-            background: linear-gradient(135deg, #4a90e2, #2563eb);
-            box-shadow: 0 2px 5px rgba(74, 144, 226, 0.4);
-        }
-        
-        /* Estilo para a linha do tempo (timeline) */
-        .timeline-log {
-            position: relative;
-            padding-left: 1rem;
-        }
-        .timeline-log li:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.6rem;
-            width: 8px;
-            height: 8px;
-            background-color: #8a2be2;
-            border-radius: 50%;
-            z-index: 10;
-        }
-        .timeline-log:before {
-            content: '';
-            position: absolute;
-            left: 3.5px;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background-color: #3f3f46; /* gray-700 */
-        }
+    .window {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
 
-    </style>
+    .titlebar {
+      background: linear-gradient(90deg, #e0e0e0 0%, #c0c0c0 100%);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .titlebar.dark { background: linear-gradient(90deg, #38383a 0%, #2c2c2e 100%); }
+    .dots { display: flex; gap: 8px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .red { background: #ff5f57; }
+    .yellow { background: #ffbd2e; }
+    .green { background: #28ca42; }
+
+    .header {
+      padding: 30px 40px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .date-selector {
+      margin: 20px 40px;
+      text-align: center;
+    }
+    select {
+      padding: 10px 14px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .content { padding: 30px 40px; display: none; }
+    .content.active { display: block; }
+
+    .event {
+      margin-bottom: 40px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .event-header {
+      padding: 14px 20px;
+      font-weight: 600;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .event-header.red    { background: #ffebeb; color: var(--red); }
+    .event-header.orange { background: #fff4e5; color: var(--orange); }
+    .event-header.blue   { background: #e5f1ff; color: var(--blue); }
+    .event-header.green  { background: #e6f7e9; color: var(--green); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+    }
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: rgba(0,0,0,0.02);
+      font-weight: 600;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    .status-green { color: var(--green); font-weight: 600; }
+    .status-red   { color: var(--red); font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .header, .date-selector, .content { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
 </head>
-<body class="p-4 md:p-8 bg-primary-bg min-h-screen">
+<body>
 
-    <div class="max-w-7xl mx-auto">
-        <!-- Título e Seletor de Datas -->
-        <header class="mb-8 pb-4 border-b border-gray-800 flex flex-col md:flex-row justify-between items-center">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-brand-purple tracking-wider mb-4 md:mb-0">
-                Diário de Bordo de Monitoramento
-            </h1>
-            <div class="flex items-center space-x-4">
-                <input type="text" id="date-selector" placeholder="Filtrar por data..." 
-                        class="p-2 rounded-lg bg-secondary-bg border border-gray-700 text-text-light focus:outline-none focus:ring-2 focus:ring-brand-purple transition duration-200 shadow-inner-dark" />
-                <button id="clear-date-filter" class="p-2 rounded-lg bg-gray-700 text-text-light hover:bg-brand-purple hover:text-white transition duration-200 shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-            </div>
-        </header>
+<div class="window">
+  <div class="titlebar">
+    <div class="dots">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+    </div>
+    <span>Diário de Bordo de Monitoramento – Black Friday 2025</span>
+  </div>
 
-        <!-- Métricas de Resumo -->
-        <div id="summary-metrics" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            <!-- Métricas serão injetadas aqui -->
-        </div>
+  <div class="header">
+    <h1>Diário de Bordo de Monitoramento</h1>
+  </div>
 
-        <!-- Container Principal para as Datas -->
-        <div id="dashboard-container">
-            <!-- As seções de datas serão renderizadas aqui -->
-        </div>
-        
+  <div class="date-selector">
+    <select id="dateSelect" onchange="showDate(this.value)">
+      <option value="">Selecione a data</option>
+      <option value="2025-11-17">17/11/2025</option>
+      <option value="2025-11-18">18/11/2025</option>
+    </select>
+  </div>
+
+  <!-- =============== 17/11/2025 =============== -->
+  <div id="2025-11-17" class="content">
+    <h2 style="text-align:center;margin-bottom:30px;">Diário de Bordo de Monitoramento – 17/11/2025</h2>
+
+    <div class="event">
+      <div class="event-header red">1. Incidente: Pedidos Represados no Faturamento (Jund)</div>
+      <table>
+        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>08:31:00</td><td>Gleice</td><td>Acionamento inicial: Faturamento paralisado.<br>(Chamado #2511170003)</td></tr>
+        <tr><td>08:37:00</td><td>Pablo</td><td>Verificação: Robôs do Jundiaí estão OK. Identificado pedido das 08:10 represado na fila de Separação do Jundiaí. O pedido seguiu o fluxo automaticamente logo após a verificação.</td></tr>
+        <tr><td>08:40:00</td><td>Sistema</td><td><span class="status-green">RESOLVIDO</span>: Fluxo de faturamento normalizado.<br>(Causa raiz: Represamento pontual e autossolucionado no pipeline de Separação.)</td></tr>
+      </table>
     </div>
 
-    <script>
-        // Dados brutos do Diário de Bordo
-        const eventData = [
-            {
-                date: "17/11/2025",
-                events: [
-                    // ORGANIZADO PELA HORA DE INÍCIO (initialTime) EM ORDEM CRESCENTE
+    <div class="event">
+      <div class="event-header orange">2. Evento: Disco Insuficiente – Servidor Donatello (Partição G:)</div>
+      <table>
+        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>08:09:00</td><td>Monitoramento</td><td>Alerta de espaço em disco no Servidor Donatello (G:). Espaço disponível: 573.1 GB.</td></tr>
+        <tr><td>08:11:00</td><td>Gabriel</td><td>Hipótese: Falha na exclusão do backup do dia anterior. Acionamento do Time de Banco para verificação e ação.</td></tr>
+        <tr><td>10:03:00</td><td>Gabriel Soares</td><td>Ação Corretiva: Solicitação de ajuste na trigger (limite do alerta) para 500 GB.</td></tr>
+        <tr><td>10:20:00</td><td>Gabriel Soares</td><td>Informou que está movendo o último backup full + checkdb do disco G para o disco E. Será deletado após ser movido para o S3.</td></tr>
+        <tr><td>11:16:00</td><td></td><td><span class="status-green">Normalizado</span>, o disco retornou para 42% de uso.</td></tr>
+      </table>
+    </div>
 
-                    // 1. Alto Consumo de Disco (07:54:00)
-                    {
-                        icon: '📉',
-                        type: 'Evento de Capacidade',
-                        title: 'Alto Consumo de Disco - Servidor Linux PROD-WMS-INTEGRADOR (Filesystem /)',
-                        status: 'RESOLVIDO',
-                        statusClass: 'badge-resolved text-white',
-                        initialTime: '07:54:00',
-                        actors: ['Pablo', 'Murilo'],
-                        log: [
-                            { time: '07:54:00', actor: 'Pablo', description: 'Acionamento inicial: Alerta de espaço em disco no filesystem raiz (/) do Servidor Linux. Utilização: 97%.' },
-                            { time: '08:46:00', actor: 'Murilo', description: 'Time de Suporte acionado, verificando a origem do consumo de espaço em disco.' },
-                            { time: '09:44:00', actor: 'Murilo', description: 'RESOLVIDO: Problema de espaço em disco corrigido. (Presume-se a limpeza/remoção de logs ou arquivos temporários.)' },
-                        ],
-                        summary: 'Alto consumo no filesystem raiz do PROD-WMS-INTEGRADOR (97% de uso). Resolvido pelo Time de Suporte com limpeza de logs/temporários.'
-                    },
-                    // 2. Disco Insuficiente (08:09:00)
-                    {
-                        icon: '⚠️',
-                        type: 'Evento de Capacidade',
-                        title: 'Disco Insuficiente - Servidor Donatello (Partição G:)',
-                        status: 'NORMALIZADO',
-                        statusClass: 'badge-normalized text-white',
-                        initialTime: '08:09:00',
-                        actors: ['Monitoramento', 'Gabriel', 'Gabriel Soares'],
-                        log: [
-                            { time: '08:09:00', actor: 'Monitoramento', description: 'Alerta de espaço em disco no Servidor Donatello (G:). Espaço disponível: 573.1 GB.' },
-                            { time: '08:11:00', actor: 'Gabriel', description: 'Hipótese: Falha na exclusão do backup do dia anterior. Acionamento do Time de Banco para verificação e ação.' },
-                            { time: '10:03:00', actor: 'Gabriel Soares', description: 'Ação Corretiva: Solicitação de ajuste na trigger (limite do alerta) para 500 GB, readequando o threshold de monitoramento.' },
-                            { time: '10:20:00', actor: 'Gabriel Soares', description: 'Movendo o último backup full + checkdb do disco G para o disco E, para posterior deleção após mover para S3.' },
-                            { time: '11:16:00', actor: 'Monitoramento', description: 'Normalizado, o disco retornou para 42% de uso.' },
-                        ],
-                        summary: 'Alerta de disco em Donatello. Causa provável: falha na rotina de backup. Resolvido com readequação de threshold e movimentação de dados legados.'
-                    },
-                    // 3. Pedidos Represados (08:31:00)
-                    {
-                        icon: '🛑',
-                        type: 'Incidente Crítico',
-                        title: 'Pedidos Represados no Faturamento (Sistema Jundsoft)',
-                        status: 'RESOLVIDO',
-                        statusClass: 'badge-resolved text-white',
-                        initialTime: '08:31:00',
-                        actors: ['Gleice', 'Pablo'],
-                        log: [
-                            { time: '08:31:00', actor: 'Gleice', description: 'Acionamento inicial: Faturamento paralisado. (Chamado #2511170003)' },
-                            { time: '08:37:00', actor: 'Pablo', description: 'Verificação: Robôs do Jundiaí estão OK. Identificado pedido das 08:10 represado na fila de Separação do Jundiaí.' },
-                            { time: '08:40:00', actor: 'Sistema', description: 'RESOLVIDO: Fluxo de faturamento normalizado. (Causa raiz: Represamento pontual e autossolucionado no pipeline de Separação.)' },
-                        ],
-                        summary: 'Represamento pontual de pedidos no pipeline de Separação no Sistema Jundsoft. O fluxo foi normalizado automaticamente em 9 minutos.'
-                    },
-                    // 4. Alerta de Instabilidade (16:25:00)
-                    {
-                        icon: '🚨',
-                        type: 'Instabilidade de Infra',
-                        title: 'Alerta de Instabilidade - Link de Internet em Jundiaí', 
-                        status: 'NORMALIZADO',
-                        statusClass: 'badge-normalized text-white',
-                        initialTime: '16:25:00',
-                        actors: ['Elison', 'Matheus - JDI'],
-                        log: [
-                            { time: '16:25:00', actor: 'Elison', description: 'Identificada instabilidade na internet em Jundiaí.' }, 
-                            { time: '16:28:00', actor: 'Matheus - JDI', description: 'Houve uma queda de internet de aproximadamente 3 minutos há pouco; - O serviço já foi normalizado; - Segundo o Matheus, esse tipo de oscilação ocorre normalmente 1 vez por dia (nem sempre no mesmo horário e nem todos os dias).' },
-                            { time: '16:30:00', actor: 'Elison', description: 'Verificado que o sistema estava normal e informado no grupo.' },
-                        ],
-                        summary: 'Queda de internet de 3 minutos afetando o Sistema Jundsoft, e o conexão geral do local. Serviço normalizado. Nota: É uma oscilação de recorrência diária.' 
-                    },
-                ]
-            }
-            // Não há dados para 18/11/2025, o que ativará o estado de "Nenhum evento" se selecionado.
-        ];
+    <div class="event">
+      <div class="event-header blue">3. Evento: Alto Consumo de Disco – Servidor Linux PROD-WMS-INTEGRADOR (Filesystem /)</div>
+      <table>
+        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>07:54:00</td><td>Pablo</td><td>Acionamento inicial: Alerta de espaço em disco no filesystem raiz (/). Utilização: 97%.</td></tr>
+        <tr><td>08:46:00</td><td>Murilo</td><td>Time de Suporte acionado, verificando a origem do consumo de espaço em disco.</td></tr>
+        <tr><td>09:44:00</td><td>Murilo</td><td><span class="status-green">RESOLVIDO</span>: Problema de espaço em disco corrigido (presume-se limpeza/remoção de logs ou arquivos temporários).</td></tr>
+      </table>
+    </div>
 
-        let selectedDate = null; // Variável para armazenar a data selecionada
+    <div class="event">
+      <div class="event-header orange">4. Alerta de Instabilidade – Link de Internet em Jundiaí</div>
+      <table>
+        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>16:25:00</td><td>Elison</td><td>Identificada instabilidade na internet em Jundiaí.</td></tr>
+        <tr><td>16:28:00</td><td>Matheus – JDI</td><td>Houve uma “queda de internet de aproximadamente 3 minutos” há pouco; serviço já normalizado. Esse tipo de oscilação ocorre normalmente 1 vez por dia.</td></tr>
+        <tr><td>16:30:00</td><td>Elison</td><td>Verificado que o sistema estava normal e informado no grupo.</td></tr>
+      </table>
+    </div>
+  </div>
 
-        // Função utilitária para gerar classes de cores de borda/accent baseadas no ícone
-        function getIconColorClass(icon) {
-            switch (icon) {
-                case '🛑': return 'border-status-critical';
-                case '⚠️': return 'border-status-warning';
-                case '📉': return 'border-status-warning';
-                case '🚨': return 'border-brand-blue';
-                case '✅': return 'border-status-resolved';
-                default: return 'border-gray-500';
-            }
-        }
+  <!-- =============== 18/11/2025 =============== -->
+  <div id="2025-11-18" class="content">
 
-        // Função para determinar a classe de badge
-        function getBadgeClass(status) {
-            switch (status) {
-                case 'RESOLVIDO':
-                case 'NORMALIZADO':
-                    return 'badge-resolved';
-                case 'CRÍTICO':
-                case 'INCIDENTE':
-                    return 'badge-critical';
-                case 'AVISO':
-                case 'ALERTA':
-                    return 'badge-warning';
-                default:
-                    return 'badge-normalized';
-            }
-        }
+    <h2 style="text-align:center;margin-bottom:30px;">Diário de Bordo de Monitoramento – 18/11/2025</h2>
 
-        // Função para calcular e renderizar as métricas de resumo
-        function renderSummary(filteredEvents) {
-            let totalEvents = 0;
-            let totalIncidents = 0;
-            let totalWarnings = 0;
+    <div class="event">
+      <div class="event-header red">Evento: Espaço em Disco Criticamente Baixo no GLPI-PROXY-INVENTORY [/]</div>
+      <table>
+        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>07:00:27</td><td>Lucas Gomes do Nascimento</td><td>PROBLEM – GLPI-PROXY-INVENTORY – Linux: FS [/]: Space is critically low (used > 90%, total 7.6GB). Espaço utilizado: 90.9%</td></tr>
+        <tr><td>07:47:00</td><td>Lucas Gomes do Nascimento</td><td>Informado via grupo NOC sobre o alerta de disco crítico.</td></tr>
+        <tr><td>10:21:00</td><td>Operação</td><td><span class="status-red">Status: ainda em aberto – Ainda sem resposta / ação corretiva registrada.</span></td></tr>
+      </table>
+    </div>
 
-            filteredEvents.forEach(event => {
-                totalEvents++;
-                if (event.icon === '🛑') {
-                    totalIncidents++;
-                } else if (event.icon === '⚠️' || event.icon === '📉' || event.icon === '🚨') {
-                    totalWarnings++;
-                }
-            });
+    <div class="event">
+      <div class="event-header red">Evento: Espaço em Disco Criticamente Baixo no PAOLLO [/]</div>
+      <table>
+        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>08:42:43</td><td>Sistema (Zabbix)</td><td>PROBLEM – PAOLLO – Linux: FS [/]: Space is critically low (used > 90%, total 44.0GB). Espaço utilizado: 92.6%</td></tr>
+      </table>
+    </div>
 
-            const metricCard = (title, count, colorClass, iconPath) => `
-                <div class="p-5 bg-secondary-bg rounded-xl shadow-xl border-l-4 ${colorClass} flex items-center justify-between card-neo-dark transition duration-300 hover:scale-[1.01]">
-                    <div>
-                        <p class="text-sm font-medium text-text-muted">${title}</p>
-                        <p class="text-3xl font-extrabold text-text-light mt-1">${count}</p>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 ${colorClass.replace('border-l-4 border-', 'text-')} opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        ${iconPath}
-                    </svg>
-                </div>
-            `;
+    <div class="event">
+      <div class="event-header red">Evento: Falha em Rotinas e Backups no Servidor Donatello</div>
+      <table>
+        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>07:39:00</td><td>Lucas Gomes do Nascimento</td><td>Informado no grupo do DBA sobre falha em algumas rotinas do DONATELLO e solicitação de verificação.</td></tr>
+        <tr><td>08:14:00</td><td>Gabriel Soares</td><td>Disco G: está com alta latência para escrita, job de Backup não concluiu (rodando há 14 horas). Sugestão: solicitar ao Kaue confirmar e avisar a Equinix.</td></tr>
+        <tr><td>08:20:00</td><td>Lucas Gomes do Nascimento</td><td>Informado no grupo do NOC sobre a latência e falha no job de backup.</td></tr>
+        <tr><td colspan="3"><em>Diversos alertas Zabbix de jobs e backups com mais de 8h/12h sem sucesso (AlliedCorreios, AlliedServicos, Cotacao, DBADashDB, JUNDSOFT, etc.)</em></td></tr>
+      </table>
+    </div>
 
-            const metricsHtml = `
-                ${metricCard(
-                    "Eventos Exibidos", 
-                    totalEvents, 
-                    "border-brand-purple", 
-                    '<path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 2v-6m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5l2 2h2a2 2 0 012 2v6a2 2 0 01-2 2z" />'
-                )}
-                ${metricCard(
-                    "Incidentes Críticos", 
-                    totalIncidents, 
-                    "border-status-critical", 
-                    '<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />'
-                )}
-                ${metricCard(
-                    "Alertas/Avisos", 
-                    totalWarnings, 
-                    "border-status-warning", 
-                    '<path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />'
-                )}
-            `;
-            document.getElementById('summary-metrics').innerHTML = metricsHtml;
-        }
+    <div class="event">
+      <div class="event-header green">Evento: Agentes Zabbix Indisponíveis (MASACCIO e GIORGIONE) e Ação Corretiva</div>
+      <table>
+        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>2025-11-14 10:02:58</td><td>Sistema (Zabbix)</td><td>PROBLEM – MASACCIO – Zabbix agent not available (duração 4d 28m)</td></tr>
+        <tr><td>2025-11-13 17:02:58</td><td>Sistema (Zabbix)</td><td>PROBLEM – GIORGIONE – Zabbix agent not available (duração 4d 17h)</td></tr>
+        <tr><td>10:34:28</td><td>Operação/NOC</td><td>Solicitado que os servidores MASACCIO e GIORGIONE fiquem em modo de manutenção no Zabbix até o final do dia 18/11/2025 para investigação.</td></tr>
+        <tr><td>10:37:00</td><td>Operação/NOC</td><td>Monitoração desativada a pedido do Kaue Silva.</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
 
-        // Função para renderizar um único cartão de evento
-        function createEventCard(event) {
-            const iconColorClass = getIconColorClass(event.icon);
-            const badgeClass = getBadgeClass(event.status);
-            
-            const logItems = event.log.map(item => `
-                <li class="py-1 relative text-text-light border-b border-gray-800 last:border-b-0 pl-4">
-                    <div class="text-xs font-mono text-text-muted mb-0.5">${item.time}</div>
-                    <div class="text-sm">
-                        <span class="font-bold text-brand-purple">${item.actor}:</span>
-                        ${item.description}
-                    </div>
-                </li>
-            `).join('');
+<script>
+  // Mostra a data selecionada (padrão = hoje ou primeira disponível)
+  function showDate(value) {
+    document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+    if (value) {
+      document.getElementById(value).classList.add('active');
+    }
+  }
 
-            return `
-                <div class="card-neo-dark rounded-xl p-6 transition-all duration-300 hover:shadow-brand-purple/20 hover:scale-[1.01]">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center space-x-3">
-                            <!-- Ícone -->
-                            <span class="text-3xl bg-gray-800 p-2 rounded-full border-2 ${iconColorClass}">${event.icon}</span>
-                            
-                            <div>
-                                <!-- Título Principal -->
-                                <h3 class="text-xl font-extrabold text-text-light">${event.title}</h3>
-                                <!-- Tipo e Hora Inicial -->
-                                <p class="text-sm text-text-muted mt-1">${event.type} • Início: <span class="font-mono text-brand-blue">${event.initialTime}</span></p>
-                            </div>
-                        </div>
-                        <!-- Status Badge -->
-                        <span class="px-4 py-1 text-xs font-bold rounded-full ${badgeClass} text-white uppercase tracking-wider">
-                            ${event.status}
-                        </span>
-                    </div>
+  // Auto-seleciona a data de hoje se existir (hoje é 18/11/2025)
+  const today = "2025-11-18";
+  if (document.getElementById(today)) {
+    document.getElementById('dateSelect').value = today;
+    showDate(today);
+  }
+</script>
 
-                    <!-- Resumo Executivo -->
-                    <div class="mb-4 p-4 rounded-lg bg-gray-900 border border-gray-800 shadow-inner-dark">
-                        <p class="text-sm font-semibold text-text-muted mb-1">Resumo Executivo:</p>
-                        <p class="text-base text-text-light">${event.summary}</p>
-                        <p class="text-xs mt-2 text-text-muted">Atores Chave: ${event.actors.join(', ')}</p>
-                    </div>
-
-                    <!-- Log Completo (Timeline de Ações) -->
-                    <details class="group cursor-pointer">
-                        <summary class="flex justify-between items-center text-sm font-semibold text-brand-purple hover:text-text-light transition duration-200 list-none p-2 rounded-lg bg-secondary-bg border border-gray-700 shadow-md">
-                            <span>➡️ Timeline de Ações (Detalhes)</span>
-                            <svg class="w-4 h-4 transform group-open:rotate-180 transition duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </summary>
-                        <ul class="mt-3 p-3 bg-gray-900 rounded-lg border border-gray-800 log-container max-h-56 overflow-y-auto timeline-log">
-                            ${logItems}
-                        </ul>
-                    </details>
-                </div>
-            `;
-        }
-
-        // Função principal para renderizar o dashboard
-        function renderDashboard() {
-            const container = document.getElementById('dashboard-container');
-            container.innerHTML = '';
-
-            let allFilteredEvents = [];
-
-            // Filtra os eventos com base na data selecionada
-            const filteredEventData = eventData.filter(day => {
-                if (!selectedDate) return true; // Se nenhuma data selecionada, mostra todos
-                // Conversão robusta de data (dd/mm/yyyy para Date object)
-                const parts = day.date.split('/');
-                const eventDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-                
-                // Zera o tempo para comparação apenas da data
-                const selectedDateOnly = new Date(selectedDate.setHours(0, 0, 0, 0));
-                const eventDateOnly = new Date(eventDate.setHours(0, 0, 0, 0));
-
-                return day.events.length > 0 && eventDateOnly.getTime() === selectedDateOnly.getTime();
-            });
-
-            filteredEventData.forEach(day => {
-                // Adiciona todos os eventos filtrados para cálculo de métricas
-                allFilteredEvents = allFilteredEvents.concat(day.events);
-
-                // Seção de Data
-                let daySection = `
-                    <section class="mb-10">
-                        <h2 class="text-2xl font-bold text-text-light mb-6 p-2 rounded-md bg-secondary-bg inline-block border-l-4 border-brand-purple shadow-md">
-                            🗓️ Data: ${day.date}
-                        </h2>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                `;
-
-                // Renderiza os eventos
-                daySection += day.events.map(createEventCard).join('');
-                
-                daySection += `
-                        </div>
-                    </section>
-                `;
-                container.innerHTML += daySection;
-            });
-            
-            // Caso não haja resultados
-            if (allFilteredEvents.length === 0) {
-                 const message = selectedDate 
-                    ? `Nenhum evento ou incidente registrado para a data: ${selectedDate.toLocaleDateString('pt-BR')}.`
-                    : `Nenhum evento registrado no diário de bordo.`;
-
-                 container.innerHTML = `
-                    <section class="mb-10">
-                        <div class="col-span-full bg-secondary-bg p-8 rounded-xl text-center border-2 border-dashed border-status-resolved card-neo-dark">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-status-resolved mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.001 12.001 0 002.944 12c.162 2.895 1.258 5.676 3.04 7.618A11.955 11.955 0 0112 21.056c2.895-.162 5.676-1.258 7.618-3.04A12.001 12.001 0 0021.056 12a11.955 11.955 0 00-3.04-8.618z" />
-                            </svg>
-                            <p class="text-xl font-semibold text-text-light">${message}</p>
-                            <p class="text-sm text-text-muted mt-2">Parabéns! Dia tranquilo. Experimente limpar o filtro de data para ver todos os registros.</p>
-                        </div>
-                    </section>
-                `;
-            }
-
-
-            // Renderiza as métricas no topo com base nos eventos filtrados
-            renderSummary(allFilteredEvents);
-        }
-
-        // Função para obter as datas que realmente possuem eventos (para habilitar no seletor)
-        function getAvailableDates() {
-            return eventData
-                .filter(day => day.events.length > 0)
-                .map(day => {
-                    const parts = day.date.split('/');
-                    return `${parts[2]}-${parts[1]}-${parts[0]}`; // Retorna YYYY-MM-DD
-                });
-        }
-
-        // Inicializa o Flatpickr
-        document.addEventListener('DOMContentLoaded', () => {
-            const availableDates = getAvailableDates(); // Obtém as datas válidas
-            
-            // Usa o dia de hoje se houver dados, senão usa o primeiro dia com dados.
-            let defaultDate = null;
-            const todayISO = new Date().toISOString().slice(0, 10);
-            if (availableDates.includes(todayISO)) {
-                 defaultDate = todayISO;
-            } else if (availableDates.length > 0) {
-                 defaultDate = availableDates[0];
-            }
-
-            if (defaultDate) {
-                 // Converte para objeto Date para ser usado globalmente
-                 const parts = defaultDate.split('-');
-                 selectedDate = new Date(parts[0], parts[1] - 1, parts[2]); 
-            }
-
-
-            const fp = flatpickr("#date-selector", {
-                dateFormat: "d/m/Y",
-                locale: "pt", // Define o locale para português
-                // enable: availableDates, // Desativado para permitir seleção (e mostrar a mensagem de "sem eventos")
-                defaultDate: defaultDate ? new Date(defaultDate) : null,
-                onChange: function(selectedDates, dateStr, instance) {
-                    if (selectedDates.length > 0) {
-                        selectedDate = selectedDates[0];
-                    } else {
-                        selectedDate = null;
-                    }
-                    renderDashboard(); // Re-renderiza o dashboard com a nova data
-                }
-            });
-
-            // Adiciona evento ao botão de limpar filtro
-            document.getElementById('clear-date-filter').addEventListener('click', () => {
-                fp.clear(); // Limpa a seleção do flatpickr
-                selectedDate = null; // Reseta a variável de data selecionada
-                renderDashboard(); // Re-renderiza o dashboard sem filtro
-            });
-
-            // Renderiza o dashboard inicialmente
-            renderDashboard();
-        });
-    </script>
 </body>
 </html>
