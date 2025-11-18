@@ -453,7 +453,7 @@
       <div class="event-header">
         <div class="event-title">CRITICAL: Disco Criticamente Baixo - SRV-PAOLLO [/]</div>
         <div class="header-right">
-          <span class="status-badge badge-danger blink">Em Aberto</span>
+          <span class="status-badge badge-maintenance">Manutenção</span>
           <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
@@ -462,6 +462,7 @@
           <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
           <tr><td>08:42:43</td><td>Zabbix</td><td>PROBLEM: FS [/] Critically low (> 90%, total 44.0GB). Atual: 92.6%</td></tr>
           <tr><td>10:49:00</td><td>Operação</td><td><span class="status-text-red">EM ABERTO</span> Ainda sem resposta / ação corretiva registrada.</td></tr>
+          <tr><td>14:56:00</td><td>Daily Teams</td><td><span class="status-text-green">MANUTENÇÃO</span> Kaue informou que está realizando manutenção no servidor e ficará indisponível.</td></tr>
         </table>
       </div>
     </div>
@@ -470,7 +471,6 @@
       <div class="event-header">
         <div class="event-title">FALHA: Rotinas de Backup - SRV-DONATELLO</div>
         <div class="header-right">
-          <!-- Atualizado para Warning piscando pois aguarda validação -->
           <span class="status-badge badge-warning blink">Validação</span>
           <span class="toggle-text">Detalhes ▼</span>
         </div>
@@ -532,7 +532,7 @@
       <div class="event-header">
         <div class="event-title">WARNING: Alta Utilização de CPU - WHISKEY</div>
         <div class="header-right">
-          <span class="status-badge badge-success">Resolvido</span>
+          <span class="status-badge badge-warning blink">Em Análise</span>
           <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
@@ -542,10 +542,31 @@
           <tr><td>10:11:38</td><td>Zabbix</td><td>PROBLEM: High CPU utilization (> 90% por 5m). Atual: 100%. Duração: 47m 38s.</td></tr>
           <tr><td>11:00:00</td><td>Elison Arley</td><td>Informado no grupo do NOC.</td></tr>
           <tr><td>11:01:00</td><td>Murilo R.</td><td>Informado que o Ricardo Henrique está rodando um scan manual do Windows Defender.</td></tr>
-          <tr><td>11:05:00</td><td>Fabio Santos</td><td><span class="status-text-green">RESOLVIDO</span> Scan pausado após alinhamento sobre janela de atividade. CPU normalizada.</td></tr>
+          <tr><td>11:05:00</td><td>Fabio Santos</td><td>Informado inicialmente que Scan foi pausado e CPU normalizada.</td></tr>
+          <tr><td>13:06:00</td><td>Elison Arley</td><td><span class="status-text-orange">ALERTA</span> Consumo de CPU continua alto mesmo após o "stop".</td></tr>
+          <tr><td>14:30:00</td><td>Murillo</td><td><span class="status-text-red">DIAGNÓSTICO</span> Em reunião com Ricardo, verificado que o Defender <b>não</b> havia sido parado anteriormente.</td></tr>
         </table>
       </div>
     </div>
+    
+    <!-- Novo Evento: Queda de Link -->
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">CRITICAL: Queda de Link (Americanet) - FGT_JDI</div>
+        <div class="header-right">
+          <span class="status-badge badge-danger blink">Em Aberto</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>14:26:32</td><td>Elison Arley</td><td>PROBLEM: FGT_JDI. Identificado queda no Link da Americanet em Jundiaí.</td></tr>
+          <tr><td>14:29:00</td><td>Matheus (JDI)</td><td>Evidência (gráfico de tráfego) enviada confirmando a queda.</td></tr>
+        </table>
+      </div>
+    </div>
+
   </div>
   
   <div class="footer-spacer"></div>
