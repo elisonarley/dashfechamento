@@ -4,126 +4,260 @@
   <meta charset="UTF-8">
   <title>Diário de Bordo de Monitoramento - Black Friday 2025</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fonte Inter para visual moderno -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --bg: #f5f5f7;
-      --text: #1d1d1f;
-      --card: #ffffff;
-      --border: #d2d2d7;
-      --red: #ff3b30;
-      --orange: #ff9500;
-      --green: #34c759;
-      --blue: #007aff;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #1c1c1e;
-        --text: #f5f5f7;
-        --card: #2c2c2e;
-        --border: #38383a;
-      }
+      /* Cores Base - Paleta Dark Glass */
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      
+      /* Texto */
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      
+      /* Status Colors (Neon Style) */
+      --red: #ff4d4d;
+      --red-bg: rgba(255, 77, 77, 0.15);
+      --red-glow: 0 0 10px rgba(255, 77, 77, 0.3);
+      
+      --orange: #fb923c;
+      --orange-bg: rgba(251, 146, 60, 0.15);
+      
+      --green: #4ade80;
+      --green-bg: rgba(74, 222, 128, 0.15);
+      --green-glow: 0 0 10px rgba(74, 222, 128, 0.3);
+      
+      --blue: #38bdf8;
+      --blue-bg: rgba(56, 189, 248, 0.15);
     }
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      padding: 20px 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 40px 20px;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    /* Efeito de Background Mesh (Decorativo) */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+      z-index: -1;
+      pointer-events: none;
     }
 
     .window {
       max-width: 1100px;
       margin: 0 auto;
-      background: var(--card);
-      border-radius: 12px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: var(--glass-shadow);
       overflow: hidden;
-      border: 1px solid var(--border);
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .titlebar {
-      background: linear-gradient(90deg, #e0e0e0 0%, #c0c0c0 100%);
-      padding: 12px 20px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .dots { display: flex; gap: 8px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; position: relative; }
+    .red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .yellow { background: #eab308; }
+    .green { background: #22c55e; }
+
+    .titlebar span {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .header {
+      padding: 40px 40px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(to right, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .date-selector {
+      margin: 30px 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    select {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-family: 'Inter', sans-serif;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+      min-width: 200px;
+    }
+
+    select:hover, select:focus {
+      border-color: var(--blue);
+      background: rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+    }
+
+    .content { 
+      padding: 10px 40px 40px; 
+      display: none; 
+    }
+    .content.active { 
+      display: block; 
+      animation: slideUp 0.4s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 20px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+
+    .event {
+      margin-bottom: 30px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .event:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .event-header {
+      padding: 16px 24px;
+      font-weight: 600;
+      font-size: 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-    .titlebar.dark { background: linear-gradient(90deg, #38383a 0%, #2c2c2e 100%); }
-    .dots { display: flex; gap: 8px; }
-    .dot { width: 12px; height: 12px; border-radius: 50%; }
-    .red { background: #ff5f57; }
-    .yellow { background: #ffbd2e; }
-    .green { background: #28ca42; }
-
-    .header {
-      padding: 30px 40px 20px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    h1 {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 600;
-    }
-    .date-selector {
-      margin: 20px 40px;
-      text-align: center;
-    }
-    select {
-      padding: 10px 14px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
+      border-bottom: 1px solid var(--glass-border);
     }
 
-    .content { padding: 30px 40px; display: none; }
-    .content.active { display: block; }
-
-    .event {
-      margin-bottom: 40px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .event-header {
-      padding: 14px 20px;
-      font-weight: 600;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .event-header.red    { background: #ffebeb; color: var(--red); }
-    .event-header.orange { background: #fff4e5; color: var(--orange); }
-    .event-header.blue   { background: #e5f1ff; color: var(--blue); }
-    .event-header.green  { background: #e6f7e9; color: var(--green); }
+    .event-header.red { background: var(--red-bg); color: var(--red); border-left: 4px solid var(--red); text-shadow: var(--red-glow); }
+    .event-header.orange { background: var(--orange-bg); color: var(--orange); border-left: 4px solid var(--orange); }
+    .event-header.blue { background: var(--blue-bg); color: var(--blue); border-left: 4px solid var(--blue); }
+    .event-header.green { background: var(--green-bg); color: var(--green); border-left: 4px solid var(--green); text-shadow: var(--green-glow); }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background: var(--card);
     }
-    th, td {
-      padding: 12px 16px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    th {
-      background: rgba(0,0,0,0.02);
-      font-weight: 600;
-    }
-    tr:last-child td { border-bottom: none; }
 
-    .status-green { color: var(--green); font-weight: 600; }
-    .status-red   { color: var(--red); font-weight: 600; }
+    th, td {
+      padding: 16px 24px;
+      text-align: left;
+      border-bottom: 1px solid var(--glass-border);
+      font-size: 14px;
+    }
+
+    th {
+      background: rgba(0, 0, 0, 0.2);
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    td {
+      color: var(--text-primary);
+    }
+
+    /* Usar fonte mono para horários e nomes de servidores para ar tech */
+    td:first-child, td:nth-child(2) {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    .status-green { 
+      color: var(--green); 
+      font-weight: 700; 
+      background: rgba(74, 222, 128, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    
+    .status-red { 
+      color: var(--red); 
+      font-weight: 700; 
+      background: rgba(255, 77, 77, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
 
     @media (max-width: 768px) {
       .header, .date-selector, .content { padding-left: 20px; padding-right: 20px; }
+      .window { border-radius: 0; border: none; background: transparent; box-shadow: none; }
+      .event-header { font-size: 15px; flex-direction: column; align-items: flex-start; }
+      th, td { padding: 12px 16px; }
+      td:first-child { white-space: nowrap; }
     }
   </style>
 </head>
@@ -136,64 +270,66 @@
       <div class="dot yellow"></div>
       <div class="dot green"></div>
     </div>
-    <span>Diário de Bordo de Monitoramento – Black Friday 2025</span>
+    <span>MONITORAMENTO :: BLACK FRIDAY 2025</span>
   </div>
 
   <div class="header">
-    <h1>Diário de Bordo de Monitoramento</h1>
+    <h1>War Room | Diário de Bordo</h1>
   </div>
 
   <div class="date-selector">
     <select id="dateSelect" onchange="showDate(this.value)">
-      <option value="">Selecione a data</option>
-      <option value="2025-11-17">17/11/2025</option>
-      <option value="2025-11-18">18/11/2025</option>
+      <option value="">Selecione a data do incidente...</option>
+      <option value="2025-11-17">17/11/2025 (Segunda-feira)</option>
+      <option value="2025-11-18">18/11/2025 (Hoje)</option>
     </select>
   </div>
 
   <!-- =============== 17/11/2025 =============== -->
   <div id="2025-11-17" class="content">
-    <h2 style="text-align:center;margin-bottom:30px;">Diário de Bordo de Monitoramento – 17/11/2025</h2>
+    <div style="text-align:center;">
+      <h2>Log de Eventos: 17/11/2025</h2>
+    </div>
 
     <div class="event">
-      <div class="event-header red">1. Incidente: Pedidos Represados no Faturamento (Jund)</div>
+      <div class="event-header red">INCIDENTE #2511170003: Represamento no Faturamento (Jund)</div>
       <table>
-        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>08:31:00</td><td>Gleice</td><td>Acionamento inicial: Faturamento paralisado.<br>(Chamado #2511170003)</td></tr>
-        <tr><td>08:37:00</td><td>Pablo</td><td>Verificação: Robôs do Jundiaí estão OK. Identificado pedido das 08:10 represado na fila de Separação do Jundiaí. O pedido seguiu o fluxo automaticamente logo após a verificação.</td></tr>
-        <tr><td>08:40:00</td><td>Sistema</td><td><span class="status-green">RESOLVIDO</span>: Fluxo de faturamento normalizado.<br>(Causa raiz: Represamento pontual e autossolucionado no pipeline de Separação.)</td></tr>
+        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>08:31:00</td><td>Gleice</td><td>Acionamento inicial: Faturamento paralisado.</td></tr>
+        <tr><td>08:37:00</td><td>Pablo</td><td>Verificação: Robôs do Jundiaí [OK]. Pedido das 08:10 represado na Separação liberado. Fluxo retomado.</td></tr>
+        <tr><td>08:40:00</td><td>Sistema</td><td><span class="status-green">RESOLVIDO</span> Fluxo de faturamento normalizado. (Causa: Represamento pontual)</td></tr>
       </table>
     </div>
 
     <div class="event">
-      <div class="event-header orange">2. Evento: Disco Insuficiente – Servidor Donatello (Partição G:)</div>
+      <div class="event-header orange">WARNING: Disco Insuficiente – SRV-DONATELLO (G:)</div>
       <table>
-        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>08:09:00</td><td>Monitoramento</td><td>Alerta de espaço em disco no Servidor Donatello (G:). Espaço disponível: 573.1 GB.</td></tr>
-        <tr><td>08:11:00</td><td>Gabriel</td><td>Hipótese: Falha na exclusão do backup do dia anterior. Acionamento do Time de Banco para verificação e ação.</td></tr>
-        <tr><td>10:03:00</td><td>Gabriel Soares</td><td>Ação Corretiva: Solicitação de ajuste na trigger (limite do alerta) para 500 GB.</td></tr>
-        <tr><td>10:20:00</td><td>Gabriel Soares</td><td>Informou que está movendo o último backup full + checkdb do disco G para o disco E. Será deletado após ser movido para o S3.</td></tr>
-        <tr><td>11:16:00</td><td></td><td><span class="status-green">Normalizado</span>, o disco retornou para 42% de uso.</td></tr>
+        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>08:09:00</td><td>Zabbix</td><td>Alerta de disco (G:). Free: 573.1 GB.</td></tr>
+        <tr><td>08:11:00</td><td>Gabriel</td><td>Hipótese: Falha na exclusão do backup anterior. Acionado time de DB.</td></tr>
+        <tr><td>10:03:00</td><td>G. Soares</td><td>Ação: Ajuste de trigger para 500 GB.</td></tr>
+        <tr><td>10:20:00</td><td>G. Soares</td><td>Movendo backup full + checkdb (G: -> E:). Upload para S3 agendado.</td></tr>
+        <tr><td>11:16:00</td><td>Monitor</td><td><span class="status-green">NORMALIZADO</span> Disco retornou para 42% de uso.</td></tr>
       </table>
     </div>
 
     <div class="event">
-      <div class="event-header blue">3. Evento: Alto Consumo de Disco – Servidor Linux PROD-WMS-INTEGRADOR (Filesystem /)</div>
+      <div class="event-header blue">INFO: Alto Consumo de Disco – PROD-WMS-INTEGRADOR (/)</div>
       <table>
-        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>07:54:00</td><td>Pablo</td><td>Acionamento inicial: Alerta de espaço em disco no filesystem raiz (/). Utilização: 97%.</td></tr>
-        <tr><td>08:46:00</td><td>Murilo</td><td>Time de Suporte acionado, verificando a origem do consumo de espaço em disco.</td></tr>
-        <tr><td>09:44:00</td><td>Murilo</td><td><span class="status-green">RESOLVIDO</span>: Problema de espaço em disco corrigido (presume-se limpeza/remoção de logs ou arquivos temporários).</td></tr>
+        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>07:54:00</td><td>Pablo</td><td>Acionamento: Alerta filesystem root (/). Utilização: 97%.</td></tr>
+        <tr><td>08:46:00</td><td>Murilo</td><td>Suporte N2 acionado para limpeza de logs.</td></tr>
+        <tr><td>09:44:00</td><td>Murilo</td><td><span class="status-green">RESOLVIDO</span> Espaço recuperado após limpeza de temps.</td></tr>
       </table>
     </div>
 
     <div class="event">
-      <div class="event-header orange">4. Alerta de Instabilidade – Link de Internet em Jundiaí</div>
+      <div class="event-header orange">WARNING: Instabilidade Link Jundiaí</div>
       <table>
-        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>16:25:00</td><td>Elison</td><td>Identificada instabilidade na internet em Jundiaí.</td></tr>
-        <tr><td>16:28:00</td><td>Matheus – JDI</td><td>Houve uma “queda de internet de aproximadamente 3 minutos” há pouco; serviço já normalizado. Esse tipo de oscilação ocorre normalmente 1 vez por dia.</td></tr>
-        <tr><td>16:30:00</td><td>Elison</td><td>Verificado que o sistema estava normal e informado no grupo.</td></tr>
+        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>16:25:00</td><td>Elison</td><td>Identificada latência alta/perda de pacote em Jundiaí.</td></tr>
+        <tr><td>16:28:00</td><td>Matheus</td><td>Queda confirmada de ~3min. Oscilação diária padrão da operadora.</td></tr>
+        <tr><td>16:30:00</td><td>Elison</td><td>Serviços normalizados.</td></tr>
       </table>
     </div>
   </div>
@@ -201,60 +337,66 @@
   <!-- =============== 18/11/2025 =============== -->
   <div id="2025-11-18" class="content">
 
-    <h2 style="text-align:center;margin-bottom:30px;">Diário de Bordo de Monitoramento – 18/11/2025</h2>
+    <div style="text-align:center;">
+      <h2>Log de Eventos: 18/11/2025</h2>
+    </div>
 
     <div class="event">
-      <div class="event-header red">Evento: Espaço em Disco Criticamente Baixo no GLPI-PROXY-INVENTORY [/]</div>
+      <div class="event-header red">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</div>
       <table>
-        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>07:00:27</td><td>Lucas Gomes do Nascimento</td><td>PROBLEM – GLPI-PROXY-INVENTORY – Linux: FS [/]: Space is critically low (used > 90%, total 7.6GB). Espaço utilizado: 90.9%</td></tr>
-        <tr><td>07:47:00</td><td>Lucas Gomes do Nascimento</td><td>Informado via grupo NOC sobre o alerta de disco crítico.</td></tr>
-        <tr><td>10:21:00</td><td>Operação</td><td><span class="status-red">Status: ainda em aberto – Ainda sem resposta / ação corretiva registrada.</span></td></tr>
+        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>07:00:27</td><td>L. Gomes</td><td>PROBLEM: FS [/] Critically low (> 90%, total 7.6GB). Atual: 90.9%</td></tr>
+        <tr><td>07:47:00</td><td>L. Gomes</td><td>Escalado para o NOC.</td></tr>
+        <tr><td>10:21:00</td><td>Operação</td><td><span class="status-red">EM ABERTO</span> Aguardando ação corretiva.</td></tr>
       </table>
     </div>
 
     <div class="event">
-      <div class="event-header red">Evento: Espaço em Disco Criticamente Baixo no PAOLLO [/]</div>
+      <div class="event-header red">CRITICAL: Disco Criticamente Baixo - SRV-PAOLLO [/]</div>
       <table>
-        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>08:42:43</td><td>Sistema (Zabbix)</td><td>PROBLEM – PAOLLO – Linux: FS [/]: Space is critically low (used > 90%, total 44.0GB). Espaço utilizado: 92.6%</td></tr>
+        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>08:42:43</td><td>Zabbix</td><td>PROBLEM: FS [/] Critically low (> 90%, total 44.0GB). Atual: 92.6%</td></tr>
       </table>
     </div>
 
     <div class="event">
-      <div class="event-header red">Evento: Falha em Rotinas e Backups no Servidor Donatello</div>
+      <div class="event-header red">FALHA: Rotinas de Backup - SRV-DONATELLO</div>
       <table>
-        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>07:39:00</td><td>Lucas Gomes do Nascimento</td><td>Informado no grupo do DBA sobre falha em algumas rotinas do DONATELLO e solicitação de verificação.</td></tr>
-        <tr><td>08:14:00</td><td>Gabriel Soares</td><td>Disco G: está com alta latência para escrita, job de Backup não concluiu (rodando há 14 horas). Sugestão: solicitar ao Kaue confirmar e avisar a Equinix.</td></tr>
-        <tr><td>08:20:00</td><td>Lucas Gomes do Nascimento</td><td>Informado no grupo do NOC sobre a latência e falha no job de backup.</td></tr>
-        <tr><td colspan="3"><em>Diversos alertas Zabbix de jobs e backups com mais de 8h/12h sem sucesso (AlliedCorreios, AlliedServicos, Cotacao, DBADashDB, JUNDSOFT, etc.)</em></td></tr>
+        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>07:39:00</td><td>L. Gomes</td><td>Reportado falha em jobs SQL no Donatello.</td></tr>
+        <tr><td>08:14:00</td><td>G. Soares</td><td>Diagnóstico: Latência alta de escrita (Disco G:). Backup rodando há 14h.</td></tr>
+        <tr><td>08:20:00</td><td>L. Gomes</td><td>NOC notificado. Acionar Equinix/Infra.</td></tr>
+        <tr><td colspan="3" style="font-style:italic; opacity: 0.7;">Alertas Zabbix correlacionados: AlliedCorreios, AlliedServicos, Cotacao, DBADashDB, JUNDSOFT (>8h delay).</td></tr>
       </table>
     </div>
 
     <div class="event">
-      <div class="event-header green">Evento: Agentes Zabbix Indisponíveis (MASACCIO e GIORGIONE) e Ação Corretiva</div>
+      <div class="event-header green">MAINTENANCE: Agentes Zabbix (MASACCIO / GIORGIONE)</div>
       <table>
-        <tr><th>Horário</th><th>Ator</th><th>Descrição da Ação / Status</th></tr>
-        <tr><td>2025-11-14 10:02:58</td><td>Sistema (Zabbix)</td><td>PROBLEM – MASACCIO – Zabbix agent not available (duração 4d 28m)</td></tr>
-        <tr><td>2025-11-13 17:02:58</td><td>Sistema (Zabbix)</td><td>PROBLEM – GIORGIONE – Zabbix agent not available (duração 4d 17h)</td></tr>
-        <tr><td>10:34:28</td><td>Operação/NOC</td><td>Solicitado que os servidores MASACCIO e GIORGIONE fiquem em modo de manutenção no Zabbix até o final do dia 18/11/2025 para investigação.</td></tr>
-        <tr><td>10:37:00</td><td>Operação/NOC</td><td>Monitoração desativada a pedido do Kaue Silva.</td></tr>
+        <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Descrição da Ação / Status</th></tr>
+        <tr><td>14/11 10:02</td><td>Zabbix</td><td>MASACCIO: Agent unavailable (4d+).</td></tr>
+        <tr><td>13/11 17:02</td><td>Zabbix</td><td>GIORGIONE: Agent unavailable (4d+).</td></tr>
+        <tr><td>10:34:28</td><td>NOC</td><td>Solicitação de janela de manutenção até fim do dia 18/11 para análise.</td></tr>
+        <tr><td>10:37:00</td><td>NOC</td><td><span class="status-green">MANUTENÇÃO</span> Monitoração pausada (aprovado por Kaue Silva).</td></tr>
       </table>
     </div>
   </div>
 </div>
 
 <script>
-  // Mostra a data selecionada (padrão = hoje ou primeira disponível)
   function showDate(value) {
-    document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+    // Fade out
+    const contents = document.querySelectorAll('.content');
+    contents.forEach(el => el.classList.remove('active'));
+    
     if (value) {
-      document.getElementById(value).classList.add('active');
+      // Delay slight to allow logic to catch up, looks smoother
+      setTimeout(() => {
+        document.getElementById(value).classList.add('active');
+      }, 50);
     }
   }
 
-  // Auto-seleciona a data de hoje se existir (hoje é 18/11/2025)
   const today = "2025-11-18";
   if (document.getElementById(today)) {
     document.getElementById('dateSelect').value = today;
