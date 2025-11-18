@@ -4,379 +4,333 @@
   <meta charset="UTF-8">
   <title>Diário de Bordo de Monitoramento - Black Friday 2025</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Fonte Inter para visual moderno -->
+  <!-- Fonte Roboto (Similar a Samsung Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      /* Cores Base - Paleta Dark Glass */
-      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-      --glass-bg: rgba(255, 255, 255, 0.03);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      /* One UI Dark Palette */
+      --bg-color: #000000;
+      --surface-color: #1C1C1E; /* Cinza escuro Samsung */
+      --surface-color-highlight: #2C2C2E;
       
-      /* Texto */
-      --text-primary: #f8fafc;
-      --text-secondary: #94a3b8;
+      /* Cores de Acento One UI */
+      --samsung-blue: #3E91FF;
+      --samsung-red: #FF453A;
+      --samsung-orange: #FF9F0A;
+      --samsung-green: #32D74B;
+      --text-primary: #FFFFFF;
+      --text-secondary: #98989E;
       
-      /* Status Colors (Neon Style) */
-      --red: #ff4d4d;
-      --red-bg: rgba(255, 77, 77, 0.15);
-      --red-glow: 0 0 10px rgba(255, 77, 77, 0.3);
-      
-      --orange: #fb923c;
-      --orange-bg: rgba(251, 146, 60, 0.15);
-      
-      --green: #4ade80;
-      --green-bg: rgba(74, 222, 128, 0.15);
-      --green-glow: 0 0 10px rgba(74, 222, 128, 0.3);
-      
-      --blue: #38bdf8;
-      --blue-bg: rgba(56, 189, 248, 0.15);
+      /* Backgrounds de Status (Pastel/Suave) */
+      --bg-red-subtle: rgba(255, 69, 58, 0.15);
+      --bg-orange-subtle: rgba(255, 159, 10, 0.15);
+      --bg-green-subtle: rgba(50, 215, 75, 0.15);
+      --bg-blue-subtle: rgba(62, 145, 255, 0.15);
+
+      --border-radius-card: 26px;
+      --border-radius-inner: 18px;
     }
 
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-gradient);
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--bg-color);
       color: var(--text-primary);
-      line-height: 1.6;
-      padding: 40px 20px;
-      min-height: 100vh;
-      box-sizing: border-box;
+      line-height: 1.5;
+      padding: 0;
+      /* Simula a rolagem nativa suave */
+      scroll-behavior: smooth;
     }
 
-    /* Efeito de Background Mesh (Decorativo) */
-    body::before {
-      content: '';
-      position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    .window {
-      max-width: 1100px;
+    /* Container Principal */
+    .app-container {
+      max-width: 800px; /* Largura típica de visualização móvel/tablet esticada */
       margin: 0 auto;
-      background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      box-shadow: var(--glass-shadow);
-      overflow: hidden;
-      animation: fadeIn 0.6s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .titlebar {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 16px 24px;
+      min-height: 100vh;
       display: flex;
-      align-items: center;
-      gap: 16px;
-      border-bottom: 1px solid var(--glass-border);
+      flex-direction: column;
     }
 
-    .dots { display: flex; gap: 8px; }
-    .dot { width: 12px; height: 12px; border-radius: 50%; position: relative; }
-    .red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
-    .yellow { background: #eab308; }
-    .green { background: #22c55e; }
+    /* === Viewing Area (Cabeçalho One UI) === */
+    .header-area {
+      padding: 60px 24px 20px 24px; /* Padding top grande para simular Viewing Area */
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-    .titlebar span {
+    .header-subtitle {
       font-size: 14px;
-      color: var(--text-secondary);
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-
-    .header {
-      padding: 40px 40px 20px;
-      text-align: center;
-      border-bottom: 1px solid var(--glass-border);
+      color: var(--samsung-blue);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
     
     h1 {
       margin: 0;
-      font-size: 28px;
-      font-weight: 700;
-      background: linear-gradient(to right, #fff, #94a3b8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
+      font-size: 34px;
+      font-weight: 700; /* Título Bold One UI */
+      color: var(--text-primary);
     }
 
-    .date-selector {
-      margin: 30px 40px;
-      display: flex;
-      justify-content: center;
+    /* === Date Selector (Estilo Botão/Pílula) === */
+    .controls-area {
+      padding: 10px 24px 30px;
+    }
+
+    .select-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 100%;
     }
 
     select {
-      padding: 12px 24px;
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      padding: 16px 24px;
       font-size: 16px;
-      font-family: 'Inter', sans-serif;
-      border-radius: 12px;
-      border: 1px solid var(--glass-border);
-      background: rgba(0, 0, 0, 0.3);
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      border-radius: var(--border-radius-card);
+      border: none;
+      background-color: var(--surface-color);
       color: var(--text-primary);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: background 0.2s ease;
+    }
+
+    select:focus {
       outline: none;
-      min-width: 200px;
+      background-color: var(--surface-color-highlight);
     }
 
-    select:hover, select:focus {
-      border-color: var(--blue);
-      background: rgba(0, 0, 0, 0.5);
-      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+    /* Seta customizada para o select */
+    .select-wrapper::after {
+      content: '▼';
+      font-size: 12px;
+      color: var(--text-secondary);
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
     }
 
+    /* === Conteúdo === */
     .content { 
-      padding: 10px 40px 40px; 
+      padding: 0 16px 40px; /* Margens laterais menores para cards largos */
       display: none; 
+      animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Curva One UI */
     }
     .content.active { 
-      display: block; 
-      animation: slideUp 0.4s ease-out;
-    }
-
-    h2 {
-      font-size: 20px;
-      color: var(--text-secondary);
-      font-weight: 500;
-      margin-bottom: 40px;
-      border-bottom: 1px solid var(--glass-border);
-      padding-bottom: 10px;
-      display: inline-block;
-    }
-
-    /* Estilos do Evento Ajustados para Accordion */
-    .event {
-      margin-bottom: 20px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .event:hover {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .event-header {
-      padding: 16px 24px;
-      font-weight: 600;
-      font-size: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer; /* Indica clicável */
-      user-select: none;
-      gap: 20px;
-    }
-
-    .event-title {
-      flex: 1; /* Ocupa o espaço da esquerda */
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
+      display: flex; 
+      flex-direction: column;
       gap: 16px;
     }
 
-    /* Badge Style & Animation */
-    @keyframes blink-animation {
-      0% { opacity: 1; box-shadow: 0 0 5px currentColor; }
-      50% { opacity: 0.5; box-shadow: 0 0 15px currentColor; }
-      100% { opacity: 1; box-shadow: 0 0 5px currentColor; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
+    h2 {
+      font-size: 18px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin: 10px 8px 10px; /* Alinhado com os cards */
+      padding-left: 8px;
+    }
+
+    /* === Cards de Eventos (Estilo Bolha) === */
+    .event {
+      background-color: var(--surface-color);
+      border-radius: var(--border-radius-card);
+      overflow: hidden;
+      transition: background-color 0.2s;
+      /* Sem bordas, apenas superfície */
+    }
+
+    .event:active {
+      background-color: var(--surface-color-highlight); /* Feedback de toque */
+    }
+
+    .event-header {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start; /* Alinhamento topo para textos longos */
+      cursor: pointer;
+      user-select: none;
+      gap: 16px;
+    }
+
+    /* Título do Evento */
+    .event-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    /* Indicador de Cor lateral (Barra fina típica de apps de produtividade) */
+    .event.border-red .event-title { color: var(--samsung-red); }
+    .event.border-orange .event-title { color: var(--samsung-orange); }
+    .event.border-blue .event-title { color: var(--samsung-blue); }
+    .event.border-green .event-title { color: var(--samsung-green); }
+
+
+    /* Header Right: Badge e Ícone */
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      min-width: 100px; /* Espaço fixo para alinhamento */
+    }
+
+    /* === Badges (One UI Style: Sólido Pastel) === */
     .status-badge {
-      font-size: 10px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 1px solid currentColor;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Badge Verde para Resolvido/Normalizado independente da cor do evento */
-    .status-badge.badge-success {
-      color: var(--green);
-      border-color: var(--green);
-      background: rgba(74, 222, 128, 0.1);
-      box-shadow: 0 0 8px rgba(74, 222, 128, 0.2);
-    }
-
-    /* Classe para piscar */
-    .blink {
-      animation: blink-animation 1.5s infinite ease-in-out;
-    }
-
-    .event-header.red { background: var(--red-bg); color: var(--red); border-left: 4px solid var(--red); text-shadow: var(--red-glow); }
-    .event-header.orange { background: var(--orange-bg); color: var(--orange); border-left: 4px solid var(--orange); }
-    .event-header.blue { background: var(--blue-bg); color: var(--blue); border-left: 4px solid var(--blue); }
-    .event-header.green { background: var(--green-bg); color: var(--green); border-left: 4px solid var(--green); text-shadow: var(--green-glow); }
-
-    /* Ícone de seta */
-    .toggle-icon {
       font-size: 12px;
-      opacity: 0.7;
-      transition: transform 0.3s ease;
-    }
-    
-    .event.expanded .toggle-icon {
-      transform: rotate(180deg);
+      padding: 6px 14px;
+      border-radius: 50px; /* Pílula perfeita */
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: none; /* Remove borda do estilo anterior */
     }
 
-    /* Wrapper da Timeline (Tabela) */
+    .status-badge.badge-success {
+      background-color: var(--bg-green-subtle);
+      color: var(--samsung-green);
+    }
+
+    /* Badge Vermelho (Em Aberto) */
+    .status-badge.badge-danger {
+      background-color: var(--bg-red-subtle);
+      color: var(--samsung-red);
+    }
+
+    /* Badge Manutenção */
+    .status-badge.badge-maintenance {
+      background-color: var(--bg-green-subtle); /* Manutenção é planejado = verde ou neutro */
+      color: var(--samsung-green);
+    }
+
+    /* Badge Falha */
+    .status-badge.badge-fail {
+      background-color: var(--bg-red-subtle);
+      color: var(--samsung-red);
+    }
+
+    .blink {
+      animation: pulse-opacity 2s infinite;
+    }
+
+    @keyframes pulse-opacity {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .toggle-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* === Timeline Area (Dentro do Card) === */
     .timeline-wrapper {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
-      background: rgba(0, 0, 0, 0.1);
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background-color: rgba(0,0,0,0.2); /* Levemente mais escuro que o card */
     }
 
     .event.expanded .timeline-wrapper {
-      max-height: 1000px; /* Valor alto para permitir expansão */
-      transition: max-height 0.4s ease-in-out;
+      max-height: 1000px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 14px;
     }
 
     th, td {
       padding: 16px 24px;
       text-align: left;
-      border-bottom: 1px solid var(--glass-border);
-      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: #ccc;
     }
 
     th {
-      background: rgba(0, 0, 0, 0.2);
-      font-weight: 600;
       color: var(--text-secondary);
+      font-weight: 600;
       text-transform: uppercase;
-      font-size: 12px;
+      font-size: 11px;
       letter-spacing: 1px;
-    }
-
-    td {
-      color: var(--text-primary);
+      padding-top: 24px;
     }
 
     td:first-child, td:nth-child(2) {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
       color: var(--text-secondary);
-    }
-
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(255, 255, 255, 0.02); }
-
-    .status-green { 
-      color: var(--green); 
-      font-weight: 700; 
-      background: rgba(74, 222, 128, 0.1);
-      padding: 2px 8px;
-      border-radius: 4px;
       font-size: 12px;
-      text-transform: uppercase;
-    }
-    
-    .status-red { 
-      color: var(--red); 
-      font-weight: 700; 
-      background: rgba(255, 77, 77, 0.1);
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      text-transform: uppercase;
     }
 
-    .timeline-hint {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-right: 4px;
-      font-weight: 400;
-      opacity: 0.6;
-      display: none;
-    }
+    tr:last-child td { border-bottom: none; padding-bottom: 24px; }
 
-    .event:hover .timeline-hint {
-      display: inline;
-    }
+    .status-text-green { color: var(--samsung-green); font-weight: 700; }
+    .status-text-red { color: var(--samsung-red); font-weight: 700; }
+
+    /* === Rodapé ou Decoração === */
+    .footer-spacer { height: 100px; }
 
     @media (max-width: 768px) {
-      .header, .date-selector, .content { padding-left: 20px; padding-right: 20px; }
-      .window { border-radius: 0; border: none; background: transparent; box-shadow: none; }
-      .event-header { font-size: 15px; flex-direction: column; align-items: flex-start; gap: 12px; }
-      .header-right { width: 100%; justify-content: space-between; }
-      th, td { padding: 12px 16px; }
-      td:first-child { white-space: nowrap; }
-      .timeline-hint { display: none; }
+      .header-area { padding-top: 40px; }
+      h1 { font-size: 28px; }
+      .event-header { padding: 16px 20px; }
+      .status-badge { font-size: 11px; padding: 4px 10px; }
     }
   </style>
 </head>
 <body>
 
-<div class="window">
-  <div class="titlebar">
-    <div class="dots">
-      <div class="dot red"></div>
-      <div class="dot yellow"></div>
-      <div class="dot green"></div>
+<div class="app-container">
+  
+  <!-- Cabeçalho Estilo Viewing Area -->
+  <div class="header-area">
+    <div class="header-subtitle">War Room • Black Friday 2025</div>
+    <h1>Diário de Bordo</h1>
+  </div>
+
+  <!-- Controles -->
+  <div class="controls-area">
+    <div class="select-wrapper">
+      <select id="dateSelect" onchange="showDate(this.value)">
+        <option value="">Selecionar data...</option>
+        <option value="2025-11-17">17 Novembro (Seg)</option>
+        <option value="2025-11-18">18 Novembro (Ter)</option>
+      </select>
     </div>
-    <span>MONITORAMENTO :: BLACK FRIDAY 2025</span>
-  </div>
-
-  <div class="header">
-    <h1>War Room | Diário de Bordo</h1>
-  </div>
-
-  <div class="date-selector">
-    <select id="dateSelect" onchange="showDate(this.value)">
-      <option value="">Selecione a data do incidente...</option>
-      <option value="2025-11-17">17/11/2025 (Segunda-feira)</option>
-      <option value="2025-11-18">18/11/2025 (Hoje)</option>
-    </select>
   </div>
 
   <!-- =============== 17/11/2025 =============== -->
   <div id="2025-11-17" class="content">
-    <div style="text-align:center;">
-      <h2>Log de Eventos: 17/11/2025</h2>
-    </div>
+    <h2>Eventos de Segunda-feira</h2>
 
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header red">
-        <span class="event-title">INCIDENTE #2511170003: Represamento no Faturamento (Jund)</span>
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">INCIDENTE #2511170003: Represamento no Faturamento (Jund)</div>
         <div class="header-right">
           <span class="status-badge badge-success">Resolvido</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
@@ -384,18 +338,17 @@
           <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
           <tr><td>08:31:00</td><td>Gleice</td><td>Acionamento inicial: Faturamento paralisado.</td></tr>
           <tr><td>08:37:00</td><td>Pablo</td><td>Verificação: Robôs do Jundiaí [OK]. Pedido das 08:10 represado na Separação liberado. Fluxo retomado.</td></tr>
-          <tr><td>08:40:00</td><td>Sistema</td><td><span class="status-green">RESOLVIDO</span> Fluxo de faturamento normalizado. (Causa: Represamento pontual)</td></tr>
+          <tr><td>08:40:00</td><td>Sistema</td><td><span class="status-text-green">RESOLVIDO</span> Fluxo de faturamento normalizado. (Causa: Represamento pontual)</td></tr>
         </table>
       </div>
     </div>
 
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header orange">
-        <span class="event-title">WARNING: Disco Insuficiente – SRV-DONATELLO (G:)</span>
+    <div class="event border-orange" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">WARNING: Disco Insuficiente – SRV-DONATELLO (G:)</div>
         <div class="header-right">
           <span class="status-badge badge-success">Normalizado</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
@@ -405,18 +358,17 @@
           <tr><td>08:11:00</td><td>Gabriel</td><td>Hipótese: Falha na exclusão do backup anterior. Acionado time de DB.</td></tr>
           <tr><td>10:03:00</td><td>G. Soares</td><td>Ação: Ajuste de trigger para 500 GB.</td></tr>
           <tr><td>10:20:00</td><td>G. Soares</td><td>Movendo backup full + checkdb (G: -> E:). Upload para S3 agendado.</td></tr>
-          <tr><td>11:16:00</td><td>Monitor</td><td><span class="status-green">NORMALIZADO</span> Disco retornou para 42% de uso.</td></tr>
+          <tr><td>11:16:00</td><td>Monitor</td><td><span class="status-text-green">NORMALIZADO</span> Disco retornou para 42% de uso.</td></tr>
         </table>
       </div>
     </div>
 
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header blue">
-        <span class="event-title">INFO: Alto Consumo de Disco – PROD-WMS-INTEGRADOR (/)</span>
+    <div class="event border-blue" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">INFO: Alto Consumo de Disco – PROD-WMS-INTEGRADOR (/)</div>
         <div class="header-right">
           <span class="status-badge badge-success">Resolvido</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
@@ -424,18 +376,17 @@
           <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
           <tr><td>07:54:00</td><td>Pablo</td><td>Acionamento: Alerta filesystem root (/). Utilização: 97%.</td></tr>
           <tr><td>08:46:00</td><td>Murilo</td><td>Suporte N2 acionado para limpeza de logs.</td></tr>
-          <tr><td>09:44:00</td><td>Murilo</td><td><span class="status-green">RESOLVIDO</span> Espaço recuperado após limpeza de temps.</td></tr>
+          <tr><td>09:44:00</td><td>Murilo</td><td><span class="status-text-green">RESOLVIDO</span> Espaço recuperado após limpeza de temps.</td></tr>
         </table>
       </div>
     </div>
 
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header orange">
-        <span class="event-title">WARNING: Instabilidade Link Jundiaí</span>
+    <div class="event border-orange" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">WARNING: Instabilidade Link Jundiaí</div>
         <div class="header-right">
           <span class="status-badge badge-success">Normalizado</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
@@ -451,19 +402,15 @@
 
   <!-- =============== 18/11/2025 =============== -->
   <div id="2025-11-18" class="content">
+    <h2>Eventos de Hoje</h2>
 
-    <div style="text-align:center;">
-      <h2>Log de Eventos: 18/11/2025</h2>
-    </div>
-
-    <!-- Novo Evento Persistente (Do PDF Atualizado) -->
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header red">
-        <span class="event-title">CRITICAL: Espaço em Disco - GLPI-PRD-APLICACAO [/data] (Persistente desde 17/11)</span>
+    <!-- Evento Persistente -->
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">CRITICAL: Espaço em Disco - GLPI-PRD-APLICACAO [/data] (Persistente)</div>
         <div class="header-right">
-          <span class="status-badge blink">Em Aberto</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="status-badge badge-danger blink">Em Aberto</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
@@ -471,19 +418,18 @@
           <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
           <tr><td>17/11 12:10</td><td>Elison Arley</td><td>Questiona retorno do GLPI. Uso de disco em 95.7% (156.4GB total).</td></tr>
           <tr><td>17/11 12:10</td><td>Zabbix</td><td>PROBLEM: FS [/data] Critically low (used > 90%).</td></tr>
-          <tr><td>18/11 12:46</td><td>Fábio Jose</td><td><span class="status-red">URGENTE</span> Necessidade de RDM Emergencial para expurgo de base. Cobrança de mapeamento ao Gabriel Ribeiro.</td></tr>
+          <tr><td>18/11 12:46</td><td>Fábio Jose</td><td><span class="status-text-red">URGENTE</span> Necessidade de RDM Emergencial para expurgo de base. Cobrança de mapeamento ao Gabriel Ribeiro.</td></tr>
           <tr><td>18/11 12:46</td><td>Fábio Jose</td><td>Kaue Silva adicionado ao chat para acompanhamento.</td></tr>
         </table>
       </div>
     </div>
 
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header red">
-        <span class="event-title">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</span>
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</div>
         <div class="header-right">
-          <span class="status-badge blink">Em Aberto</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="status-badge badge-danger blink">Em Aberto</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
@@ -491,36 +437,34 @@
           <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
           <tr><td>07:00:27</td><td>L. Gomes</td><td>PROBLEM: FS [/] Critically low (> 90%, total 7.6GB). Atual: 90.9%</td></tr>
           <tr><td>07:47:00</td><td>L. Gomes</td><td>Escalado para o NOC.</td></tr>
-          <tr><td>10:21:00</td><td>Operação</td><td><span class="status-red">EM ABERTO</span> Aguardando ação corretiva.</td></tr>
+          <tr><td>10:21:00</td><td>Operação</td><td><span class="status-text-red">EM ABERTO</span> Aguardando ação corretiva.</td></tr>
         </table>
       </div>
     </div>
 
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header red">
-        <span class="event-title">CRITICAL: Disco Criticamente Baixo - SRV-PAOLLO [/]</span>
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">CRITICAL: Disco Criticamente Baixo - SRV-PAOLLO [/]</div>
         <div class="header-right">
-          <span class="status-badge blink">Em Aberto</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="status-badge badge-danger blink">Em Aberto</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
         <table>
           <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
           <tr><td>08:42:43</td><td>Zabbix</td><td>PROBLEM: FS [/] Critically low (> 90%, total 44.0GB). Atual: 92.6%</td></tr>
-          <tr><td>10:49:00</td><td>Operação</td><td><span class="status-red">EM ABERTO</span> Ainda sem resposta / ação corretiva registrada.</td></tr>
+          <tr><td>10:49:00</td><td>Operação</td><td><span class="status-text-red">EM ABERTO</span> Ainda sem resposta / ação corretiva registrada.</td></tr>
         </table>
       </div>
     </div>
 
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header red">
-        <span class="event-title">FALHA: Rotinas de Backup - SRV-DONATELLO</span>
+    <div class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">FALHA: Rotinas de Backup - SRV-DONATELLO</div>
         <div class="header-right">
-          <span class="status-badge blink">Falha</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="status-badge badge-fail blink">Falha</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
@@ -535,13 +479,12 @@
       </div>
     </div>
 
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header green">
-        <span class="event-title">MAINTENANCE: Agentes Zabbix (MASACCIO / GIORGIONE)</span>
+    <div class="event border-green" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">MAINTENANCE: Agentes Zabbix (MASACCIO / GIORGIONE)</div>
         <div class="header-right">
-          <span class="status-badge">Manutenção</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="status-badge badge-maintenance">Manutenção</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
@@ -550,18 +493,17 @@
           <tr><td>14/11 10:02</td><td>Zabbix</td><td>MASACCIO: Agent unavailable (4d+).</td></tr>
           <tr><td>13/11 17:02</td><td>Zabbix</td><td>GIORGIONE: Agent unavailable (4d+).</td></tr>
           <tr><td>10:34:28</td><td>NOC</td><td>Solicitação de janela de manutenção até fim do dia 18/11 para análise.</td></tr>
-          <tr><td>10:37:00</td><td>NOC</td><td><span class="status-green">MANUTENÇÃO</span> Monitoração pausada (aprovado por Kaue Silva).</td></tr>
+          <tr><td>10:37:00</td><td>NOC</td><td><span class="status-text-green">MANUTENÇÃO</span> Monitoração pausada (aprovado por Kaue Silva).</td></tr>
         </table>
       </div>
     </div>
 
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header orange">
-        <span class="event-title">WARNING: Alta Utilização de CPU - RBPSRVFS01</span>
+    <div class="event border-orange" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">WARNING: Alta Utilização de CPU - RBPSRVFS01</div>
         <div class="header-right">
           <span class="status-badge badge-success">Resolvido</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
@@ -570,18 +512,17 @@
           <tr><td>10:48:20</td><td>Zabbix</td><td>PROBLEM: High CPU utilization (> 90% por 5m). Atual: 99.97%. Duração: 9m 16s.</td></tr>
           <tr><td>11:00:00</td><td>Elison Arley</td><td>Informado no grupo do NOC.</td></tr>
           <tr><td>11:01:00</td><td>Murilo R.</td><td>Informado que o Ricardo Henrique está rodando um scan manual do Windows Defender.</td></tr>
-          <tr><td>11:05:00</td><td>Fabio Santos</td><td><span class="status-green">RESOLVIDO</span> Scan pausado após alinhamento sobre janela de atividade. CPU normalizada.</td></tr>
+          <tr><td>11:05:00</td><td>Fabio Santos</td><td><span class="status-text-green">RESOLVIDO</span> Scan pausado após alinhamento sobre janela de atividade. CPU normalizada.</td></tr>
         </table>
       </div>
     </div>
 
-    <div class="event" onclick="toggleEvent(this)">
-      <div class="event-header orange">
-        <span class="event-title">WARNING: Alta Utilização de CPU - WHISKEY</span>
+    <div class="event border-orange" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">WARNING: Alta Utilização de CPU - WHISKEY</div>
         <div class="header-right">
           <span class="status-badge badge-success">Resolvido</span>
-          <span class="timeline-hint">Ver Timeline</span>
-          <span class="toggle-icon">▼</span>
+          <span class="toggle-text">Detalhes ▼</span>
         </div>
       </div>
       <div class="timeline-wrapper">
@@ -590,12 +531,13 @@
           <tr><td>10:11:38</td><td>Zabbix</td><td>PROBLEM: High CPU utilization (> 90% por 5m). Atual: 100%. Duração: 47m 38s.</td></tr>
           <tr><td>11:00:00</td><td>Elison Arley</td><td>Informado no grupo do NOC.</td></tr>
           <tr><td>11:01:00</td><td>Murilo R.</td><td>Informado que o Ricardo Henrique está rodando um scan manual do Windows Defender.</td></tr>
-          <tr><td>11:05:00</td><td>Fabio Santos</td><td><span class="status-green">RESOLVIDO</span> Scan pausado após alinhamento sobre janela de atividade. CPU normalizada.</td></tr>
+          <tr><td>11:05:00</td><td>Fabio Santos</td><td><span class="status-text-green">RESOLVIDO</span> Scan pausado após alinhamento sobre janela de atividade. CPU normalizada.</td></tr>
         </table>
       </div>
     </div>
-
   </div>
+  
+  <div class="footer-spacer"></div>
 </div>
 
 <script>
@@ -611,7 +553,6 @@
   }
   
   function toggleEvent(element) {
-    // Toggle da classe expanded no elemento pai (.event)
     element.classList.toggle('expanded');
   }
 
