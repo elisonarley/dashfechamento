@@ -596,8 +596,8 @@
           <div class="index-day-card" data-day-id="2025-11-19">
             <h3 class="index-day-title">19 de Novembro (Qua)</h3>
             <ul class="index-list">
-              <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-19', 'event-19-1')">Indisponibilidade Pipe Core - Login (Erro 5XX)</a></li>
-              <!-- Placeholder para novos eventos: <li><a class="index-link status-green">Nenhum evento crítico registrado.</a></li> -->
+              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-1')">Normalização Rotinas de Backup - SRV-DONATELLO</a></li>
+              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-2')">Indisponibilidade Pipe Core - Login (Erro 5XX)</a></li>
             </ul>
           </div>
           
@@ -783,6 +783,8 @@
           <tr><td>13:08:00</td><td>E. Arley</td><td>Status: Aguardando validação.</td></tr>
           <tr><td>18:15:00</td><td>Fabio via Teams</td><td>Walmir alterou o horário do backup de image level (de 02:00h) para evitar conflito com o backup de banco de dados, prevenindo instabilidade no cluster.</td></tr>
           <tr><td>19/11 10:00</td><td>E. Arley</td><td><span class="status-text-orange">PENDENTE</span> Cobrar atualização do time de banco se o backup foi realizado ou não.</td></tr>
+          <!-- NOVO DADO: Confirmação de Sucesso no Backup -->
+          <tr><td>19/11 10:28</td><td>E. Arley</td><td><span class="status-text-green">VALIDADO</span> Verificado que as rotinas foram executadas com sucesso, confirmado pelo Gabriel Soares.</td></tr>
         </table>
       </div>
     </div>
@@ -876,7 +878,27 @@
   <div id="2025-11-19" class="content">
     <h2>Eventos de Quarta-feira</h2>
     
-    <div id="event-19-1" class="event border-red" onclick="toggleEvent(this)">
+    <!-- NOVO EVENTO: NORMALIZAÇÃO DE BACKUP (Separado para melhor rastreabilidade do dia) -->
+    <div id="event-19-1" class="event border-green" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">INFO: Normalização Rotinas de Backup - SRV-DONATELLO</div>
+        <div class="header-right">
+          <span class="status-badge badge-success">Validado</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <!-- Este registro é o follow-up do dia 18/11 -->
+          <tr><td>10:00</td><td>E. Arley</td><td>Cobrança de atualização ao time de banco sobre a execução do backup (Ação Pendente do dia anterior).</td></tr>
+          <tr><td>10:28</td><td>E. Arley</td><td><span class="status-text-green">VALIDADO</span> Verificado que as rotinas de backup foram executadas com sucesso. Confirmado pelo Gabriel Soares (Banco) que ocorreu dentro da janela prevista.</td></tr>
+        </table>
+      </div>
+    </div>
+    
+    <!-- EVENTO ANTERIOR DO DIA 19 -->
+    <div id="event-19-2" class="event border-red" onclick="toggleEvent(this)">
       <div class="event-header">
         <div class="event-title">CRITICAL: Indisponibilidade Pipe Core - Login (Erro 5XX)</div>
         <div class="header-right">
@@ -1026,7 +1048,7 @@
     renderOpenIncidents();
     
     // 2. Define a data padrão ao carregar (Preferência: último dia com dados)
-    const lastDay = "2025-11-19"; // Mudei para 19/11
+    const lastDay = "2025-11-19";
     if (document.getElementById(lastDay)) {
       document.getElementById('dateSelect').value = lastDay;
       showDate(lastDay);
