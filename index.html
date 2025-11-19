@@ -647,6 +647,8 @@
               <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-19', 'event-19-2')">Expurgo de Base Pendente - GLPI-PRD-APLICACAO</a></li>
               <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-3')">Normalização de Disco - GLPI-PROXY-INVENTORY</a></li>
               <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-4')">Indisponibilidade Pipe Core - Login (Erro 5XX)</a></li>
+              <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-19', 'event-19-5')">ALERTA CRÍTICO: Vazamento de Credenciais (CERT.br)</a></li>
+              
             </ul>
           </div>
           
@@ -750,10 +752,11 @@
           <tr><td>18/11 18:16</td><td>Gabriel Ribeiro</td><td>Informou a relação de grupos para expurgo. Fábio informou que precisa dos *patchs* ou do script via banco.</td></tr>
           <tr><td>18/11 18:49</td><td>Fellipe Soares (DBA)</td><td>Informou que irá precisar montar o script para todas as pastas citadas.</td></tr>
           <tr><td>18/11 19:15</td><td>Gabriel Ribeiro</td><td>Reforçou a importância de manter os arquivos expurgados em outra "Maquina".</td></tr>
-          <!-- NOVAS INFORMAÇÕES DO DIA 19/11 -->
-          <tr><td>19/11 13:29</td><td>Magali Lucena</td><td>Cobrou uma posição de data de conclusão e perguntou se o Fellipe irá prosseguir com o script.</td></tr>
-          <tr><td>19/11 14:44</td><td>Fellipe Soares</td><td>Enviou a lista de acordo com os grupos e datas de expurgo solicitadas por cada um.</td></tr>
-          <tr><td>19/11 14:56</td><td>Fabio Santos</td><td>Solicitou um alinhamento para definição das próximas etapas.</td></tr>
+          <!-- NOVAS INFORMAÇÕES DO DIA 19/11 (ATUALIZADO) -->
+          <tr><td>19/11 13:29</td><td>Magali Lucena</td><td>Cobrou posição de conclusão e se Fellipe irá prosseguir com o script.</td></tr>
+          <tr><td>19/11 14:44</td><td>Fellipe Soares</td><td>Enviou lista de acordo com grupos e datas de expurgo solicitadas.</td></tr>
+          <tr><td>19/11 14:56</td><td>Fabio Santos</td><td>Solicitou alinhamento para definição das próximas etapas.</td></tr>
+          <tr><td>19/11 15:31</td><td>Fabio</td><td><span class="status-text-red">EXPURGO AGENDADO</span> Alinhado o Expurgo para hoje **após as 20:00**. Informado que pode haver lentidão e indisponibilidade.</td></tr>
         </table>
       </div>
     </div>
@@ -770,7 +773,7 @@
         <table>
           <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
           <tr><td>17/11 15:49</td><td>Sistema (Zabbix)</td><td>PROBLEM: WORKER CONSUMER DLQ - site sem responder há mais de 5 min. Status: *UNKNOWN*. Duração: 1d 1h 2m.</td></tr>
-          <tr><td>18/11 16:00:00</td><td>Callel</td><td><span class="status-text-orange">IGNORADO</span> Devido ao *freezing* (período de congelamento de mudanças/serviços), será tratado após a Black Friday.</td></tr>
+          <tr><td>18/11 16:00:00</td><td>Callel</td><td><span class="status-text-orange">IGNORADO</span> Devido ao *freezing* (período de congelamento de mudanças/serviços), o problema será tratado após a Black Friday.</td></tr>
         </table>
       </div>
     </div>
@@ -784,7 +787,7 @@
         <!-- CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/] -->
         <div class="event-title">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</div>
         <div class="header-right">
-          <!-- CORREÇÃO: O status agora é Normalizado, pois o follow-up foi concluído no dia 19/11 -->
+          <!-- O status agora é Normalizado -->
           <span class="status-badge badge-success">Normalizado</span> 
           <span class="toggle-text">Detalhes ▼</span>
         </div>
@@ -795,7 +798,6 @@
           <tr><td>07:00:27</td><td>L. Gomes</td><td>PROBLEM: FS [/] Critically low (used > 90%, total 7.6GB). Atual: 90.9%</td></tr>
           <tr><td>07:47:00</td><td>L. Gomes</td><td>Informado via grupo NOC sobre o alerta de disco crítico.</td></tr>
           <tr><td>10:21:00</td><td>Operação</td><td>EM ABERTO: Aguardando ação corretiva.</td></tr>
-          <!-- O follow-up de normalização do dia 19/11 já existe como evento separado, mas podemos encerrar o card de origem -->
           <tr><td>19/11 14:19</td><td>E. Arley</td><td><span class="status-text-green">NORMALIZADO</span>: Servidor voltou para estado normal (88%). (Referência ao evento 19.3)</td></tr>
         </table>
       </div>
@@ -968,7 +970,8 @@
                 <tr><td>17/11 12:10</td><td>INC. ORIGEM</td><td>O evento original (17.5) acionou a necessidade de expurgo urgente (uso de disco 95.7%).</td></tr>
                 <tr><td>19/11 13:29</td><td>Magali Lucena</td><td>Cobrou uma posição de data de conclusão e perguntou se o Fellipe irá prosseguir com o script.</td></tr>
                 <tr><td>19/11 14:44</td><td>Fellipe Soares</td><td>Enviou a lista de acordo com os grupos e datas de expurgo solicitadas.</td></tr>
-                <tr><td>19/11 14:56</td><td>Fabio Santos</td><td><span class="status-text-red">EM ABERTO</span> Solicitou um alinhamento para definição das próximas etapas.</td></tr>
+                <tr><td>19/11 14:56</td><td>Fabio Santos</td><td>Solicitou um alinhamento para definição das próximas etapas.</td></tr>
+                <tr><td>19/11 15:31</td><td>Fabio</td><td><span class="status-text-red">EXPURGO AGENDADO</span> Alinhado o Expurgo para hoje **após as 20:00**. Informado que pode haver lentidão e indisponibilidade.</td></tr>
             </table>
         </div>
     </div>
@@ -1012,6 +1015,29 @@
         </table>
       </div>
     </div>
+
+    <!-- NOVO EVENTO 19.5: ALERTA DE SEGURANÇA CRÍTICO -->
+    <div id="event-19-5" class="event border-red" onclick="toggleEvent(this)">
+        <div class="event-header">
+            <div class="event-title">SECURITY ALERT: Vazamento de Credenciais (CERT.br)</div>
+            <div class="header-right">
+                <span class="status-badge badge-danger blink">IR em Andamento</span>
+                <span class="toggle-text">Detalhes ▼</span>
+            </div>
+        </div>
+        <div class="timeline-wrapper">
+            <table>
+                <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+                <tr><td>15:17</td><td>E. Arley (NOC)</td><td>ALERT: SSL Expiration Certificado SSL do domínio allieddpp.com.br expira em 15 dias. <span class="status-text-red">PRIORIDADE ALTA</span>. Necessário iniciar workflow de renovação.</td></tr>
+                <tr><td>15:35</td><td>Monitoramento / Você</td><td><span class="status-text-red">SECURITY ALERT</span> Recebimento e acknowledge de alerta crítico via CERT.br sobre suspeita de vazamento de credenciais.</td></tr>
+                <tr><td>15:40</td><td>Monitoramento / Você</td><td>Initial Triage: Mapeamento preliminar de Domínios/Serviços Afetados (e.g., servicedesk, alliedconectados). Alerta é preventivo.</td></tr>
+                <tr><td>15:50</td><td>Você</td><td><span class="status-text-red">ESCALATION</span> Acionamento imediato do time de Security/CISO e DevOps/Infra. Recomendação de **rotação imediata de credenciais** e auditoria de acessos.</td></tr>
+                <tr><td>15:50</td><td>Security / CISO</td><td>Mitigation Plan WIP (IR): Início da investigação forense (IR). Ações: 1. Cruzamento de logs e hash das máquinas infectadas (WIN-OQH7RSUVFJK, DESKTOP-8659HK9). 2. Forcing Password Reset para e-mails corporativos expostos (mb_pracadaarvoresp@alliedbrasil.com.br).</td></tr>
+                <tr><td>15:50</td><td>Infra / DevOps</td><td>Hardening Implementation: Início da revisão da Política de Firewall de Aplicação (WAF) e Estratégia de Segmentação de Rede nas VPCs.</td></tr>
+                <tr><td>15:50</td><td>Asper / CISO</td><td>Post-Incident Analysis: Avaliação final de risco e compliance pela consultoria Asper.</td></tr>
+            </table>
+        </div>
+    </div>
     
   </div>
   
@@ -1019,11 +1045,10 @@
   <div class="changelog-area">
     <h3>Últimas Mudanças no Diário</h3>
     <ul>
-      <li>[20/11 17:07] Status do Disco GLPI-PROXY-INVENTORY (18.1) alterado para Normalizado para remoção do filtro de Incidentes Abertos.</li>
+      <li>[20/11 17:15] Adicionado **ALERTA CRÍTICO DE SEGURANÇA** (19.5) com plano inicial de Incident Response (IR).</li>
+      <li>[20/11 17:15] Atualizado Expurgo GLPI-PRD-APLICACAO (17.5/19.2) com **agendamento para hoje às 20:00**.</li>
+      <li>[20/11 17:07] Status do Disco GLPI-PROXY-INVENTORY (18.1) alterado para Normalizado.</li>
       <li>[19/11 15:04] Normalização de Disco GLPI-PROXY-INVENTORY (19.3) adicionada.</li>
-      <li>[19/11 15:04] Atualizados *follow-ups* de Expurgo no GLPI-PRD-APLICACAO (17.5/19.2).</li>
-      <li>[19/11 13:51] Adicionada validação de sucesso para o Backup do Donatello (18.3/19.1).</li>
-      <li>[19/11 13:51] Adicionado timestamp e seção de changelog no rodapé.</li>
     </ul>
   </div>
 
