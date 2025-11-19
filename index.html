@@ -535,6 +535,7 @@
       scroll-snap-align: start; /* Alinha o card no início da rolagem */
     }
 
+    /* ESTILO PARA O CONTADOR DE EVENTOS */
     .index-day-title {
       font-size: 16px;
       font-weight: 700;
@@ -542,6 +543,20 @@
       margin: 0 0 15px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       padding-bottom: 10px;
+      
+      /* Configuração para o contador */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .event-count-badge {
+        background-color: var(--samsung-blue);
+        color: var(--text-primary);
+        padding: 4px 10px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 900;
     }
 
     .index-list {
@@ -615,7 +630,7 @@
         <div class="index-grid">
           
           <div class="index-day-card" data-day-id="2025-11-17">
-            <h3 class="index-day-title">17 de Novembro (Seg)</h3>
+            <h3 class="index-day-title">17 de Novembro (Seg) <span class="event-count-badge" data-count-day="2025-11-17">0</span></h3>
             <ul class="index-list">
               <!-- Adicionado evento-link para o JS scrollToEvent -->
               <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-17', 'event-17-1')">Pedidos Represados no Faturamento (Jund)</a></li>
@@ -628,7 +643,7 @@
           </div>
           
           <div class="index-day-card" data-day-id="2025-11-18">
-            <h3 class="index-day-title">18 de Novembro (Ter)</h3>
+            <h3 class="index-day-title">18 de Novembro (Ter) <span class="event-count-badge" data-count-day="2025-11-18">0</span></h3>
             <ul class="index-list">
               <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-18', 'event-18-1')">Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</a></li>
               <li><a class="index-link status-maintenance" onclick="scrollToEvent('2025-11-18', 'event-18-2')">Disco Criticamente Baixo - SRV-PAOLLO [/]</a></li>
@@ -641,7 +656,7 @@
           </div>
 
           <div class="index-day-card" data-day-id="2025-11-19">
-            <h3 class="index-day-title">19 de Novembro (Qua)</h3>
+            <h3 class="index-day-title">19 de Novembro (Qua) <span class="event-count-badge" data-count-day="2025-11-19">0</span></h3>
             <ul class="index-list">
               <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-1')">Normalização Rotinas de Backup - SRV-DONATELLO</a></li>
               <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-19', 'event-19-2')">Expurgo de Base Pendente - GLPI-PRD-APLICACAO</a></li>
@@ -651,6 +666,8 @@
               <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-19', 'event-19-5')">ALERTA CRÍTICO: Vazamento de Credenciais (CERT.br)</a></li>
               <!-- NOVO EVENTO 19.6 -->
               <li><a class="index-link status-orange" onclick="scrollToEvent('2025-11-19', 'event-19-6')">ALERTA: Expiração de Certificado SSL (15 dias)</a></li>
+              <!-- NOVO EVENTO 19.7 -->
+              <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-19', 'event-19-7')">Queda de Acesso - alliedbrasil.com.br (LAN/VPN)</a></li>
               
             </ul>
           </div>
@@ -760,6 +777,7 @@
           <tr><td>19/11 14:44</td><td>Fellipe Soares</td><td>Enviou lista de acordo com grupos e datas de expurgo solicitadas.</td></tr>
           <tr><td>19/11 14:56</td><td>Fabio Santos</td><td>Solicitou alinhamento para definição das próximas etapas.</td></tr>
           <tr><td>19/11 15:31</td><td>Fabio</td><td><span class="status-text-red">EXPURGO AGENDADO</span> Alinhado o Expurgo para hoje **após as 20:00**. Informado que pode haver lentidão e indisponibilidade.</td></tr>
+          <tr><td>19/11 17:11</td><td>Gabriel</td><td><span class="status-text-orange">COMUNICADO</span> Informado que o comunicado de manutenção no GLPI (20:00h até o fechamento das lojas) foi realizado. Sistema pode ter lentidão/instabilidade, mas não ficará indisponível.</td></tr>
         </table>
       </div>
     </div>
@@ -886,6 +904,7 @@
           <tr><td>11:00:00</td><td>E. Arley</td><td>Informado no grupo do NOC.</td></tr>
           <tr><td>11:01:00</td><td>M. Rodrigues</td><td>Causa: Scan manual do Windows Defender em andamento (Ricardo Henrique).</td></tr>
           <tr><td>11:05:00</td><td>Fabio Santos</td><td><span class="status-text-green">NORMALIZADO</span> Scan foi pausado e CPU normalizada. Alinhamento feito com Ricardo para comunicação prévia de atividades.</td></tr>
+          <tr><td>19/11 16:09</td><td>E. Arley</td><td><span class="status-text-red">RECORRÊNCIA</span>: Servidor voltou a ficar com CPU > 90%. Kaue acionou Equinix para verificar consumo de CLBackup.</td></tr>
         </table>
       </div>
     </div>
@@ -975,6 +994,7 @@
                 <tr><td>19/11 14:44</td><td>Fellipe Soares</td><td>Enviou a lista de acordo com os grupos e datas de expurgo solicitadas.</td></tr>
                 <tr><td>19/11 14:56</td><td>Fabio Santos</td><td>Solicitou um alinhamento para definição das próximas etapas.</td></tr>
                 <tr><td>19/11 15:31</td><td>Fabio</td><td><span class="status-text-red">EXPURGO AGENDADO</span> Alinhado o Expurgo para hoje **após as 20:00**. Informado que pode haver lentidão e indisponibilidade.</td></tr>
+                <tr><td>19/11 17:11</td><td>Gabriel</td><td><span class="status-text-orange">COMUNICADO</span> Informado que o comunicado de manutenção no GLPI (20:00h até o fechamento das lojas) foi realizado. Sistema pode ter lentidão/instabilidade, mas não ficará indisponível.</td></tr>
             </table>
         </div>
     </div>
@@ -1063,17 +1083,37 @@
         </div>
     </div>
     
+    <!-- NOVO EVENTO 19.7: Queda de Acesso - alliedbrasil.com.br (LAN/VPN) -->
+    <div id="event-19-7" class="event border-red" onclick="toggleEvent(this)">
+        <div class="event-header">
+            <div class="event-title">CRITICAL: Queda de Acesso - alliedbrasil.com.br (Rede Interna/VPN)</div>
+            <div class="header-right">
+                <span class="status-badge badge-success">Normalizado</span>
+                <span class="toggle-text">Detalhes ▼</span>
+            </div>
+        </div>
+        <div class="timeline-wrapper">
+            <table>
+                <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+                <tr><td>17:32</td><td>Luiz Galante (NOC)</td><td>PROBLEM (Disponibilidade): Confirmação de que o asset alliedbrasil.com.br está inacessível para Rede Interna. Descartada alteração recente no Azion (CDN/WAF).</td></tr>
+                <tr><td>17:32</td><td>Lucas Quirino (NOC)</td><td>Status Quo: Não houve *change* no *edge* ou *backend* do asset nos últimos 30 minutos. Hipótese de erro em regra de CDN é baixa.</td></tr>
+                <tr><td>17:34</td><td>E. Arley (NOC)</td><td>Scope Defined: Acesso normalizado via Internet/4G. Falha totalmente restrita ao Egress corporativo (Rede Interna e VPN). O problema é Rede/Infraestrutura e não Aplicação.</td></tr>
+                <tr><td>17:40</td><td>Monitoramento (Você)</td><td><span class="status-text-red">ESCALATION</span>: Acionamento do time de Cloud via [Teams] para investigação *on-premise*. Requerido *traceroute* e validação de DNS interno/externo. Ação imediata: Auditar ACLs/Firewalls de Borda.</td></tr>
+                <tr><td>18:09</td><td>Luiz Galante (Cloud)</td><td><span class="status-text-green">RESOLVIDO</span>: Realizada a alteração do IP do DNS. Acesso normalizado. Pode ser necessário *flushdns* ou reconexão da VPN em alguns casos.</td></tr>
+            </table>
+        </div>
+    </div>
+    
   </div>
   
   <!-- NOVO: Seção de Últimas Mudanças (Changelog) -->
   <div class="changelog-area">
     <h3>Últimas Mudanças no Diário</h3>
     <ul>
-      <li>[19/11 16:00] **Ajuste de Ator e Cronologia:** Corrigidos horários (13:30) e atores (Asper) no incidente de Segurança (19.5).</li>
-      <li>[19/11 15:52] Estrutura de Incidente de Segurança corrigida. Alerta SSL (15:17) separado em novo evento (19.6).</li>
-      <li>[19/11 15:35] Reajuste de horários do Alerta de Segurança (19.5). Evento CERT.br adiantado para 12:27.</li>
-      <li>[19/11 15:15] Adicionado **ALERTA CRÍTICO DE SEGURANÇA** (19.5) com plano inicial de Incident Response (IR).</li>
-      <li>[19/11 15:15] Atualizado Expurgo GLPI-PRD-APLICACAO (17.5/19.2) com **agendamento para hoje às 20:00**.</li>
+      <li>[19/11 18:15] **Incidente Resolvido:** Adicionada a resolução da Queda de Acesso alliedbrasil.com.br (19.7) - Causa: alteração de IP DNS.</li>
+      <li>[19/11 17:55] Atualizado Expurgo GLPI-PRD-APLICACAO (19.2) com **Comunicação de Manutenção (17:11)**.</li>
+      <li>[19/11 17:55] Adicionado novo evento **CRITICAL: Queda de Acesso - alliedbrasil.com.br (19.7)**.</li>
+      <li>[19/11 16:00] Ajuste de Ator e Cronologia: Corrigidos horários (13:30) e atores (Asper) no incidente de Segurança (19.5).</li>
     </ul>
   </div>
 
@@ -1082,6 +1122,25 @@
 
 <script>
   let isFilterActive = false;
+
+  // NOVA FUNÇÃO: Atualiza os contadores de eventos no carrossel do índice
+  function updateEventCounts() {
+    const dayContents = document.querySelectorAll('.content');
+    
+    dayContents.forEach(dayContent => {
+        const dateId = dayContent.id;
+        // Conta quantos eventos estão dentro deste bloco de conteúdo
+        const eventCount = dayContent.querySelectorAll('.event').length;
+        
+        // Encontra o badge correspondente no carrossel pelo atributo de dados
+        const countBadge = document.querySelector(`.event-count-badge[data-count-day="${dateId}"]`);
+        
+        if (countBadge) {
+            countBadge.textContent = eventCount;
+        }
+    });
+  }
+
 
   // Função central para rolar para um evento específico
   function scrollToEvent(dateId, eventId) {
@@ -1231,11 +1290,14 @@
   window.onload = function() {
     // 1. Exibe o timestamp no cabeçalho
     displayUpdateTimestamp();
+    
+    // 2. NOVA CHAMADA: Atualiza a contagem de eventos por dia
+    updateEventCounts();
 
-    // 2. Renderiza os incidentes abertos globalmente
+    // 3. Renderiza os incidentes abertos globalmente
     renderOpenIncidents();
     
-    // 3. Define a data padrão ao carregar (Preferência: último dia com dados)
+    // 4. Define a data padrão ao carregar (Preferência: último dia com dados)
     const lastDay = "2025-11-19";
     if (document.getElementById(lastDay)) {
       document.getElementById('dateSelect').value = lastDay;
