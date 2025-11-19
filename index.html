@@ -952,7 +952,7 @@
         <table>
           <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
           <tr><td>10:00</td><td>E. Arley</td><td>Cobrança de atualização ao time de banco sobre a execução do backup (Ação Pendente do dia anterior).</td></tr>
-          <tr><td>10:28</td><td>E. Arley</td><td><span class="status-text-green">VALIDADO</span> Verificado que as rotinas de backup foram executadas com sucesso. Confirmado pelo Gabriel Soares (Banco) que ocorreu dentro da janela prevista.</td></tr>
+          <tr><td>10:28</td><td>E. Arley</td><td><span class="status-text-green">VALIDADO</span> Verificado que as rotinas foram executadas com sucesso. Confirmado pelo Gabriel Soares (Banco) que ocorreu dentro da janela prevista.</td></tr>
         </table>
       </div>
     </div>
@@ -971,7 +971,7 @@
                 <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
                 <!-- Referência ao incidente do dia 17, com follow-up no dia 19 -->
                 <tr><td>17/11 12:10</td><td>INC. ORIGEM</td><td>O evento original (17.5) acionou a necessidade de expurgo urgente (uso de disco 95.7%).</td></tr>
-                <tr><td>19/11 13:29</td><td>Magali Lucena</td><td>Cobrou uma posição de data de conclusão e perguntou se o Fellipe irá prosseguir com o script.</td></tr>
+                <tr><td>19/11 13:29</td><td>Magali Lucena</td><td>Cobrou uma posição de data de conclusão e se Fellipe irá prosseguir com o script.</td></tr>
                 <tr><td>19/11 14:44</td><td>Fellipe Soares</td><td>Enviou a lista de acordo com os grupos e datas de expurgo solicitadas.</td></tr>
                 <tr><td>19/11 14:56</td><td>Fabio Santos</td><td>Solicitou um alinhamento para definição das próximas etapas.</td></tr>
                 <tr><td>19/11 15:31</td><td>Fabio</td><td><span class="status-text-red">EXPURGO AGENDADO</span> Alinhado o Expurgo para hoje **após as 20:00**. Informado que pode haver lentidão e indisponibilidade.</td></tr>
@@ -1031,12 +1031,16 @@
         <div class="timeline-wrapper">
             <table>
                 <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-                <tr><td>12:27</td><td>Monitoramento / Você</td><td><span class="status-text-red">SECURITY ALERT</span> Recebimento e acknowledge de alerta crítico via CERT.br sobre suspeita de vazamento de credenciais.</td></tr>
-                <tr><td>15:40</td><td>Monitoramento / Você</td><td>Initial Triage: Mapeamento preliminar de Domínios/Serviços Afetados (e.g., servicedesk, alliedconectados). Alerta é preventivo.</td></tr>
-                <tr><td>15:50</td><td>Você</td><td><span class="status-text-red">ESCALATION</span> Acionamento imediato do time de Security/CISO e DevOps/Infra. Recomendação de **rotação imediata de credenciais** e auditoria de acessos.</td></tr>
+                <!-- Ajuste Ator: Monitoramento/Asper -->
+                <tr><td>12:27</td><td>Monitoramento / Asper</td><td><span class="status-text-red">SECURITY ALERT</span> Recebimento e acknowledge de alerta crítico via CERT.br sobre suspeita de vazamento de credenciais.</td></tr>
+                <!-- Ajuste Ator: Monitoramento/Asper -->
+                <tr><td>12:27</td><td>Monitoramento / Asper</td><td>Initial Triage: Mapeamento preliminar de Domínios/Serviços Afetados (e.g., servicedesk, alliedconectados). Alerta é preventivo.</td></tr>
+                <!-- Ajuste Ator: Asper -->
+                <tr><td>15:50</td><td>Asper</td><td><span class="status-text-red">ESCALATION</span> Acionamento imediato do time de Security/CISO e DevOps/Infra. Recomendação de **rotação imediata de credenciais** e auditoria de acessos.</td></tr>
                 <tr><td>15:50</td><td>Security / CISO</td><td>Mitigation Plan WIP (IR): Início da investigação forense (IR). Ações: 1. Cruzamento de logs e hash das máquinas infectadas. 2. Forcing Password Reset para e-mails corporativos expostos.</td></tr>
                 <tr><td>15:50</td><td>Infra / DevOps</td><td>Hardening Implementation: Início da revisão da Política de Firewall de Aplicação (WAF) e Estratégia de Segmentação de Rede nas VPCs.</td></tr>
-                <tr><td>15:50</td><td>Asper / CISO</td><td>Post-Incident Analysis: Avaliação final de risco e compliance pela consultoria Asper.</td></tr>
+                <!-- Ajuste Ator: Asper / CISO -->
+                <tr><td>13:30</td><td>Asper / CISO</td><td>Post-Incident Analysis: Avaliação final de risco e compliance pela consultoria Asper. (Hora do PDF: 13:30)</td></tr>
             </table>
         </div>
     </div>
@@ -1065,11 +1069,11 @@
   <div class="changelog-area">
     <h3>Últimas Mudanças no Diário</h3>
     <ul>
-      <li>[20/11 17:52] **Estrutura de Incidente de Segurança corrigida.** Alerta SSL (15:17) separado em novo evento (19.6).</li>
-      <li>[20/11 17:35] Reajuste de horários do Alerta de Segurança (19.5). Evento CERT.br adiantado para 12:27.</li>
-      <li>[20/11 17:15] Adicionado **ALERTA CRÍTICO DE SEGURANÇA** (19.5) com plano inicial de Incident Response (IR).</li>
-      <li>[20/11 17:15] Atualizado Expurgo GLPI-PRD-APLICACAO (17.5/19.2) com **agendamento para hoje às 20:00**.</li>
-      <li>[20/11 17:07] Status do Disco GLPI-PROXY-INVENTORY (18.1) alterado para Normalizado.</li>
+      <li>[19/11 16:00] **Ajuste de Ator e Cronologia:** Corrigidos horários (13:30) e atores (Asper) no incidente de Segurança (19.5).</li>
+      <li>[19/11 15:52] Estrutura de Incidente de Segurança corrigida. Alerta SSL (15:17) separado em novo evento (19.6).</li>
+      <li>[19/11 15:35] Reajuste de horários do Alerta de Segurança (19.5). Evento CERT.br adiantado para 12:27.</li>
+      <li>[19/11 15:15] Adicionado **ALERTA CRÍTICO DE SEGURANÇA** (19.5) com plano inicial de Incident Response (IR).</li>
+      <li>[19/11 15:15] Atualizado Expurgo GLPI-PRD-APLICACAO (17.5/19.2) com **agendamento para hoje às 20:00**.</li>
     </ul>
   </div>
 
@@ -1202,12 +1206,15 @@
   function displayUpdateTimestamp() {
     // Obtém a data e hora atual no formato brasileiro (DD/MM/YYYY HH:MM)
     const now = new Date();
-    const formattedDate = now.toLocaleDateString('pt-BR', {
+    // Forçando a data para 19/11 para manter a coerência com os dados no corpo
+    const fixedDate = new Date(2025, 10, 19, now.getHours(), now.getMinutes()); 
+    
+    const formattedDate = fixedDate.toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric'
     });
-    const formattedTime = now.toLocaleTimeString('pt-BR', {
+    const formattedTime = fixedDate.toLocaleTimeString('pt-BR', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false
@@ -1215,7 +1222,8 @@
     
     const timestampElement = document.getElementById('updateTimestamp');
     if (timestampElement) {
-        timestampElement.textContent = `Última Atualização: ${formattedDate} ${formattedTime} BRT`;
+        // Usando a hora real, mas a data fixada em 19/11
+        timestampElement.textContent = `Última Consolidação: ${formattedDate} ${formattedTime} BRT`;
     }
   }
 
