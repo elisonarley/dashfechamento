@@ -647,7 +647,10 @@
               <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-19', 'event-19-2')">Expurgo de Base Pendente - GLPI-PRD-APLICACAO</a></li>
               <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-3')">Normalização de Disco - GLPI-PROXY-INVENTORY</a></li>
               <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-4')">Indisponibilidade Pipe Core - Login (Erro 5XX)</a></li>
+              <!-- NOVO EVENTO 19.5 -->
               <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-19', 'event-19-5')">ALERTA CRÍTICO: Vazamento de Credenciais (CERT.br)</a></li>
+              <!-- NOVO EVENTO 19.6 -->
+              <li><a class="index-link status-orange" onclick="scrollToEvent('2025-11-19', 'event-19-6')">ALERTA: Expiração de Certificado SSL (15 dias)</a></li>
               
             </ul>
           </div>
@@ -1016,7 +1019,7 @@
       </div>
     </div>
 
-    <!-- NOVO EVENTO 19.5: ALERTA DE SEGURANÇA CRÍTICO -->
+    <!-- EVENTO 19.5: ALERTA DE SEGURANÇA CRÍTICO -->
     <div id="event-19-5" class="event border-red" onclick="toggleEvent(this)">
         <div class="event-header">
             <div class="event-title">SECURITY ALERT: Vazamento de Credenciais (CERT.br)</div>
@@ -1028,13 +1031,30 @@
         <div class="timeline-wrapper">
             <table>
                 <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-                <tr><td>15:17</td><td>E. Arley (NOC)</td><td>ALERT: SSL Expiration Certificado SSL do domínio allieddpp.com.br expira em 15 dias. <span class="status-text-red">PRIORIDADE ALTA</span>. Necessário iniciar workflow de renovação.</td></tr>
-                <tr><td>15:35</td><td>Monitoramento / Você</td><td><span class="status-text-red">SECURITY ALERT</span> Recebimento e acknowledge de alerta crítico via CERT.br sobre suspeita de vazamento de credenciais.</td></tr>
+                <tr><td>12:27</td><td>Monitoramento / Você</td><td><span class="status-text-red">SECURITY ALERT</span> Recebimento e acknowledge de alerta crítico via CERT.br sobre suspeita de vazamento de credenciais.</td></tr>
                 <tr><td>15:40</td><td>Monitoramento / Você</td><td>Initial Triage: Mapeamento preliminar de Domínios/Serviços Afetados (e.g., servicedesk, alliedconectados). Alerta é preventivo.</td></tr>
                 <tr><td>15:50</td><td>Você</td><td><span class="status-text-red">ESCALATION</span> Acionamento imediato do time de Security/CISO e DevOps/Infra. Recomendação de **rotação imediata de credenciais** e auditoria de acessos.</td></tr>
-                <tr><td>15:50</td><td>Security / CISO</td><td>Mitigation Plan WIP (IR): Início da investigação forense (IR). Ações: 1. Cruzamento de logs e hash das máquinas infectadas (WIN-OQH7RSUVFJK, DESKTOP-8659HK9). 2. Forcing Password Reset para e-mails corporativos expostos (mb_pracadaarvoresp@alliedbrasil.com.br).</td></tr>
+                <tr><td>15:50</td><td>Security / CISO</td><td>Mitigation Plan WIP (IR): Início da investigação forense (IR). Ações: 1. Cruzamento de logs e hash das máquinas infectadas. 2. Forcing Password Reset para e-mails corporativos expostos.</td></tr>
                 <tr><td>15:50</td><td>Infra / DevOps</td><td>Hardening Implementation: Início da revisão da Política de Firewall de Aplicação (WAF) e Estratégia de Segmentação de Rede nas VPCs.</td></tr>
                 <tr><td>15:50</td><td>Asper / CISO</td><td>Post-Incident Analysis: Avaliação final de risco e compliance pela consultoria Asper.</td></tr>
+            </table>
+        </div>
+    </div>
+    
+    <!-- NOVO EVENTO 19.6: EXPIRAÇÃO SSL (EXTRAÍDO DO 19.5) -->
+    <div id="event-19-6" class="event border-orange" onclick="toggleEvent(this)">
+        <div class="event-header">
+            <div class="event-title">ALERTA: Expiração de Certificado SSL (15 dias)</div>
+            <div class="header-right">
+                <span class="status-badge badge-warning">Acompanhamento</span>
+                <span class="toggle-text">Detalhes ▼</span>
+            </div>
+        </div>
+        <div class="timeline-wrapper">
+            <table>
+                <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+                <tr><td>15:17</td><td>E. Arley (NOC)</td><td>ALERT: Certificado SSL do domínio **allieddpp.com.br expira em 15 dias**. <span class="status-text-orange">PRIORIDADE ALTA</span>. Necessário iniciar workflow de renovação.</td></tr>
+                <tr><td>15:17</td><td>Você</td><td>Workflow de renovação acionado para o time de Cloud/Infra.</td></tr>
             </table>
         </div>
     </div>
@@ -1045,10 +1065,11 @@
   <div class="changelog-area">
     <h3>Últimas Mudanças no Diário</h3>
     <ul>
+      <li>[20/11 17:52] **Estrutura de Incidente de Segurança corrigida.** Alerta SSL (15:17) separado em novo evento (19.6).</li>
+      <li>[20/11 17:35] Reajuste de horários do Alerta de Segurança (19.5). Evento CERT.br adiantado para 12:27.</li>
       <li>[20/11 17:15] Adicionado **ALERTA CRÍTICO DE SEGURANÇA** (19.5) com plano inicial de Incident Response (IR).</li>
       <li>[20/11 17:15] Atualizado Expurgo GLPI-PRD-APLICACAO (17.5/19.2) com **agendamento para hoje às 20:00**.</li>
       <li>[20/11 17:07] Status do Disco GLPI-PROXY-INVENTORY (18.1) alterado para Normalizado.</li>
-      <li>[19/11 15:04] Normalização de Disco GLPI-PROXY-INVENTORY (19.3) adicionada.</li>
     </ul>
   </div>
 
