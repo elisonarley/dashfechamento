@@ -620,6 +620,9 @@
         <option value="2025-11-17">17 Novembro (Seg)</option>
         <option value="2025-11-18">18 Novembro (Ter)</option>
         <option value="2025-11-19">19 Novembro (Qua)</option>
+        <!-- ADICIONADOS NOVOS DIAS -->
+        <option value="2025-11-20">20 Novembro (Qui)</option>
+        <option value="2025-11-21">21 Novembro (Sex)</option>
       </select>
     </div>
   </div>
@@ -669,6 +672,23 @@
               <!-- NOVO EVENTO 19.7 -->
               <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-19', 'event-19-7')">Queda de Acesso - alliedbrasil.com.br (LAN/VPN)</a></li>
               
+            </ul>
+          </div>
+          
+          <!-- NOVO DIA 20/11 -->
+          <div class="index-day-card" data-day-id="2025-11-20">
+            <h3 class="index-day-title">20 de Novembro (Qui) <span class="event-count-badge" data-count-day="2025-11-20">0</span></h3>
+            <ul class="index-list">
+              <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-20', 'event-20-1')">RECORRÊNCIA: Falhas no Backup de Log (DONATELLO)</a></li>
+            </ul>
+          </div>
+
+          <!-- NOVO DIA 21/11 -->
+          <div class="index-day-card" data-day-id="2025-11-21">
+            <h3 class="index-day-title">21 de Novembro (Sex) <span class="event-count-badge" data-count-day="2025-11-21">0</span></h3>
+            <ul class="index-list">
+              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-21', 'event-21-1')">Falha e Normalização no Backup Full (DONATELLO)</a></li>
+              <li><a class="index-link status-maintenance" onclick="scrollToEvent('2025-11-21', 'event-21-2')">Falha na Varredura Completa (Full Scan) - Múltiplos Hosts</a></li>
             </ul>
           </div>
           
@@ -889,7 +909,7 @@
       </div>
     </div>
 
-    <div id="event-18-5" class="event border-green" onclick="toggleEvent(this)">
+    <div id="event-18-5" class="event border-red" onclick="toggleEvent(this)">
       <div class="event-header">
         <div class="event-title">ALERTA: Alta Utilização de CPU - RBPSRVFS01</div>
         <div class="header-right">
@@ -1106,14 +1126,89 @@
     
   </div>
   
+  <!-- NOVO DIA 20/11 -->
+  <div id="2025-11-20" class="content">
+    <h2>Eventos de Quinta-feira</h2>
+    
+    <!-- EVENTO 20.1: RECORRÊNCIA DE FALHAS NO BACKUP DE LOG -->
+    <div id="event-20-1" class="event border-red" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">CRITICAL: Recorrência de Falhas no Backup de Log (DONATELLO)</div>
+        <div class="header-right">
+          <span class="status-badge badge-danger blink">Em Aberto</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>22:00:28 (Ontem)</td><td>Sistema</td><td>PROBLEM: Falha na execução do Job 'DBA_Rotinas Administrativas - (Backup Log)' e do Job 'Truncate Log File (Jundsoft)'. Duração da falha: 10h 13m 35s.</td></tr>
+          <tr><td>17:03 (Ontem)</td><td>Pablo de A. Cruz</td><td>Comunicação: Alertas sobre Logs com mais de 8h (Duração: 13h 10m) e as falhas dos Jobs (Duração: 19h 2s) foram encaminhados. **Solicitada a desconsideração destes alertas.**</td></tr>
+          <tr><td>03:50:30 (Hoje)</td><td>Sistema</td><td><span class="status-text-red">PROBLEMA RECORRENTE</span>: Múltiplos alertas de "Log backup older than 8h" em cinco bases de dados. Duração: 4h 23m 33s e crescendo.</td></tr>
+        </table>
+      </div>
+    </div>
+    
+  </div>
+  
+  <!-- NOVO DIA 21/11 -->
+  <div id="2025-11-21" class="content">
+    <h2>Eventos de Sexta-feira</h2>
+    
+    <!-- EVENTO 21.1: FALHA NO BACKUP FULL -->
+    <div id="event-21-1" class="event border-green" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">FALHA: Falha e Normalização no Backup Full (DONATELLO)</div>
+        <div class="header-right">
+          <span class="status-badge badge-success">Resolvido</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+          <tr><td>07:24</td><td>L. Gomes</td><td>Acionamento inicial: Alerta de baixo espaço em disco para Backup Full no host DONATELLO (FS BACKUP 5 SPACE REMAIN < 100GB).</td></tr>
+          <tr><td>07:24</td><td>L. Gomes</td><td>Análise Detalhada: Verificação da Job History. Identificado que o backup do dia 19/11 excedeu o tempo de vida (> 20 horas), impedindo a exclusão automática e saturando o disco.</td></tr>
+          <tr><td>08:18</td><td>Gabriel Soares</td><td><span class="status-text-green">RESOLVIDO/CONFIRMAÇÃO</span>: O backup Full da rotina administrativa de hoje (20/11) foi executado com sucesso. O alerta de espaço foi normalizado.</td></tr>
+        </table>
+      </div>
+    </div>
+    
+    <!-- EVENTO 21.2: FALHA NA VARREDURA COMPLETA -->
+    <div id="event-21-2" class="event border-blue" onclick="toggleEvent(this)">
+      <div class="event-header">
+        <div class="event-title">INFO: Falha na Varredura Completa (Full Scan) - Múltiplos Hosts</div>
+        <div class="header-right">
+          <span class="status-badge badge-maintenance">Alerta Preventivo</span>
+          <span class="toggle-text">Detalhes ▼</span>
+        </div>
+      </div>
+      <div class="timeline-wrapper">
+        <table>
+          <tr><th width="15%">Horário</th><th width="15%">Host</th><th>Status / Detalhes</th></tr>
+          <tr><td>19/11 20:57</td><td>SANDRO</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 12h 55m.</td></tr>
+          <tr><td>19/11 20:57</td><td>BOSCH</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 12h 55m.</td></tr>
+          <tr><td>19/11 20:31</td><td>CEZANNE</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
+          <tr><td>19/11 20:31</td><td>DONATELLO</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
+          <tr><td>19/11 20:31</td><td>ANGELICO</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
+          <tr><td>19/11 20:31</td><td>BACON</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
+          <tr><td>19/11 20:31</td><td>WOLFGANG</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
+          <tr><td>19/11 20:31</td><td>RENOIR</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
+        </table>
+      </div>
+    </div>
+    
+  </div>
+  
+  
   <!-- NOVO: Seção de Últimas Mudanças (Changelog) -->
   <div class="changelog-area">
     <h3>Últimas Mudanças no Diário</h3>
     <ul>
+      <li>[21/11 10:05] **Nova Consolidação (20/11 - 21/11):** Adicionados eventos de Recorrência de Falha de Log (20.1), Falha/Normalização de Backup Full (21.1) e Falha de Full Scan em 8 Hosts (21.2).</li>
       <li>[19/11 18:15] **Incidente Resolvido:** Adicionada a resolução da Queda de Acesso alliedbrasil.com.br (19.7) - Causa: alteração de IP DNS.</li>
       <li>[19/11 17:55] Atualizado Expurgo GLPI-PRD-APLICACAO (19.2) com **Comunicação de Manutenção (17:11)**.</li>
       <li>[19/11 17:55] Adicionado novo evento **CRITICAL: Queda de Acesso - alliedbrasil.com.br (19.7)**.</li>
-      <li>[19/11 16:00] Ajuste de Ator e Cronologia: Corrigidos horários (13:30) e atores (Asper) no incidente de Segurança (19.5).</li>
     </ul>
   </div>
 
@@ -1265,8 +1360,8 @@
   function displayUpdateTimestamp() {
     // Obtém a data e hora atual no formato brasileiro (DD/MM/YYYY HH:MM)
     const now = new Date();
-    // Forçando a data para 19/11 para manter a coerência com os dados no corpo
-    const fixedDate = new Date(2025, 10, 19, now.getHours(), now.getMinutes()); 
+    // Definindo a data de consolidação para o momento atual (21/11/2025)
+    const fixedDate = new Date(2025, 10, 21, now.getHours(), now.getMinutes()); 
     
     const formattedDate = fixedDate.toLocaleDateString('pt-BR', {
         day: '2-digit',
@@ -1281,7 +1376,6 @@
     
     const timestampElement = document.getElementById('updateTimestamp');
     if (timestampElement) {
-        // Usando a hora real, mas a data fixada em 19/11
         timestampElement.textContent = `Última Consolidação: ${formattedDate} ${formattedTime} BRT`;
     }
   }
@@ -1298,14 +1392,14 @@
     renderOpenIncidents();
     
     // 4. Define a data padrão ao carregar (Preferência: último dia com dados)
-    const lastDay = "2025-11-19";
+    const lastDay = "2025-11-21"; // Novo dia mais recente
     if (document.getElementById(lastDay)) {
       document.getElementById('dateSelect').value = lastDay;
       showDate(lastDay);
     } else {
-      const day18 = "2025-11-18";
-      document.getElementById('dateSelect').value = day18;
-      showDate(day18);
+      const day19 = "2025-11-19";
+      document.getElementById('dateSelect').value = day19;
+      showDate(day19);
     }
   };
 </script>
