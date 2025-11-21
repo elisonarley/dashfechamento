@@ -689,6 +689,7 @@
             <ul class="index-list">
               <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-21', 'event-21-1')">Falha e Normalização no Backup Full (DONATELLO)</a></li>
               <li><a class="index-link status-maintenance" onclick="scrollToEvent('2025-11-21', 'event-21-2')">Falha na Varredura Completa (Full Scan) - Múltiplos Hosts</a></li>
+              <li><a class="index-link status-orange" onclick="scrollToEvent('2025-11-21', 'event-21-3')">Alerta de Inatividade/Falha de Tópicos Kafka (LAG)</a></li>
             </ul>
           </div>
           
@@ -799,7 +800,7 @@
           <tr><td>19/11 15:31</td><td>Fabio</td><td><span class="status-text-red">EXPURGO AGENDADO</span> Alinhado o Expurgo para hoje **após as 20:00**. Informado que pode haver lentidão e indisponibilidade.</td></tr>
           <tr><td>19/11 17:11</td><td>Gabriel</td><td><span class="status-text-orange">COMUNICADO</span> Informado que o comunicado de manutenção no GLPI (20:00h até o fechamento das lojas) foi realizado. Sistema pode ter lentidão/instabilidade, mas não ficará indisponível.</td></tr>
           <tr><td>19/11 20:37</td><td>Elison Arley</td><td><span class="status-text-green">RESOLVIDO</span>: Verificado que a partição está com **32,99%** de uso de disco no momento, após as ações tomadas.</td></tr>
-          <tr><td>19/11 21:16</td><td>Gabriel Ribeiro</td><td><span class="status-text-blue">NOVO FLUXO</span>: Informou o novo fluxo para anexos fora da data de corte do expurgo (retornam mensagem de arquivo não encontrado). Área solicitante deve indicar o arquivo para disponibilização.</td></tr>
+          <tr><td>19/11 21:16</td><td>Gabriel Ribeiro</td><td><span class="status-text-blue">NOVO FLUXO</span>: Chamados seguem acessíveis. Anexos fora da data de corte do expurgo retornarão "arquivo não encontrado". Área solicitante deve indicar o arquivo para disponibilização.</td></tr>
         </table>
       </div>
     </div>
@@ -1016,7 +1017,7 @@
                 <tr><td>19/11 14:44</td><td>Fellipe Soares</td><td>Enviou a lista de acordo com os grupos e datas de expurgo solicitadas.</td></tr>
                 <tr><td>19/11 14:56</td><td>Fabio Santos</td><td>Solicitou um alinhamento para definição das próximas etapas.</td></tr>
                 <tr><td>19/11 15:31</td><td>Fabio</td><td><span class="status-text-red">EXPURGO AGENDADO</span> Alinhado o Expurgo para hoje **após as 20:00**. Informado que pode haver lentidão e indisponibilidade.</td></tr>
-                <tr><td>19/11 17:11</td><td>Gabriel</td><td><span class="status-text-orange">COMUNICADO</span> Informado que o comunicado de manutenção no GLPI (20:00h até o fechamento das lojas) foi realizado.</td></tr>
+                <tr><td>19/11 17:11</td><td>Gabriel</td><td><span class="status-text-orange">COMUNICADO</span> Informado que o comunicado de manutenção no GLPI (20:00h até o fechamento das lojas) foi realizado. Sistema pode ter lentidão/instabilidade, mas não ficará indisponível.</td></tr>
                 <tr><td>19/11 20:37</td><td>E. Arley</td><td><span class="status-text-green">RESOLVIDO</span>: Verificado que a partição está com **32,99%** de uso de disco no momento, após o expurgo.</td></tr>
                 <tr><td>19/11 21:16</td><td>Gabriel Ribeiro</td><td><span class="status-text-blue">NOVO FLUXO</span>: Chamados seguem acessíveis. Anexos fora da data de corte do expurgo retornarão "arquivo não encontrado". Área solicitante deve indicar o arquivo para disponibilização.</td></tr>
             </table>
@@ -1085,6 +1086,7 @@
                 <tr><td>15:50</td><td>Infra / DevOps</td><td>Hardening Implementation: Início da revisão da Política de Firewall de Aplicação (WAF) e Estratégia de Segmentação de Rede nas VPCs.</td></tr>
                 <!-- Ajuste Ator: Asper / CISO -->
                 <tr><td>13:30</td><td>Asper / CISO</td><td>Post-Incident Analysis: Avaliação final de risco e compliance pela consultoria Asper. (Hora do PDF: 13:30)</td></tr>
+                <tr><td>21/11 10:47</td><td>E. Arley</td><td><span class="status-text-orange">PENDENTE</span> Solicitado ao Vinicius Avelino um retorno da analise da Asper (Follow-up do dia 21/11).</td></tr>
             </table>
         </div>
     </div>
@@ -1198,8 +1200,29 @@
           <tr><td>19/11 20:31</td><td>BACON</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
           <tr><td>19/11 20:31</td><td>WOLFGANG</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
           <tr><td>19/11 20:31</td><td>RENOIR</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
+          <tr><td>20/11 12:03</td><td>E. Arley</td><td>Informado no privado ao Ricardo Henrique para que verifique os alertas acima.</td></tr>
         </table>
       </div>
+    </div>
+    
+    <!-- EVENTO 21.3: NOVO INCIDENTE KAFKA -->
+    <div id="event-21-3" class="event border-orange" onclick="toggleEvent(this)">
+        <div class="event-header">
+            <div class="event-title">ALERTA: Alerta de Inatividade/Falha de Tópicos Kafka (LAG / SA UPDATE ORDERS)</div>
+            <div class="header-right">
+                <span class="status-badge badge-warning">Acompanhamento</span>
+                <span class="toggle-text">Detalhes ▼</span>
+            </div>
+        </div>
+        <div class="timeline-wrapper">
+            <table>
+                <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
+                <tr><td>11:02</td><td>Rangel, Roger, Wilson</td><td>Acionamento inicial: Solicitação de verificação do alerta de Kafka Tópicos LAG e SA UPDATE ORDERS (Inativo ou com falha - Severity: Warning/Problem).</td></tr>
+                <tr><td>11:11</td><td>Rangel D. de Almeida</td><td>Investigação: Questiona a origem dos alertas e envia screenshot de tópicos ativos, sugerindo que os lags estão OK.</td></tr>
+                <tr><td>11:12</td><td>Rangel D. de Almeida</td><td>Confirmação: "Oi Rangel, boa tarde. Alarmaram novamente." / "lags estao ok" (referindo-se à verificação de lag em tempo real no monitoramento).</td></tr>
+                <tr><td>15:14</td><td>Rangel D. de Almeida</td><td><span class="status-text-orange">AÇÃO MITIGADORA</span>: "vou ajustar os parâmetros aqui das chamadas, como temos alguns picos durante o dia, o lag em certos momentos é normal".</td></tr>
+            </table>
+        </div>
     </div>
     
   </div>
@@ -1209,10 +1232,9 @@
   <div class="changelog-area">
     <h3>Últimas Mudanças no Diário</h3>
     <ul>
+      <li>[21/11 15:30] **Nova Consolidação (21/11):** Adicionado novo incidente Kafka (21.3). Atualizado follow-up de Full Scan (21.2) com acionamento do Ricardo Henrique.</li>
       <li>[21/11 10:20] **Incidente GLPI RESOLVIDO:** Consolidada a conclusão do expurgo GLPI-PRD-APLICACAO (17.5/19.2) com uso de disco em 32.99% e novo fluxo de anexos.</li>
       <li>[21/11 10:05] **Nova Consolidação (20/11 - 21/11):** Adicionados eventos de Recorrência de Falha de Log (20.1), Falha/Normalização de Backup Full (21.1) e Falha de Full Scan em 8 Hosts (21.2).</li>
-      <li>[19/11 18:15] **Incidente Resolvido:** Adicionada a resolução da Queda de Acesso alliedbrasil.com.br (19.7) - Causa: alteração de IP DNS.</li>
-      <li>[19/11 17:55] Atualizado Expurgo GLPI-PRD-APLICACAO (19.2) com **Comunicação de Manutenção (17:11)**.</li>
     </ul>
   </div>
 
@@ -1365,7 +1387,7 @@
     // Obtém a data e hora atual no formato brasileiro (DD/MM/YYYY HH:MM)
     const now = new Date();
     // Definindo a data de consolidação para o momento atual (21/11/2025)
-    const fixedDate = new Date(2025, 10, 21, 10, 20); // 10:20 BRT
+    const fixedDate = new Date(2025, 10, 21, 15, 30); // 15:30 BRT
     
     const formattedDate = fixedDate.toLocaleDateString('pt-BR', {
         day: '2-digit',
