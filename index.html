@@ -2,41 +2,33 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Diario de Bordo - Black Friday 2025</title>
+  <title>SRE Dashboard - Monitoria Operacional</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Mantendo as fontes, mas JetBrains Mono será a principal -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      /* Palette SRE / Ultra Dark */
-      --bg-color: #070707; /* Preto ultra-sutil para reduzir o brilho */
-      --surface-color: #1A1A1A; /* Superfície dos cards */
-      --surface-color-highlight: #2A2A2A; /* Card Ativo / Hover */
-      
-      /* Cores de Acento (Sinais SRE) */
-      --sre-blue: #00A3FF; /* Blue para INFO / Manutenção */
-      --sre-red: #FF3B30; /* Vermelho Crítico */
-      --sre-orange: #FF9500; /* Warning / Atenção */
-      --sre-green: #34C759; /* Sucesso / Resolvido */
+      --bg-color: #070707;
+      --surface-color: #1A1A1A;
+      --surface-color-highlight: #2A2A2A;
+      --sre-blue: #00A3FF;
+      --sre-red: #FF3B30;
+      --sre-orange: #FF9500;
+      --sre-green: #34C759;
       --text-primary: #FFFFFF;
-      --text-secondary: #AAAAAA; /* Texto de detalhes/secundário */
-      
-      /* Backgrounds de Status (Destaque sutil) */
+      --text-secondary: #AAAAAA;
       --bg-red-subtle: rgba(255, 59, 48, 0.1);
       --bg-orange-subtle: rgba(255, 149, 0, 0.1);
       --bg-green-subtle: rgba(52, 199, 87, 0.1);
       --bg-blue-subtle: rgba(0, 163, 255, 0.1);
-
-      --border-radius-card: 16px; /* Reduzido para visual mais técnico */
+      --border-radius-card: 16px;
       --border-radius-inner: 12px;
     }
 
     body {
       margin: 0;
-      /* Fonte principal para dados e logs */
       font-family: 'JetBrains Mono', monospace; 
       background-color: var(--bg-color);
       color: var(--text-primary);
@@ -45,22 +37,19 @@
       scroll-behavior: smooth;
     }
 
-    /* Container Principal */
     .app-container {
-      max-width: 900px; /* Mais largo para mais densidade de dados */
+      max-width: 900px;
       margin: 0 auto;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
-    /* === Viewing Area (Cabeçalho) === */
     .header-area {
       padding: 40px 24px 15px 24px;
       display: flex;
       flex-direction: column;
       gap: 5px;
-      /* Border inferior sutil para separação */
       border-bottom: 1px solid var(--surface-color-highlight);
     }
 
@@ -78,7 +67,7 @@
       font-size: 38px;
       font-weight: 900; 
       color: var(--text-primary);
-      font-family: 'Roboto', sans-serif; /* Título em Roboto */
+      font-family: 'Roboto', sans-serif;
     }
     
     .update-timestamp {
@@ -87,7 +76,6 @@
         margin-top: 5px;
     }
     
-    /* NOVO: PAINEL DE MÉTRICAS */
     .metrics-dashboard {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -128,32 +116,15 @@
     .metric-value.critical { color: var(--sre-red); }
     .metric-value.total { color: var(--sre-orange); }
 
-    .metric-icon {
-        width: 20px;
-        height: 20px;
-    }
+    .metric-icon { width: 20px; height: 20px; }
     
-    /* Responsividade do Painel de Métricas */
     @media (max-width: 600px) {
-        .metrics-dashboard {
-            grid-template-columns: 1fr; /* Empilha em telas pequenas */
-            padding: 15px 16px 5px;
-        }
-        .metric-value {
-            font-size: 26px;
-        }
+        .metrics-dashboard { grid-template-columns: 1fr; padding: 15px 16px 5px; }
+        .metric-value { font-size: 26px; }
     }
 
-
-    /* === Date Selector & Filter Button === */
-    .controls-area {
-      padding: 20px 24px 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
+    .controls-area { padding: 20px 24px 30px; display: flex; flex-direction: column; gap: 15px; }
     
-    /* Botão de Filtro - Live Alert Indicator */
     .filter-button {
       background-color: var(--sre-red);
       color: var(--text-primary);
@@ -168,31 +139,20 @@
       align-items: center;
       gap: 10px;
       transition: all 0.2s;
-      box-shadow: 0 0 15px rgba(255, 59, 48, 0.6); /* Sombra intensa de alerta */
+      box-shadow: 0 0 15px rgba(255, 59, 48, 0.6);
     }
-    .filter-button:hover {
-      background-color: #cc372f;
-      transform: translateY(-2px);
-    }
-    .filter-button:active {
-      transform: scale(0.98);
-    }
+    .filter-button:hover { background-color: #cc372f; transform: translateY(-2px); }
     .filter-button.inactive {
         background-color: var(--surface-color);
         box-shadow: none;
         color: var(--text-secondary);
         border: 1px solid var(--surface-color-highlight);
     }
-    .filter-button.inactive .blink {
-        animation: none;
-        color: var(--text-secondary);
-    }
     .filter-button.active-filter {
-        background-color: var(--sre-blue); /* Fica azul quando ativo/clicado */
+        background-color: var(--sre-blue);
         box-shadow: 0 0 15px rgba(0, 163, 255, 0.4);
     }
     
-    /* Badge de contagem crítica */
     .filter-count {
       background-color: var(--bg-red-subtle);
       color: var(--sre-red);
@@ -203,31 +163,19 @@
       border: 1px solid var(--sre-red);
     }
 
-    .select-wrapper {
-      position: relative;
-      display: inline-block;
-      width: 100%;
-    }
+    .select-wrapper { position: relative; width: 100%; }
 
     select {
       appearance: none;
-      -webkit-appearance: none;
       width: 100%;
       padding: 14px 20px;
       font-size: 15px;
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 400;
       border-radius: var(--border-radius-card);
       border: 1px solid var(--surface-color-highlight);
       background-color: var(--surface-color);
       color: var(--text-primary);
       cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    select:focus {
-      outline: none;
-      background-color: var(--surface-color-highlight);
     }
 
     .select-wrapper::after {
@@ -241,1270 +189,292 @@
       pointer-events: none;
     }
     
-    /* Container para a Lista de Incidentes Abiertos (abaixo do botão) */
-    #openIncidentsContainer {
-        padding: 0 16px;
-        margin-top: 10px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
     #openIncidentsList {
         display: flex;
         flex-direction: column;
-        gap: 12px; /* Reduzido o espaçamento para densidade */
+        gap: 12px;
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s;
     }
     
-    #openIncidentsList.expanded {
-        max-height: 3000px; 
-        padding-top: 20px;
-    }
+    #openIncidentsList.expanded { max-height: 3000px; padding-top: 20px; }
     
-    .open-incident-clone {
-        /* Borda dupla para destacar que é um clone do status */
-        border: 2px solid var(--sre-red); 
-        background-color: var(--surface-color); /* Fundo mais escuro */
-        transform: scale(1);
-        opacity: 1;
-    }
-    .open-incident-clone .toggle-text {
-      color: var(--sre-blue);
-      font-weight: 700;
-    }
+    .open-incident-clone { border: 2px solid var(--sre-red); background-color: var(--surface-color); }
 
+    .content { padding: 0 16px 40px; display: none; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .content.active { display: flex; flex-direction: column; gap: 16px; }
 
-    /* === Conteúdo das Datas === */
-    .content { 
-      padding: 0 16px 40px; 
-      display: none; 
-      animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .content.active { 
-      display: flex; 
-      flex-direction: column;
-      gap: 16px;
-    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    h2 { font-size: 16px; color: var(--text-secondary); font-family: 'Roboto', sans-serif; text-transform: uppercase; letter-spacing: 1px; margin: 10px 8px; }
 
-    h2 {
-      font-size: 16px; /* Menor e mais discreto */
-      color: var(--text-secondary);
-      font-weight: 500;
-      margin: 10px 8px 10px; 
-      padding-left: 8px;
-      font-family: 'Roboto', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    /* === Cards de Eventos (SRE Data Box) === */
     .event {
       background-color: var(--surface-color);
       border-radius: var(--border-radius-card);
       overflow: hidden;
-      /* Borda sutil para separar o card */
       border: 1px solid var(--surface-color-highlight);
-      transition: background-color 0.2s, opacity 0.3s, max-height 0.3s;
+      transition: all 0.2s;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     
-    .event.expanded {
-        border-color: var(--sre-blue); /* Destaque quando expandido */
-    }
+    .event.expanded { border-color: var(--sre-blue); }
 
-    .event-header {
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center; 
-      cursor: pointer;
-      user-select: none;
-      gap: 16px;
-    }
-    
-    /* Título do Evento: Forte e Legível */
-    .event-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.3;
-      flex: 1;
-      font-family: 'JetBrains Mono', monospace;
-    }
+    .event-header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; gap: 16px; }
+    .event-title { font-size: 15px; font-weight: 700; color: var(--text-primary); flex: 1; }
 
-    /* Indicador de Cor lateral (Visual SRE) */
     .event.border-red { border-left: 5px solid var(--sre-red); }
     .event.border-orange { border-left: 5px solid var(--sre-orange); }
     .event.border-blue { border-left: 5px solid var(--sre-blue); }
     .event.border-green { border-left: 5px solid var(--sre-green); }
 
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; min-width: 100px; }
 
-    /* Header Right: Badge e Ícone */
-    .header-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 8px;
-      min-width: 100px;
-    }
+    .status-badge { font-size: 11px; padding: 4px 10px; border-radius: 4px; font-weight: 700; text-transform: uppercase; border: 1px solid transparent; }
+    .status-badge.badge-success { background-color: var(--bg-green-subtle); color: var(--sre-green); border-color: rgba(52, 199, 87, 0.4); }
+    .status-badge.badge-danger { background-color: var(--bg-red-subtle); color: var(--sre-red); border-color: rgba(255, 59, 48, 0.4); }
+    .status-badge.badge-warning { background-color: var(--bg-orange-subtle); color: var(--sre-orange); border-color: rgba(255, 149, 0, 0.4); }
+    .status-badge.badge-maintenance { background-color: var(--bg-blue-subtle); color: var(--sre-blue); border-color: rgba(0, 163, 255, 0.4); }
 
-    /* === Badges (SRE Signal Style: Fundo Sutil, Borda Clara) === */
-    .status-badge {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 4px; /* Mais quadrado */
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border: 1px solid transparent; 
-      font-family: 'JetBrains Mono', monospace;
-    }
+    .blink { animation: pulse-red 2s infinite; }
+    @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 59, 48, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); } }
 
-    .status-badge.badge-success {
-      background-color: var(--bg-green-subtle);
-      color: var(--sre-green);
-      border-color: rgba(52, 199, 87, 0.4);
-    }
+    .timeline-wrapper { max-height: 0; overflow: hidden; transition: max-height 0.4s; background-color: #101010; }
+    .event.expanded .timeline-wrapper { max-height: 1500px; }
+    .timeline-wrapper table { display: block; max-height: 400px; overflow-y: auto; }
 
-    /* Badge Vermelho (Em Aberto/Perigo) */
-    .status-badge.badge-danger {
-      background-color: var(--bg-red-subtle);
-      color: var(--sre-red);
-      border-color: rgba(255, 59, 48, 0.4);
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 12px 20px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-secondary); }
+    th { color: var(--sre-blue); font-weight: 700; text-transform: uppercase; font-size: 10px; position: sticky; top: 0; background-color: #101010; z-index: 10; }
     
-    /* Badge Amarelo/Laranja (Atenção) */
-    .status-badge.badge-warning {
-      background-color: var(--bg-orange-subtle);
-      color: var(--sre-orange);
-      border-color: rgba(255, 149, 0, 0.4);
-    }
-
-    /* Badge Manutenção/Info */
-    .status-badge.badge-maintenance {
-      background-color: var(--bg-blue-subtle); 
-      color: var(--sre-blue);
-      border-color: rgba(0, 163, 255, 0.4);
-    }
-
-    .blink {
-      animation: pulse-red 2s infinite;
-    }
-
-    @keyframes pulse-red {
-      0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(255, 59, 48, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
-    }
-
-    .toggle-text {
-      font-size: 10px;
-      color: var(--text-secondary);
-      font-weight: 400;
-      text-transform: uppercase;
-    }
-
-    /* === Timeline Area (Dentro do Card) === */
-    .timeline-wrapper {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      background-color: #101010; /* Fundo mais escuro para o log */
-    }
-
-    .event.expanded .timeline-wrapper {
-      max-height: 1500px;
-    }
-    
-    .timeline-wrapper table {
-      display: block;
-      max-height: 300px; /* Mais compacto */
-      overflow-y: auto; 
-    }
-    
-    .timeline-wrapper table::-webkit-scrollbar {
-        width: 4px;
-    }
-    .timeline-wrapper table::-webkit-scrollbar-thumb {
-        background-color: var(--sre-blue);
-        border-radius: 10px;
-    }
-    .timeline-wrapper table::-webkit-scrollbar-track {
-        background: var(--surface-color);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    th, td {
-      padding: 12px 20px; /* Menos padding para mais densidade */
-      text-align: left;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      color: var(--text-secondary);
-    }
-
-    th {
-      color: var(--sre-blue); /* Cabeçalho da tabela em azul */
-      font-weight: 700;
-      text-transform: uppercase;
-      font-size: 10px;
-      letter-spacing: 1px;
-      padding-top: 18px;
-      position: sticky;
-      top: 0;
-      background-color: #101010;
-      z-index: 10;
-    }
-    
-    /* Timestamps em JetBrains Mono */
-    td:first-child, td:nth-child(2) {
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--text-secondary);
-      font-size: 11px;
-    }
-    td:nth-child(3) {
-        color: var(--text-primary);
-    }
-
-    tr:last-child td { border-bottom: none; padding-bottom: 18px; }
-
     .status-text-green { color: var(--sre-green); font-weight: 700; }
     .status-text-red { color: var(--sre-red); font-weight: 700; }
     .status-text-orange { color: var(--sre-orange); font-weight: 700; }
-    .status-text-blue { color: var(--sre-blue); font-weight: 700; }
 
-    /* === Rodapé e Changelog === */
-    .footer-spacer { 
-      height: 60px; 
-    }
-    
-    .changelog-area {
-        padding: 30px 24px 40px;
-        background-color: var(--bg-color);
-        border-top: 1px solid var(--surface-color-highlight);
-    }
-    .changelog-area h3 {
-        color: var(--sre-blue);
-        font-size: 16px;
-        margin-top: 0;
-        margin-bottom: 15px;
-        font-family: 'Roboto', sans-serif;
-        text-transform: uppercase;
-    }
-    .changelog-area ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        font-size: 12px;
-        color: var(--text-secondary);
-    }
-    .changelog-area li {
-        margin-bottom: 8px;
-        padding-left: 20px;
-        position: relative;
-    }
-    .changelog-area li:before {
-        content: '•';
-        color: var(--sre-orange);
-        position: absolute;
-        left: 0;
-        font-size: 16px;
-        line-height: 1;
-    }
+    .changelog-area { padding: 30px 24px; border-top: 1px solid var(--surface-color-highlight); }
+    .changelog-area h3 { color: var(--sre-blue); font-size: 16px; text-transform: uppercase; }
+    .changelog-area ul { list-style: none; padding: 0; font-size: 12px; color: var(--text-secondary); }
+    .changelog-area li { margin-bottom: 8px; padding-left: 20px; position: relative; }
+    .changelog-area li:before { content: '•'; color: var(--sre-orange); position: absolute; left: 0; }
 
-
-    @media (max-width: 768px) {
-      .header-area { padding-top: 30px; }
-      h1 { font-size: 32px; }
-      .event-header { padding: 14px 16px; }
-      .status-badge { font-size: 10px; padding: 3px 8px; }
-    }
-    
-    /* === CARROSSEL DE ÍNDICE (Mantido por ser funcional) === */
-    .index-area {
-      padding: 0 0 30px 0;
-      margin-top: 10px;
-    }
-
-    .index-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin: 0 16px 15px 24px; 
-      font-family: 'Roboto', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .index-grid {
-      display: flex;
-      overflow-x: auto; 
-      padding: 0 16px 16px 16px; 
-      gap: 12px; /* Mais compacto */
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    .index-grid::-webkit-scrollbar {
-        height: 4px;
-    }
-    .index-grid::-webkit-scrollbar-thumb {
-        background-color: var(--sre-blue);
-        border-radius: 10px;
-    }
-    .index-grid::-webkit-scrollbar-track {
-        background: var(--surface-color);
-    }
-    
-    .index-grid-wrapper {
-        display: block; 
-    }
-
-    .index-day-card {
-      min-width: 80%; 
-      max-width: 80%;
-      
-      @media (min-width: 600px) {
-        min-width: 40%; 
-        max-width: 40%;
-      }
-      @media (min-width: 1024px) {
-        min-width: 25%; 
-        max-width: 25%;
-      }
-      
-      background-color: var(--surface-color);
-      border-radius: var(--border-radius-card);
-      padding: 15px 20px; /* Menos padding */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--surface-color-highlight);
-      scroll-snap-align: start; 
-    }
-
-    .index-day-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--sre-blue);
-      margin: 0 0 10px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding-bottom: 8px;
-      
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'Roboto', sans-serif;
-    }
-    
-    .event-count-badge {
-        background-color: var(--sre-blue);
-        color: var(--text-primary);
-        padding: 3px 8px;
-        border-radius: 3px;
-        font-size: 11px;
-        font-weight: 700;
-        font-family: 'JetBrains Mono', monospace;
-    }
-
-    .index-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .index-list li {
-      margin-bottom: 6px;
-    }
-
-    .index-link {
-      display: block;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 400;
-      padding: 5px 0;
-      transition: color 0.2s;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .index-link:hover {
-      text-decoration: underline;
-    }
-
-    /* Cores de Status no Índice */
-    .index-link.status-green { color: var(--sre-green); }
-    .index-link.status-red { color: var(--sre-red); }
-    .index-link.status-orange { color: var(--sre-orange); }
-    .index-link.status-maintenance { color: var(--sre-blue); } 
+    .index-grid { display: flex; overflow-x: auto; padding: 0 16px 16px; gap: 12px; }
+    .index-day-card { min-width: 250px; background-color: var(--surface-color); border-radius: var(--border-radius-card); padding: 15px; border: 1px solid var(--surface-color-highlight); }
+    .index-day-title { font-size: 14px; color: var(--sre-blue); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; display: flex; justify-content: space-between; }
+    .index-link { font-size: 12px; color: var(--text-secondary); text-decoration: none; cursor: pointer; display: block; padding: 4px 0; }
+    .index-link:hover { color: var(--text-primary); }
+    .status-green { color: var(--sre-green) !important; }
+    .status-red { color: var(--sre-red) !important; }
+    .status-orange { color: var(--sre-orange) !important; }
+    .status-maintenance { color: var(--sre-blue) !important; }
   </style>
 </head>
 <body>
 
 <div class="app-container">
-  
   <div class="header-area">
-    <div class="header-subtitle">MONITORIA - BLACK FRIDAY 2025</div>
-    <h1>Diário de Bordo</h1>
+    <div class="header-subtitle">INFRASTRUCTURE MONITORING - SEASONAL PEAK 2025</div>
+    <h1>Incident Journal</h1>
     <div id="updateTimestamp" class="update-timestamp"></div>
   </div>
 
-  <!-- NOVO: PAINEL DE MÉTRICAS (CHAMADOS) -->
   <div class="metrics-dashboard" id="metricsDashboard">
       <div class="metric-card">
-          <div class="metric-title">Resolvidos/Mitigados</div>
-          <div class="metric-value resolved" id="metricResolved">
-              <!-- Ícone SVG de Checkmark -->
-              <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              0
-          </div>
+          <div class="metric-title">Resolved / Mitigated</div>
+          <div class="metric-value resolved" id="metricResolved">0</div>
       </div>
       <div class="metric-card">
-          <div class="metric-title">Críticos Ativos</div>
-          <div class="metric-value critical" id="metricCritical">
-              <!-- Ícone SVG de Exclamação -->
-              <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                <line x1="12" y1="9" x2="12" y2="13"></line>
-                <line x1="12" y1="17" x2="12" y2="17"></line>
-              </svg>
-              0
-          </div>
+          <div class="metric-title">Active Critical</div>
+          <div class="metric-value critical" id="metricCritical">0</div>
       </div>
       <div class="metric-card">
-          <div class="metric-title">Total de Eventos</div>
-          <div class="metric-value total" id="metricTotal">
-              <!-- Ícone SVG de Raio (Total de Impacto) -->
-              <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-              </svg>
-              0
-          </div>
+          <div class="metric-title">Total Events</div>
+          <div class="metric-value total" id="metricTotal">0</div>
       </div>
   </div>
 
-
   <div class="controls-area">
     <button id="filterButton" class="filter-button inactive" onclick="toggleFilter()">
-        <span id="filterText">Visualizar </span>
-        <span id="openCount" class="filter-count blink">0</span>
-        <span id="filterLabel"> ALERTAS CRÍTICOS EM ABERTO</span>
+        <span id="filterText">View </span>
+        <span id="openCount" class="filter-count">0</span>
+        <span id="filterLabel"> OPEN CRITICAL ALERTS</span>
     </button>
     <div id="openIncidentsContainer">
-        <div id="openIncidentsList">
-            </div>
+        <div id="openIncidentsList"></div>
     </div>
     
     <div class="select-wrapper">
       <select id="dateSelect" onchange="showDate(this.value)">
-        <option value="">Selecionar data...</option>
-        <option value="2025-11-17">17 NOV (Seg)</option>
-        <option value="2025-11-18">18 NOV (Ter)</option>
-        <option value="2025-11-19">19 NOV (Qua)</option>
-        <option value="2025-11-20">20 NOV (Qui)</option>
-        <option value="2025-11-21">21 NOV (Sex)</option>
+        <option value="">Select Date...</option>
+        <option value="day-1">Nov 17 (Mon)</option>
+        <option value="day-2">Nov 18 (Tue)</option>
+        <option value="day-3">Nov 19 (Wed)</option>
+        <option value="day-4">Nov 20 (Thu)</option>
+        <option value="day-5">Nov 21 (Fri)</option>
       </select>
     </div>
   </div>
 
   <div class="index-area">
-    <h2 class="index-title">ÍNDICE DE EVENTOS POR DIA</h2>
-    <div class="index-grid-wrapper">
-        <div class="index-grid">
-          
-          <div class="index-day-card" data-day-id="2025-11-17">
-            <h3 class="index-day-title">17/11 (Seg) <span class="event-count-badge" data-count-day="2025-11-17">0</span></h3>
-            <ul class="index-list">
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-17', 'event-17-1')">Pedidos Represados no Faturamento (Jund)</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-17', 'event-17-2')">Disco Insuficiente - Servidor Donatello (G:)</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-17', 'event-17-3')">Alto Consumo de Disco - PROD-WMS-INTEGRADOR (/)</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-17', 'event-17-4')">Instabilidade Link de Internet em Jundiaí</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-17', 'event-17-5')">Disco Criticamente Baixo - GLPI-PRD-APLICACAO [/data]</a></li>
-              <li><a class="index-link status-orange" onclick="scrollToEvent('2025-11-17', 'event-17-6')">Site Sem Resposta (TRADE CREDIX WORKER)</a></li>
-            </ul>
-          </div>
-          
-          <div class="index-day-card" data-day-id="2025-11-18">
-            <h3 class="index-day-title">18/11 (Ter) <span class="event-count-badge" data-count-day="2025-11-18">0</span></h3>
-            <ul class="index-list">
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-18', 'event-18-1')">Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</a></li>
-              <li><a class="index-link status-maintenance" onclick="scrollToEvent('2025-11-18', 'event-18-2')">Disco Criticamente Baixo - SRV-PAOLLO [/] (Maint)</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-18', 'event-18-3')">Falha em Rotinas e Backups - SRV-DONATELLO</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-18', 'event-18-4')">Agentes Zabbix Indisponíveis (MASACCIO/GIORGIONE)</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-18', 'event-18-5')">Alta Utilização de CPU - RBPSRVFS01</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-18', 'event-18-6')">Alta Utilização de CPU - WHISKEY</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-18', 'event-18-7')">Queda de Link (Americanet) - FGT_JDI</a></li>
-            </ul>
-          </div>
-
-          <div class="index-day-card" data-day-id="2025-11-19">
-            <h3 class="index-day-title">19/11 (Qua) <span class="event-count-badge" data-count-day="2025-11-19">0</span></h3>
-            <ul class="index-list">
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-1')">Normalização Rotinas de Backup - SRV-DONATELLO</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-2')">Expurgo de Base Pendente - GLPI-PRD-APLICACAO</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-3')">Normalização de Disco - GLPI-PROXY-INVENTORY</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-4')">Indisponibilidade Pipe Core - Login (Erro 5XX)</a></li>
-              <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-19', 'event-19-5')">ALERTA CRÍTICO: Vazamento de Credenciais (CERT.br)</a></li>
-              <li><a class="index-link status-orange" onclick="scrollToEvent('2025-11-19', 'event-19-6')">ALERTA: Expiração de Certificado SSL (15 dias)</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-19', 'event-19-7')">Queda de Acesso - alliedbrasil.com.br (LAN/VPN)</a></li>
-            </ul>
-          </div>
-          
-          <div class="index-day-card" data-day-id="2025-11-20">
-            <h3 class="index-day-title">20/11 (Qui) <span class="event-count-badge" data-count-day="2025-11-20">0</span></h3>
-            <ul class="index-list">
-              <li><a class="index-link status-red" onclick="scrollToEvent('2025-11-20', 'event-20-1')">RECORRÊNCIA: Falhas no Backup de Log (DONATELLO)</a></li>
-            </ul>
-          </div>
-
-          <div class="index-day-card" data-day-id="2025-11-21">
-            <h3 class="index-day-title">21/11 (Sex) <span class="event-count-badge" data-count-day="2025-11-21">0</span></h3>
-            <ul class="index-list">
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-21', 'event-21-1')">Falha e Normalização no Backup Full (DONATELLO)</a></li>
-              <li><a class="index-link status-maintenance" onclick="scrollToEvent('2025-11-21', 'event-21-2')">Falha na Varredura Completa (Full Scan) - Múltiplos Hosts</a></li>
-              <li><a class="index-link status-green" onclick="scrollToEvent('2025-11-21', 'event-21-3')">Alerta de Inatividade/Falha de Tópicos Kafka</a></li>
-            </ul>
-          </div>
-          
-        </div>
+    <h2 style="margin-left: 24px;">EVENT INDEX</h2>
+    <div class="index-grid">
+      <!-- Day 1 Index -->
+      <div class="index-day-card">
+        <div class="index-day-title">Nov 17 (Mon)</div>
+        <div class="index-link status-green" onclick="scrollToEvent('day-1', 'ev-1-1')">Billing Pipeline Delay</div>
+        <div class="index-link status-green" onclick="scrollToEvent('day-1', 'ev-1-2')">Disk Threshold - SRV-DB-01</div>
+      </div>
+      <!-- Day 2 Index -->
+      <div class="index-day-card">
+        <div class="index-day-title">Nov 18 (Tue)</div>
+        <div class="index-link status-green" onclick="scrollToEvent('day-2', 'ev-2-1')">Link Flapping - Site-Alpha</div>
+        <div class="index-link status-maintenance" onclick="scrollToEvent('day-2', 'ev-2-2')">Scheduled Maintenance - Proxy-02</div>
+      </div>
+      <!-- Day 3 Index -->
+      <div class="index-day-card">
+        <div class="index-day-title">Nov 19 (Wed)</div>
+        <div class="index-link status-red" onclick="scrollToEvent('day-3', 'ev-3-1')">Security Alert - Credential Leak</div>
+        <div class="index-link status-green" onclick="scrollToEvent('day-3', 'ev-3-2')">Auth Service - 5XX Errors</div>
+      </div>
     </div>
   </div>
 
-  <div id="2025-11-17" class="content">
-    <h2>EVENTOS DE SEGUNDA-FEIRA (17/11)</h2>
-
-    <div id="event-17-1" class="event border-green" onclick="toggleEvent(this)">
+  <!-- Day 1 Content -->
+  <div id="day-1" class="content">
+    <h2>Monday Events</h2>
+    <div id="ev-1-1" class="event border-green" onclick="toggleEvent(this)">
       <div class="event-header">
-        <div class="event-title">INCIDENTE #2511170003: Represamento no Faturamento (Jund)</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Resolvido</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
+        <div class="event-title">INCIDENT #9901: Billing Pipeline Latency (Site-Alpha)</div>
+        <div class="header-right"><span class="status-badge badge-success">Resolved</span></div>
       </div>
       <div class="timeline-wrapper">
         <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>08:31:00</td><td>Gleice</td><td>Acionamento inicial: Faturamento paralisado. (Chamado #2511170003)</td></tr>
-          <tr><td>08:37:00</td><td>Pablo</td><td>Verificação: Robôs do Jundiaí estão OK. Identificado pedido das 08:10 represado na fila de Separação do Jundiaí. O pedido seguiu o fluxo automaticamente logo após a verificação.</td></tr>
-          <tr><td>08:40:00</td><td>Sistema</td><td><span class="status-text-green">RESOLVIDO</span> Fluxo de faturamento normalizado. (Causa raiz: Represamento pontual e autossolucionado no pipeline de Separação.)</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="event-17-2" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">WARNING: Disco Insuficiente – SRV-DONATELLO (G:)</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Normalizado</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>08:09:00</td><td>Monitoramento</td><td>Alerta de espaço em disco no Servidor Donatello (G:). Espaço disponível: 573.1 GB.</td></tr>
-          <tr><td>08:11:00</td><td>Gabriel</td><td>Hipótese: Falha na exclusão do backup do dia anterior. Acionamento do Time de Banco para verificação e ação.</td></tr>
-          <tr><td>10:03:00</td><td>G. Soares</td><td>Ação Corretiva: Solicitação de ajuste na trigger (limite do alerta) para 500 GB, readequando o threshold de monitoramento.</td></tr>
-          <tr><td>10:20:00</td><td>G. Soares</td><td>Movendo backup full + checkdb (G: -> E:). Será deletado após ser movido para o S3.</td></tr>
-          <tr><td>11:16:00</td><td>Monitor</td><td><span class="status-text-green">NORMALIZADO</span> Disco retornou para 42% de uso.</td></tr>
-          <tr><td>18:15:00</td><td>Fabio (Teams)</td><td><span class="status-text-green">CAUSA RAIZ ENCONTRADA</span> Walmir alterou o horário do backup de Image Level da Equinix (de 02:00h) para evitar conflito com o backup do banco de dados, que causava instabilidade no cluster.</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="event-17-3" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">INFO: Alto Consumo de Disco – PROD-WMS-INTEGRADOR (/)</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Resolvido</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>07:54:00</td><td>Pablo</td><td>Acionamento inicial: Alerta de espaço em disco no filesystem raiz (/) do Servidor Linux. Utilização: 97%.</td></tr>
-          <tr><td>08:46:00</td><td>Murilo</td><td>Time de Suporte acionado, verificando a origem do consumo de espaço em disco.</td></tr>
-          <tr><td>09:44:00</td><td>Murilo</td><td><span class="status-text-green">RESOLVIDO</span> Problema de espaço em disco corrigido (Presume-se a limpeza/remoção de logs ou arquivos temporários.)</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="event-17-4" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">WARNING: Instabilidade Link Jundiaí</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Normalizado</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>16:25:00</td><td>Elison</td><td>Identificada latência alta/perda de pacote em Jundiaí.</td></tr>
-          <tr><td>16:28:00</td><td>Matheus - JDI</td><td>Queda de internet de **aproximadamente 3 minutos** há pouco. Serviço **já foi normalizado**. Oscilação diária padrão.</td></tr>
-          <tr><td>16:30:00</td><td>Elison</td><td>Verificado que o sistema estava normal e informado no grupo.</td></tr>
-        </table>
-      </div>
-    </div>
-    
-    <div id="event-17-5" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">CRITICAL: Espaço em Disco - GLPI-PRD-APLICACAO [/data]</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Resolvido</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>17/11 12:10</td><td>Elison Arley</td><td>PROBLEM: Uso de disco em 95.7% (156.4GB total). Questiona Fábio José sobre o retorno do GLPI.</td></tr>
-          <tr><td>18/11 12:46</td><td>Fábio Jose</td><td><span class="status-text-red">URGENTE</span> Necessidade de RDM Emergencial para expurgo de base (uso > 95%). Cobrança do mapeamento ao Gabriel Ribeiro.</td></tr>
-          <tr><td>18/11 18:49</td><td>Fellipe Soares (DBA)</td><td>Informou que irá precisar montar o script para todas as pastas citadas para expurgo.</td></tr>
-          <tr><td>19/11 15:31</td><td>Fabio</td><td><span class="status-text-orange">EXPURGO AGENDADO</span> Alinhado o Expurgo para hoje **após as 20:00**.</td></tr>
-          <tr><td>19/11 17:11</td><td>Gabriel</td><td><span class="status-text-orange">COMUNICADO</span> Realizado comunicado de manutenção no GLPI (20:00h até o fechamento das lojas).</td></tr>
-          <tr><td>19/11 20:37</td><td>Elison Arley</td><td><span class="status-text-green">RESOLVIDO</span> Verificado que a partição está com **32,99% de uso de disco** no momento, após as ações tomadas.</td></tr>
-          <tr><td>19/11 21:16</td><td>Gabriel Ribeiro</td><td>NOVO FLUXO: Chamados seguem acessíveis, anexos fora da data de corte do expurgo vão retornar mensagem de arquivo não encontrado.</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="event-17-6" class="event border-orange" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">WARNING: Site Sem Resposta (TRADE CREDIX WORKER CONSUMER DLQ)</div>
-        <div class="header-right">
-          <span class="status-badge badge-warning">Ignorado</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>17/11 15:49</td><td>Sistema (Zabbix)</td><td>PROBLEM: WORKER CONSUMER DLQ - site sem responder há mais de 5 min. Status: *UNKNOWN*. Duração: 1d 1h 2m.</td></tr>
-          <tr><td>18/11 16:00:00</td><td>Callel</td><td><span class="status-text-orange">IGNORADO</span> Devido ao *freezing* (período de congelamento de mudanças/serviços), o problema será tratado após a Black Friday.</td></tr>
+          <tr><th>Time</th><th>Actor</th><th>Action / Details</th></tr>
+          <tr><td>08:31</td><td>Ops-Team</td><td>Billing service reported as stalled.</td></tr>
+          <tr><td>08:40</td><td>System</td><td><span class="status-text-green">RESOLVED</span> Auto-remediation triggered. Pipeline back to normal.</td></tr>
         </table>
       </div>
     </div>
   </div>
 
-  <div id="2025-11-18" class="content">
-    <h2>EVENTOS DE TERÇA-FEIRA (18/11)</h2>
-
-    <div id="event-18-1" class="event border-green" onclick="toggleEvent(this)">
+  <!-- Day 3 Content (With Critical Alert) -->
+  <div id="day-3" class="content">
+    <h2>Wednesday Events</h2>
+    <div id="ev-3-1" class="event border-red" onclick="toggleEvent(this)">
       <div class="event-header">
-        <div class="event-title">CRITICAL: Disco Criticamente Baixo - GLPI-PROXY-INVENTORY [/]</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Normalizado</span> 
-          <span class="toggle-text">LOG ▼</span>
-        </div>
+        <div class="event-title">SECURITY: Data Breach Alert (External Source)</div>
+        <div class="header-right"><span class="status-badge badge-danger blink">In Progress</span></div>
       </div>
       <div class="timeline-wrapper">
         <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>07:00:27</td><td>L. Gomes</td><td>PROBLEM: FS [/] Critically low (used > 90%, total 7.6GB). Atual: 90.9%</td></tr>
-          <tr><td>07:47:00</td><td>L. Gomes</td><td>Informado via grupo NOC sobre o alerta de disco crítico.</td></tr>
-          <tr><td>10:21:00</td><td>Operação</td><td>EM ABERTO: Aguardando ação corretiva.</td></tr>
-          <tr><td>19/11 14:19</td><td>E. Arley</td><td><span class="status-text-green">NORMALIZADO</span>: Servidor voltou para estado normal (88%), que é a média dos últimos 30 dias. (Referência ao evento 19.3)</td></tr>
+          <tr><th>Time</th><th>Actor</th><th>Action / Details</th></tr>
+          <tr><td>12:27</td><td>SOC-L1</td><td><span class="status-text-red">ALERT</span> Suspected credential leak reported by Security-Org.</td></tr>
+          <tr><td>15:50</td><td>CISO-Team</td><td>Escalation initiated. Password rotation policy enforced for all service accounts.</td></tr>
         </table>
       </div>
     </div>
-
-    <div id="event-18-2" class="event border-blue" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">CRITICAL: Disco Criticamente Baixo - SRV-PAOLLO [/]</div>
-        <div class="header-right">
-          <span class="status-badge badge-maintenance">Manutenção</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>08:42:43</td><td>Sistema (Zabbix)</td><td>PROBLEM: FS [/] Critically low (used > 90%, total 44.0GB). Atual: 92.6%</td></tr>
-          <tr><td>10:49:00</td><td>Operação</td><td>Status: ainda em aberto. Sem resposta / ação corretiva registrada.</td></tr>
-          <tr><td>14:56:00</td><td>Daily Teams</td><td>Kaue informou que está realizando manutenção no servidor e que ficará indisponível.</td></tr>
-          <tr><td>16:32:00</td><td>Kaue Silva</td><td>Solicitou que o Paollo seja deixado em manutenção por 30 dias para resolver a questão comercial dos discos.</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="event-18-3" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">FALHA: Rotinas de Backup - SRV-DONATELLO</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Normalizado</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>07:39:00</td><td>L. Gomes</td><td>Reportado falha em jobs SQL no Donatello.</td></tr>
-          <tr><td>08:14:00</td><td>G. Soares</td><td>Diagnóstico: Disco G: com alta latência para escrita. Backup rodando há 14h. Sugestão: Cancelar backup e acionar Equinix.</td></tr>
-          <tr><td>12:07:00</td><td>G. Soares (Devops)</td><td>Cancelou backup travado. Previsão de término do backup anterior era só para 19/11 às 20:00.</td></tr>
-          <tr><td>12:58:00</td><td>F. Jose (Devops)</td><td>Equinix acionada. Agenda solicitada na parte da tarde com time de DB.</td></tr>
-          <tr><td>13:08:00</td><td>F. Jose (Devops)</td><td><span class="status-text-orange">EQUINIX UPDATE</span>: "Ocorreu uma falha de rede na estrutura do backup... foi efetuada correção."</td></tr>
-          <tr><td>18:15:00</td><td>Fabio via Teams</td><td><span class="status-text-green">CAUSA RAIZ ENCONTRADA</span> Walmir alterou o horário do backup de Image Level (de 02:00h) para evitar conflito com o backup de banco de dados, prevenindo instabilidade no cluster.</td></tr>
-          <tr><td>19/11 10:28</td><td>E. Arley</td><td><span class="status-text-green">VALIDADO</span> Rotinas de backup executadas com sucesso dentro da janela prevista.</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="event-18-4" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">INFO: Agentes Zabbix Indisponíveis (MASACCIO e GIORGIONE)</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Resolvido</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>14/11 10:02</td><td>Sistema (Zabbix)</td><td>PROBLEM: MASACCIO - Zabbix agent is not available (duração: 4d 28m).</td></tr>
-          <tr><td>13/11 17:02</td><td>Sistema (Zabbix)</td><td>PROBLEM: GIORGIONE - Zabbix agent is not available (duração: 4d 17h 29m).</td></tr>
-          <tr><td>10:34:28</td><td>Operação/NOC</td><td>Solicitado que os servidores fiquem em modo de manutenção no Zabbix para investigação.</td></tr>
-          <tr><td>10:35:00</td><td>Kaue Silva</td><td>Solicitou a desativação da monitoria desses servidores e remoção posterior.</td></tr>
-          <tr><td>10:38:00</td><td>E. Arley</td><td><span class="status-text-green">RESOLVIDO</span> Servidores Desativados.</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="event-18-5" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">ALERTA: Alta Utilização de CPU - RBPSRVFS01</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Normalizado</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>10:48:20</td><td>Sistema (Zabbix)</td><td>PROBLEM: High CPU utilization (> 90% por 5m). Atual: 99.97%.</td></tr>
-          <tr><td>11:01:00</td><td>M. Rodrigues</td><td>Causa: Scan manual do Windows Defender em andamento (Ricardo Henrique).</td></tr>
-          <tr><td>11:05:00</td><td>Fabio Santos</td><td><span class="status-text-green">NORMALIZADO</span> Scan foi pausado e CPU normalizada. Alinhamento feito com Ricardo para comunicação prévia de atividades.</td></tr>
-          <tr><td>19/11 16:09</td><td>E. Arley</td><td><span class="status-text-red">RECORRÊNCIA</span>: Servidor voltou a ficar com CPU > 90%. Kaue acionou Equinix para verificar consumo de CLBackup.</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="event-18-6" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">ALERTA: Alta Utilização de CPU - WHISKEY</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Normalizado</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>10:11:38</td><td>Sistema (Zabbix)</td><td>PROBLEM: High CPU utilization (> 90% por 5m). Atual: 100%.</td></tr>
-          <tr><td>11:01:00</td><td>M. Rodrigues</td><td>Causa: Scan manual do Windows Defender em andamento (Ricardo Henrique).</td></tr>
-          <tr><td>14:30:00</td><td>Murillo</td><td>Verificado em reunião com Ricardo que o Defender não havia sido parado.</td></tr>
-          <tr><td>15:20:00</td><td>E. Arley</td><td><span class="status-text-green">NORMALIZADO</span> Uso de CPU está normalizado.</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div id="event-18-7" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">CRITICAL: Queda de Link (Americanet) - FGT_JDI</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Normalizado</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>14:26:32</td><td>E. Arley (NOC)</td><td>PROBLEM: Queda no Link da Americanet em Jundiaí.</td></tr>
-          <tr><td>15:11:00</td><td>Matheus (JDI)</td><td><span class="status-text-red">UPDATE PROVEDOR</span>: Incidente crítico no backbone principal. Previsão de normalização: 8 horas. Chamado: #2511188538.</td></tr>
-          <tr><td>16:59:00</td><td>Matheus (JDI)</td><td>Reportou indisponibilidade no TS-JUND load balancer.</td></tr>
-          <tr><td>17:21:00</td><td>E. Arley (NOC)</td><td>Acesso ao TS-JUND restabelecido. Internet operando por apenas um link.</td></tr>
-          <tr><td>17:30:00</td><td>Matheus (JDI)</td><td><span class="status-text-green">NORMALIZADO</span> Link da operadora normalizado.</td></tr>
-        </table>
-      </div>
-    </div>
-
   </div>
 
-  <div id="2025-11-19" class="content">
-    <h2>EVENTOS DE QUARTA-FEIRA (19/11)</h2>
-    
-    <div id="event-19-1" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">INFO: Normalização Rotinas de Backup - SRV-DONATELLO</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Validado</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>10:00</td><td>E. Arley</td><td>Cobrança de atualização ao time de banco sobre a execução do backup (Ação Pendente do dia anterior).</td></tr>
-          <tr><td>10:28</td><td>E. Arley</td><td><span class="status-text-green">VALIDADO</span> Verificado que as rotinas foram executadas com sucesso. Confirmado pelo Gabriel Soares (Banco).</td></tr>
-        </table>
-      </div>
-    </div>
-    
-    <div id="event-19-2" class="event border-green" onclick="toggleEvent(this)">
+  <!-- Day 4 Content -->
+  <div id="day-4" class="content">
+      <h2>Thursday Events</h2>
+      <div id="ev-4-1" class="event border-red" onclick="toggleEvent(this)">
         <div class="event-header">
-            <div class="event-title">CRITICAL: Expurgo de Base Pendente - GLPI-PRD-APLICACAO</div>
-            <div class="header-right">
-                <span class="status-badge badge-success">Resolvido</span>
-                <span class="toggle-text">LOG ▼</span>
-            </div>
+          <div class="event-title">CRITICAL: DB Log Backup Recurrence - Cluster-01</div>
+          <div class="header-right"><span class="status-badge badge-danger blink">Open</span></div>
         </div>
         <div class="timeline-wrapper">
-            <table>
-                <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-                <tr><td>17/11 12:10</td><td>INC. ORIGEM</td><td>O evento original (17.5) acionou a necessidade de expurgo urgente (uso de disco 95.7%).</td></tr>
-                <tr><td>19/11 15:31</td><td>Fabio</td><td><span class="status-text-orange">EXPURGO AGENDADO</span> Alinhado o Expurgo para hoje **após as 20:00**.</td></tr>
-                <tr><td>19/11 17:11</td><td>Gabriel</td><td><span class="status-text-orange">COMUNICADO</span> Informado que o comunicado de manutenção no GLPI foi realizado.</td></tr>
-                <tr><td>19/11 20:37</td><td>Elison Arley</td><td><span class="status-text-green">RESOLVIDO</span> Expurgo concluído com sucesso. Uso de disco agora em 32,99% (referência ao evento 17.5).</td></tr>
-                <tr><td>19/11 21:16</td><td>Gabriel Ribeiro</td><td>NOVO FLUXO: Chamados seguem acessíveis, anexos fora da data de corte do expurgo vão retornar mensagem de arquivo não encontrado.</td></tr>
-            </table>
-        </div>
-    </div>
-    
-    <div id="event-19-3" class="event border-green" onclick="toggleEvent(this)">
-        <div class="event-header">
-            <div class="event-title">INFO: Normalização de Disco - GLPI-PROXY-INVENTORY [/]</div>
-            <div class="header-right">
-                <span class="status-badge badge-success">Normalizado</span>
-                <span class="toggle-text">LOG ▼</span>
-            </div>
-        </div>
-        <div class="timeline-wrapper">
-            <table>
-                <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-                <tr><td>18/11 07:00</td><td>INC. ORIGEM</td><td>O evento original (18.1) acionou o problema de disco cheio (90.9%).</td></tr>
-                <tr><td>19/11 14:19</td><td>Elison Arley</td><td><span class="status-text-green">NORMALIZADO</span> Servidor voltou para o estado normal (88%), que é a média dos últimos 30 dias.</td></tr>
-            </table>
-        </div>
-    </div>
-    
-    <div id="event-19-4" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">CRITICAL: Indisponibilidade Pipe Core - Login (Erro 5XX)</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Resolvido</span>
-          <span class="toggle-text">LOG ▼</span>
+          <table>
+            <tr><th>Time</th><th>Actor</th><th>Action / Details</th></tr>
+            <tr><td>03:50</td><td>Monitoring</td><td><span class="status-text-red">RECURRENCE</span> Log backup older than 8h on 5 databases. Writing latency detected.</td></tr>
+          </table>
         </div>
       </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>10:30</td><td>Operação / NOC</td><td>PROBLEM: Identificado indisponibilidade no Pipe Core - Login (Erros 5XX detectados via Instana).</td></tr>
-          <tr><td>10:52</td><td>Rangel (DevOps)</td><td>Confirmou que iniciou a análise e troubleshooting do ambiente.</td></tr>
-          <tr><td>11:11</td><td>Lucas Quirino</td><td><span class="status-text-green">RESOLVIDO</span> Sistemas Normalizados.</td></tr>
-        </table>
-      </div>
-    </div>
+  </div>
 
-    <div id="event-19-5" class="event border-red" onclick="toggleEvent(this)">
-        <div class="event-header">
-            <div class="event-title">SECURITY ALERT: Vazamento de Credenciais (CERT.br)</div>
-            <div class="header-right">
-                <span class="status-badge badge-danger blink">IR em Andamento</span>
-                <span class="toggle-text">LOG ▼</span>
-            </div>
-        </div>
-        <div class="timeline-wrapper">
-            <table>
-                <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-                <tr><td>12:27</td><td>Monitoramento / Asper</td><td><span class="status-text-red">SECURITY ALERT</span> Recebimento de alerta crítico via CERT.br sobre suspeita de vazamento de credenciais.</td></tr>
-                <tr><td>15:50</td><td>Asper</td><td><span class="status-text-red">ESCALATION</span> Acionamento imediato do time de Security/CISO e DevOps/Infra. Recomendação de **rotação imediata de credenciais**.</td></tr>
-                <tr><td>15:50</td><td>Security / CISO</td><td>Mitigation Plan WIP (IR): Início da investigação forense. Ações: Cruzamento de logs e Forcing Password Reset para e-mails expostos.</td></tr>
-                <tr><td>15:50</td><td>Infra / DevOps</td><td>Hardening Implementation: Início da revisão da Política de Firewall de Aplicação (WAF) e Estratégia de Segmentação de Rede nas VPCs.</td></tr>
-                <tr><td>21/11 10:47</td><td>Elison Arley</td><td><span class="status-text-orange">PENDENTE</span> Solicitado ao Vinicius Avelino um retorno da analise da Asper (Follow-up do IR).</td></tr>
-            </table>
-        </div>
-    </div>
-    
-    <div id="event-19-6" class="event border-orange" onclick="toggleEvent(this)">
-        <div class="event-header">
-            <div class="event-title">ALERTA: Expiração de Certificado SSL (15 dias)</div>
-            <div class="header-right">
-                <span class="status-badge badge-warning">Acompanhamento</span>
-                <span class="toggle-text">LOG ▼</span>
-            </div>
-        </div>
-        <div class="timeline-wrapper">
-            <table>
-                <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-                <tr><td>15:17</td><td>E. Arley (NOC)</td><td>ALERT: Certificado SSL do domínio **allieddpp.com.br expira em 15 dias**. <span class="status-text-orange">PRIORIDADE ALTA</span>. Necessário iniciar workflow de renovação.</td></tr>
-                <tr><td>15:17</td><td>Você</td><td>Workflow de renovação acionado para o time de Cloud/Infra.</td></tr>
-            </table>
-        </div>
-    </div>
-    
-    <div id="event-19-7" class="event border-green" onclick="toggleEvent(this)">
-        <div class="event-header">
-            <div class="event-title">CRITICAL: Queda de Acesso - alliedbrasil.com.br (Rede Interna/VPN)</div>
-            <div class="header-right">
-                <span class="status-badge badge-success">Normalizado</span>
-                <span class="toggle-text">LOG ▼</span>
-            </div>
-        </div>
-        <div class="timeline-wrapper">
-            <table>
-                <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-                <tr><td>17:32</td><td>Luiz Galante (NOC)</td><td>PROBLEM (Disponibilidade): Confirmação de que o asset alliedbrasil.com.br está inacessível para Rede Interna.</td></tr>
-                <tr><td>17:34</td><td>E. Arley (NOC)</td><td>Scope Defined: Acesso normalizado via Internet/4G. Falha totalmente restrita ao Egress corporativo (Rede Interna e VPN). O problema é Rede/Infraestrutura.</td></tr>
-                <tr><td>17:40</td><td>Monitoramento (Você)</td><td><span class="status-text-red">ESCALATION</span>: Acionamento do time de Cloud via [Teams] para investigação *on-premise*. Requerido *traceroute* e validação de DNS.</td></tr>
-                <tr><td>18:09</td><td>Luiz Galante (Cloud)</td><td><span class="status-text-green">RESOLVIDO</span>: Realizada a alteração do IP do DNS. Acesso normalizado.</td></tr>
-            </table>
-        </div>
-    </div>
-    
-  </div>
-  
-  <div id="2025-11-20" class="content">
-    <h2>EVENTOS DE QUINTA-FEIRA (20/11)</h2>
-    
-    <div id="event-20-1" class="event border-red" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">CRITICAL: Recorrência de Falhas no Backup de Log (DONATELLO)</div>
-        <div class="header-right">
-          <span class="status-badge badge-danger blink">Em Aberto</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>22:00:28 (Ontem)</td><td>Sistema</td><td>PROBLEM: Falha na execução do Job 'DBA_Rotinas Administrativas - (Backup Log)' e do Job 'Truncate Log File (Jundsoft)'. Duração da falha: 10h 13m 35s.</td></tr>
-          <tr><td>17:03 (Ontem)</td><td>Pablo de A. Cruz</td><td>Comunicação: Alertas sobre Logs com mais de 8h foram encaminhados. **Solicitada a desconsideração destes alertas.**</td></tr>
-          <tr><td>03:50:30 (Hoje)</td><td>Sistema</td><td><span class="status-text-red">PROBLEMA RECORRENTE</span>: Múltiplos alertas de "Log backup older than 8h" em cinco bases de dados. Duração: 4h 23m 33s e crescendo.</td></tr>
-        </table>
-      </div>
-    </div>
-    
-  </div>
-  
-  <div id="2025-11-21" class="content">
-    <h2>EVENTOS DE SEXTA-FEIRA (21/11)</h2>
-    
-    <div id="event-21-1" class="event border-green" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">FALHA: Falha e Normalização no Backup Full (DONATELLO)</div>
-        <div class="header-right">
-          <span class="status-badge badge-success">Resolvido</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-          <tr><td>07:24</td><td>L. Gomes</td><td>Acionamento inicial: Alerta de baixo espaço em disco para Backup Full no host DONATELLO (FS BACKUP 5 SPACE REMAIN < 100GB).</td></tr>
-          <tr><td>07:24</td><td>L. Gomes</td><td>Análise Detalhada: Backup do dia 19/11 excedeu o tempo de vida (> 20 horas), impedindo a exclusão automática e saturando o disco.</td></tr>
-          <tr><td>08:18</td><td>Gabriel Soares</td><td><span class="status-text-green">RESOLVIDO/CONFIRMAÇÃO</span>: O backup Full da rotina administrativa de hoje (20/11) foi executado com sucesso. O alerta de espaço foi normalizado.</td></tr>
-        </table>
-      </div>
-    </div>
-    
-    <div id="event-21-2" class="event border-blue" onclick="toggleEvent(this)">
-      <div class="event-header">
-        <div class="event-title">INFO: Falha na Varredura Completa (Full Scan) - Múltiplos Hosts</div>
-        <div class="header-right">
-          <span class="status-badge badge-maintenance">Alerta Preventivo</span>
-          <span class="toggle-text">LOG ▼</span>
-        </div>
-      </div>
-      <div class="timeline-wrapper">
-        <table>
-          <tr><th width="15%">Horário</th><th width="15%">Host</th><th>Status / Detalhes</th></tr>
-          <tr><td>19/11 20:57</td><td>SANDRO</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 12h 55m.</td></tr>
-          <tr><td>19/11 20:57</td><td>BOSCH</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 12h 55m.</td></tr>
-          <tr><td>19/11 20:31</td><td>CEZANNE</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
-          <tr><td>19/11 20:31</td><td>DONATELLO</td><td>PROBLEM - Operational Data: 7 days. Duration: 1d 13h 22m.</td></tr>
-          <tr><td>19/11 12:03 PM</td><td>Elison Arley</td><td>Informado ao Ricardo Henrique para que verifique os alertas acima.</td></tr>
-        </table>
-      </div>
-    </div>
-    
-    <!-- NOVO EVENTO: KAFKA LAG -->
-    <div id="event-21-3" class="event border-green" onclick="toggleEvent(this)">
-        <div class="event-header">
-            <div class="event-title">INCIDENTE: Alerta de Inatividade/Falha de Tópicos Kafka (LAG / SA UPDATE ORDERS)</div>
-            <div class="header-right">
-                <span class="status-badge badge-success">Resolvido</span>
-                <span class="toggle-text">LOG ▼</span>
-            </div>
-        </div>
-        <div class="timeline-wrapper">
-            <table>
-                <tr><th width="15%">Horário</th><th width="15%">Ator</th><th>Ação / Detalhes</th></tr>
-                <tr><td>11:02</td><td>Rangel D. de Almeida</td><td>Acionamento inicial: Solicitação de verificação do alerta de Kafka Tópicos LAG e SA UPDATE ORDERS (Warning/Problem).</td></tr>
-                <tr><td>11:11</td><td>Rangel D. de Almeida</td><td>Investigação: Questiona a origem dos alertas e envia screenshot, sugerindo que os lags estão OK em tempo real.</td></tr>
-                <tr><td>15:14</td><td>Rangel D. de Almeida</td><td><span class="status-text-green">RESOLVIDO/MITIGAÇÃO</span>: "Vou ajustar os parâmetros aqui das chamadas, como temos alguns picos durante o dia, o lag em certos momentos é normal."</td></tr>
-            </table>
-        </div>
-    </div>
-    
-  </div>
-  
   <div class="changelog-area">
-    <h3>ÚLTIMAS MUDANÇAS NO LOG</h3>
+    <h3>Audit Log Changes</h3>
     <ul>
-      <li>[21/11 16:18] **Sincronização de Métricas:** Ajuste na ordem de execução do JS para garantir que as métricas (Críticos Ativos e Botão) se sincronizem corretamente.</li>
-      <li>[21/11 16:15] **Dashboard de Métricas Adicionado** e Refatoração Completa do Status dos Incidentes.</li>
-      <li>[21/11 16:15] **NOVO EVENTO:** Adicionado Incidente de Falha de Tópicos Kafka (21.3 - Resolvido).</li>
-      <li>[21/11 16:15] **Incidente Resolvido:** GLPI-PRD-APLICACAO (17.5 / 19.2) atualizado para **Resolvido** após expurgo e confirmação de uso de disco de 32.99%.</li>
-      <li>[21/11 10:05] Nova Consolidação (20/11 - 21/11): Adicionados eventos de Recorrência de Falha de Log (20.1), Falha/Normalização de Backup Full (21.1) e Falha de Full Scan em 8 Hosts (21.2).</li>
+      <li>[21/11 16:15] Data Masking applied for public release.</li>
+      <li>[21/11 16:10] Metrics dashboard synced with active critical alerts.</li>
     </ul>
   </div>
-
-  <div class="footer-spacer"></div>
 </div>
 
 <script>
   let isFilterActive = false;
 
-  // Função para calcular e exibir as métricas no Dashboard
   function updateMetricsDashboard() {
-      // 1. Contagem Total de Eventos (todos os cards .event)
       const totalEvents = document.querySelectorAll('.event').length;
-      document.getElementById('metricTotal').innerHTML = `
-        <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-        </svg>
-        ${totalEvents}
-      `;
+      const openEventsCount = document.querySelectorAll('.event .badge-danger.blink').length;
+      const resolvedEvents = totalEvents - openEventsCount;
 
-      // 2. Contagem de Críticos Ativos: Lendo o valor *já calculado* e exibido no botão
-      // Isso garante a sincronia total entre o Dashboard e o botão de filtro.
-      const openCountSpan = document.getElementById('openCount');
-      const criticalEvents = parseInt(openCountSpan.textContent, 10);
-      
-      document.getElementById('metricCritical').innerHTML = `
-        <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-            <line x1="12" y1="9" x2="12" y2="13"></line>
-            <line x1="12" y1="17" x2="12" y2="17"></line>
-        </svg>
-        ${criticalEvents}
-      `;
-      
-      // 3. Contagem de Resolvidos/Mitigados (Total - Críticos Ativos)
-      const resolvedEvents = totalEvents - criticalEvents;
-      document.getElementById('metricResolved').innerHTML = `
-        <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        ${resolvedEvents}
-      `;
-      
-      // DEBUG LOG: Confirma a contagem calculada
-      console.log(`[SRE Dashboard] Total de Eventos: ${totalEvents}`);
-      console.log(`[SRE Dashboard] Críticos Ativos (Sincronizado): ${criticalEvents}`);
-      console.log(`[SRE Dashboard] Resolvidos/Mitigados: ${resolvedEvents}`);
+      document.getElementById('metricTotal').textContent = totalEvents;
+      document.getElementById('metricCritical').textContent = openEventsCount;
+      document.getElementById('metricResolved').textContent = resolvedEvents;
+      document.getElementById('openCount').textContent = openEventsCount;
   }
 
-
-  // Atualiza os contadores de eventos no carrossel do índice
-  function updateEventCounts() {
-    const dayContents = document.querySelectorAll('.content');
-    
-    dayContents.forEach(dayContent => {
-        const dateId = dayContent.id;
-        // Conta quantos eventos estão dentro deste bloco de conteúdo
-        const eventCount = dayContent.querySelectorAll('.event').length;
-        
-        // Encontra o badge correspondente no carrossel pelo atributo de dados
-        const countBadge = document.querySelector(`.event-count-badge[data-count-day="${dateId}"]`);
-        
-        if (countBadge) {
-            countBadge.textContent = eventCount;
-        }
-    });
-  }
-
-
-  // Função central para rolar para um evento específico
-  function scrollToEvent(dateId, eventId) {
-    const dateSelect = document.getElementById('dateSelect');
-    
-    // 1. Garante que o dia correto esteja ativo (mesmo que já esteja)
-    dateSelect.value = dateId;
-    showDate(dateId);
-    
-    // 2. Espera a transição de showDate e rola para o evento
-    setTimeout(() => {
-        const eventElement = document.getElementById(eventId);
-        if (eventElement) {
-            // Rola para o evento
-            eventElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            // Garante que ele esteja expandido e dá um feedback visual (pisca)
-            if (!eventElement.classList.contains('expanded')) {
-                eventElement.classList.add('expanded');
-            }
-            
-            // Efeito de destaque
-            eventElement.style.transition = 'background-color 0.1s';
-            const originalColor = eventElement.style.backgroundColor;
-            setTimeout(() => eventElement.style.backgroundColor = 'var(--surface-color-highlight)', 100);
-            setTimeout(() => eventElement.style.backgroundColor = originalColor || 'var(--surface-color)', 500);
-        }
-    }, 400); // Tempo de espera para garantir que o 'content' esteja visível
-  }
-
-  // Função para renderizar os incidentes abertos na lista global
   function renderOpenIncidents() {
-    const openIncidentsList = document.getElementById('openIncidentsList');
-    const openCountSpan = document.getElementById('openCount');
-    
-    // Limpa a lista antes de renderizar
-    openIncidentsList.innerHTML = '';
-
-    // Encontra todos os eventos com o status "Em Aberto" (badge-danger.blink)
+    const list = document.getElementById('openIncidentsList');
+    list.innerHTML = '';
     const openEvents = document.querySelectorAll('.event .badge-danger.blink');
     
-    openCountSpan.textContent = openEvents.length;
-
-    if (openEvents.length > 0) {
-        openEvents.forEach(badge => {
-            const eventCard = badge.closest('.event');
-            const clone = eventCard.cloneNode(true);
-            
-            // 1. Adiciona a classe 'open-incident-clone' para estilização de filtro
-            clone.classList.add('open-incident-clone');
-            
-            // 2. Garante que o card clonado esteja EXPANDIDO para exibir os detalhes
-            clone.classList.add('expanded');
-            
-            // 3. Atualiza o texto de toggle (Detalhes) para a lista de abertos
-            const toggleText = clone.querySelector('.toggle-text');
-            if (toggleText) {
-                toggleText.textContent = 'VER CARD ORIGINAL ↗';
-            }
-            // Remove o onclick do clone para não colapsar na lista de abertos
-            clone.onclick = null;
-            
-            // Adiciona um listener que chama a nova função scrollToEvent
-            clone.addEventListener('click', () => {
-                const eventId = eventCard.id;
-                // O dia está no ID do content pai (ex: 2025-11-17)
-                const dateId = eventCard.parentElement.id; 
-                scrollToEvent(dateId, eventId);
-            });
-            
-            openIncidentsList.appendChild(clone);
+    openEvents.forEach(badge => {
+        const original = badge.closest('.event');
+        const clone = original.cloneNode(true);
+        clone.classList.add('open-incident-clone', 'expanded');
+        clone.onclick = null;
+        clone.addEventListener('click', () => {
+            scrollToEvent(original.parentElement.id, original.id);
         });
-        document.getElementById('filterButton').classList.remove('inactive');
-        openCountSpan.classList.add('blink');
+        list.appendChild(clone);
+    });
+
+    const btn = document.getElementById('filterButton');
+    if(openEvents.length > 0) {
+        btn.classList.remove('inactive');
     } else {
-        document.getElementById('filterButton').classList.add('inactive');
-        openCountSpan.classList.remove('blink');
+        btn.classList.add('inactive');
     }
   }
 
-  // Função principal de filtro (agora apenas gerencia a exibição da lista global)
   function toggleFilter() {
-    const listContainer = document.getElementById('openIncidentsList');
-    
-    // Alterna o estado do filtro (expande/contrai a lista)
     isFilterActive = !isFilterActive;
-    listContainer.classList.toggle('expanded', isFilterActive);
-    
-    const filterButton = document.getElementById('filterButton');
-    filterButton.classList.toggle('active-filter', isFilterActive);
-    
-    if (isFilterActive) {
-      filterButton.querySelector('#filterText').textContent = 'Ocultar ';
-      // Rola para o topo da lista quando expande
-      document.getElementById('openIncidentsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    } else {
-      filterButton.querySelector('#filterText').textContent = 'Visualizar ';
-    }
-  }
-  
-  // Função para exibir o conteúdo da data selecionada
-  function showDate(value) {
-    // Garante que o filtro esteja fechado ao mudar a data
-    if (isFilterActive) {
-        toggleFilter();
-    }
-    
-    const contents = document.querySelectorAll('.content');
-    contents.forEach(el => el.classList.remove('active'));
-    
-    if (value) {
-      setTimeout(() => {
-        document.getElementById(value).classList.add('active');
-        // Rola para o topo do conteúdo do dia
-        document.getElementById(value).scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50);
-    }
-  }
-  
-  function toggleEvent(element) {
-    element.classList.toggle('expanded');
+    document.getElementById('openIncidentsList').classList.toggle('expanded', isFilterActive);
+    document.getElementById('filterButton').classList.toggle('active-filter', isFilterActive);
+    document.getElementById('filterText').textContent = isFilterActive ? 'Hide ' : 'View ';
   }
 
-  // Função para exibir o timestamp
-  function displayUpdateTimestamp() {
+  function showDate(id) {
+    if (isFilterActive) toggleFilter();
+    document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+    if(id) {
+        const el = document.getElementById(id);
+        el.classList.add('active');
+        el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function scrollToEvent(dateId, eventId) {
+    document.getElementById('dateSelect').value = dateId;
+    showDate(dateId);
+    setTimeout(() => {
+        const ev = document.getElementById(eventId);
+        ev.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        ev.classList.add('expanded');
+    }, 300);
+  }
+
+  function toggleEvent(el) { el.classList.toggle('expanded'); }
+
+  window.onload = () => {
     const now = new Date();
-    // Definindo a data de consolidação para o momento atual (21/11/2025)
-    const fixedDate = new Date(2025, 10, 21, now.getHours(), now.getMinutes()); 
-    
-    const formattedDate = fixedDate.toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-    const formattedTime = fixedDate.toLocaleTimeString('pt-BR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    });
-    
-    const timestampElement = document.getElementById('updateTimestamp');
-    if (timestampElement) {
-        timestampElement.textContent = `ÚLTIMA CONSOLIDAÇÃO: ${formattedDate} ${formattedTime} BRT`;
-    }
-  }
-
-  // Inicialização ao carregar a página
-  window.onload = function() {
-    // 1. Exibe o timestamp no cabeçalho
-    displayUpdateTimestamp();
-    
-    // 2. Atualiza a contagem de eventos por dia
-    updateEventCounts();
-
-    // 3. Renderiza os incidentes abertos globalmente (popula o contador e lista)
-    renderOpenIncidents();
-    
-    // 4. Atualiza o Dashboard de Métricas (usa o contador populado pelo renderOpenIncidents)
+    document.getElementById('updateTimestamp').textContent = `LAST CONSOLIDATION: ${now.toLocaleDateString()} ${now.toLocaleTimeString()} BRT`;
     updateMetricsDashboard();
-    
-    // 5. Define a data padrão ao carregar (Preferência: último dia com dados)
-    const lastDay = "2025-11-21";
-    if (document.getElementById(lastDay)) {
-      document.getElementById('dateSelect').value = lastDay;
-      showDate(lastDay);
-    } else {
-      const day19 = "2025-11-19";
-      document.getElementById('dateSelect').value = day19;
-      showDate(day19);
-    }
+    renderOpenIncidents();
+    // Default to Day 3 for demonstration
+    document.getElementById('dateSelect').value = 'day-3';
+    showDate('day-3');
   };
 </script>
 
